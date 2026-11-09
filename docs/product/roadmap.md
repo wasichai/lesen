@@ -16,9 +16,11 @@ por terminada porque una pantalla exista.
 ## Próximos pasos concretos
 
 - **Fase 6.** Backend hecho (ADR-0012): borradores, comprobación, revisión, publicación con audio subido y preguntas,
-  historial, entradas de diccionario y archivos en `wasichai-files`; operación en `docs/operations.md`. Falta la
-  interfaz del estudio.
+  historial, entradas de diccionario y archivos en `wasichai-files`; operación en `docs/operations.md`. Interfaz del
+  estudio en `lesen-ui` (`/studio`).
 - **Después.** Un proveedor de voz detrás de una interfaz para generar el audio desde el estudio, varios idiomas de
   estudio a la vez (RF-PER-05) y avisos fuera de la aplicación cuando Wasichai publique su API de notificaciones.
 - **Aguas arriba.** Pedir a `wasichai-ui` un popover, una hoja inferior y una barra de pestañas (ADR-0006), y a
-  `wasichai` un registro público de cuentas con rol por defecto y una API pública de notificaciones (ADR-0011).
+  `wasichai` un registro público de cuentas con rol por defecto y una API pública de notificaciones (ADR-0011). Al
+  cliente de `@wasichai/core`, que no fije `Content-Type: application/json` cuando el cuerpo es `FormData`: hoy el
+  estudio sube el audio y las portadas con `fetch` y el token del cliente (ADR-0012).
