@@ -9,6 +9,7 @@ import lesen.common.Access
 import lesen.common.Learner
 import lesen.common.PageRequest
 import lesen.common.requireLength
+import lesen.reading.ReadingCompletionListener
 import lesen.reading.ReadingVersions
 import lesen.reading.VersionRef
 import org.springframework.http.HttpStatus
@@ -63,6 +64,7 @@ class LibraryService(
     private val versions: ReadingVersions,
     private val catalog: CatalogService,
     private val clock: Clock,
+    private val completionListeners: List<ReadingCompletionListener>,
 ) {
     suspend fun progress(
         me: Learner,
@@ -104,6 +106,7 @@ class LibraryService(
                 clock.instant(),
             )
         store.saveProgress(me.organizationId, me.userId, version.readingId, done)
+        completionListeners.forEach { it.completed(me.organizationId, me.userId, version) }
         return done.view()
     }
 

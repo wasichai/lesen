@@ -31,8 +31,8 @@ import wasichai.core.common.ValidationException
 import java.time.Instant
 import java.util.UUID
 
-// estados del cuaderno (docs/architecture/domain-model.md §Vocabulario). En la fase 2 solo existe SAVED: guardada no es
-// lo mismo que recordada, y los demás estados los da el repaso espaciado de la fase 4, nunca un botón
+// estados del cuaderno (docs/architecture/domain-model.md §Vocabulario). Guardada no es lo mismo que recordada: SAVED
+// hasta el primer repaso, y los demás estados los da el repaso espaciado (ReviewStatus, ADR-0010), nunca un botón
 enum class VocabularyStatus { SAVED, LEARNING, FAMILIAR, MASTERED }
 
 data class SaveWordRequest(
@@ -66,6 +66,9 @@ data class VocabularyItem(
     val status: VocabularyStatus,
     val note: String?,
     val savedAt: Instant,
+    // la próxima fecha de repaso; una palabra recién guardada se puede repasar ya
+    val dueAt: Instant,
+    val reviews: Int,
 )
 
 data class SavedWord(
@@ -248,9 +251,12 @@ class VocabularyStore(
         val status: VocabularyStatus,
         val note: String?,
         val savedAt: Instant,
+        val card: Card,
+        val reviews: Int,
+        val lapses: Int,
     )
 
-    private fun row(r: Readable) =
+    fun row(r: Readable) =
         Row(
             r.get("id", UUID::class.java)!!,
             r.get("entry_key", String::class.java)!!,
@@ -264,12 +270,23 @@ class VocabularyStore(
             VocabularyStatus.valueOf(r.get("status", String::class.java)!!),
             r.get("note", String::class.java),
             r.get("saved_at", Instant::class.java)!!,
+            Card(
+                CardState.valueOf(r.get("card_state", String::class.java)!!),
+                r.get("card_step", Number::class.java)?.toInt(),
+                r.get("stability", java.lang.Double::class.java)?.toDouble(),
+                r.get("difficulty", java.lang.Double::class.java)?.toDouble(),
+                r.get("due_at", Instant::class.java)!!,
+                r.get("last_review_at", Instant::class.java),
+            ),
+            r.get("reviews", Number::class.java)!!.toInt(),
+            r.get("lapses", Number::class.java)!!.toInt(),
         )
 
     companion object {
-        private val SELECT =
+        val SELECT =
             """
             SELECT x.id, x.entry_key, x.language, x.surface, x.context, x.token_ref, x.version_number, x.status, x.note, x.saved_at,
+                   x.card_state, x.card_step, x.stability, x.difficulty, x.due_at, x.last_review_at, x.reviews, x.lapses,
                    r.slug, v.title
             FROM lesen.vocabulary_entry x
             JOIN lesen.dictionary_entry e ON e.key = x.entry_key
@@ -364,7 +381,7 @@ class VocabularyService(
         into: String,
     ): VocabularyItem = item(row, entries.entry(row.entryKey)!!, into)
 
-    private fun item(
+    fun item(
         row: VocabularyStore.Row,
         entry: lesen.dictionary.StoredEntry,
         into: String,
@@ -382,6 +399,8 @@ class VocabularyService(
         status = row.status,
         note = row.note,
         savedAt = row.savedAt,
+        dueAt = row.card.due,
+        reviews = row.reviews,
     )
 }
 
