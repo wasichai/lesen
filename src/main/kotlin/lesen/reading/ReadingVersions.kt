@@ -15,6 +15,19 @@ data class VersionRef(
     val current: Boolean,
 )
 
+// lo que acompaña al texto de una versión, para volver a editarla en el estudio
+data class VersionMeta(
+    val level: String,
+    val featured: Boolean,
+    val topics: List<String>,
+    val title: String,
+    val subtitle: String?,
+    val summary: String,
+    val cover: String?,
+    val accent: String?,
+    val hash: String,
+)
+
 // lectura de las versiones congeladas: por slug y número, con su contenido y sus traducciones
 @Repository
 class ReadingVersions(
@@ -82,4 +95,28 @@ class ReadingVersions(
             .collectList()
             .awaitSingleOrNull()
             .orEmpty()
+
+    suspend fun meta(versionId: UUID): VersionMeta? =
+        db
+            .sql(
+                """
+                SELECT r.level, r.featured, v.title, v.subtitle, v.summary, v.cover, v.accent, v.content_hash,
+                       (SELECT array_agg(t.topic_slug ORDER BY t.position) FROM lesen.reading_topic t WHERE t.reading_id = r.id) AS topics
+                FROM lesen.reading_version v JOIN lesen.reading r ON r.id = v.reading_id WHERE v.id = :v
+                """.trimIndent(),
+            ).bind("v", versionId)
+            .map { row, _ ->
+                VersionMeta(
+                    row.get("level", String::class.java)!!,
+                    row.get("featured", java.lang.Boolean::class.java)!!.booleanValue(),
+                    (row.get("topics", Array<String>::class.java) ?: emptyArray()).toList(),
+                    row.get("title", String::class.java)!!,
+                    row.get("subtitle", String::class.java),
+                    row.get("summary", String::class.java)!!,
+                    row.get("cover", String::class.java),
+                    row.get("accent", String::class.java),
+                    row.get("content_hash", String::class.java)!!,
+                )
+            }.one()
+            .awaitSingleOrNull()
 }

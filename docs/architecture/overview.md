@@ -15,7 +15,7 @@ código, no solo en su documentación:
 | Errores                       | `problem+json` desde las excepciones de Wasichai                                                                   | Se reutilizan; lo ajeno es 404                                                       |
 | Pruebas                       | `WasichaiIntegrationTest` (Testcontainers o base externa `*_test`), WebTestClient                                  | Se reutiliza, con `model/apply.py` en la primera prueba                              |
 | LMS de elearning              | Cursos, ediciones, matrículas, lecciones, «lectura en bloques» (HTML saneado a bloques, calculada al vuelo)        | **No se reutiliza el dominio**: un LMS no es una plataforma de lectura (ADR-0001)    |
-| Flujo editorial de elearning  | Borrador → revisión → aprobada → publicada, inmutable, con guardas                                                 | Mismo principio de inmutabilidad; el estudio editorial propio llega en la fase 6     |
+| Flujo editorial de elearning  | Borrador → revisión → aprobada → publicada, inmutable, con guardas                                                 | Mismo principio de inmutabilidad; estudio propio (borrador → revisión → publicada)   |
 | Cola de trabajos de elearning | `lms.trabajo` con `FOR UPDATE SKIP LOCKED`                                                                         | Se copiará cuando haga falta (generación de audio, fase 3); hoy no hay trabajo largo |
 | Interfaz (`@wasichai/core`)   | `WasichaiApp`, registro de módulos, rutas `shell`, `bare` o `public`, i18n por módulo, cliente de API, temas       | Se reutiliza; todas las rutas de Lesen son `bare` con su propio marco (ADR-0006)     |
 | Componentes (`@wasichai/ui`)  | Botón, diálogo, campos, tablas, pestañas. Sin popover, hoja inferior, barra de pestañas, toast ni esqueleto        | Diálogo de la librería para las hojas; lo que falta, propio y pedido aguas arriba    |
@@ -54,6 +54,7 @@ flowchart BT
   audio --> reading
   assessment --> learner & reading
   progress --> learner & catalog & vocabulary & assessment
+  editorial --> language & reading & audio & assessment & dictionary
   demo --> assessment & audio & catalog & dictionary & reading
 ```
 
@@ -70,13 +71,16 @@ flowchart BT
 | `audio`      | Narración: activos, voces, tiempos por palabra validados contra el texto, archivos con rangos            |
 | `assessment` | Preguntas de comprensión, corrección por reglas, cola de corrección asistida, autoevaluación             |
 | `progress`   | Actividad, proyección diaria, panel, resumen semanal, metas, racha semanal, logros, señales de historial |
+| `editorial`  | Estudio: borradores, comprobación, revisión, publicación con audio y preguntas, historial, diccionario   |
 | `demo`       | Carga del contenido de demostración a través de la publicación real                                      |
 
 `vocabulary` también lleva el repaso FSRS y los encuentros: `library` le avisa al terminar una lectura por
 `ReadingCompletionListener`, una interfaz de `reading`, sin depender de ella. Del mismo modo, `library`, `vocabulary` y
 `assessment` emiten su actividad por `LearningActivityListener` (en `common`) y `catalog` pide las señales del historial
-por `LearnerSignalsSource`; `progress` implementa las dos (ADR-0011) y nadie depende de él. Fase siguiente: `editorial`
-(escribe a través de `reading`).
+por `LearnerSignalsSource`; `progress` implementa las dos (ADR-0011) y nadie depende de él. `editorial` (ADR-0012)
+escribe solo a través de `reading` (`ReadingPublisher`), `audio`, `assessment` y `dictionary`, y lee las versiones
+publicadas para el historial; tampoco depende nadie de él. Los archivos subidos usan `FileStore` de `wasichai-files`
+(`common.Media`).
 
 **Modelo de lectura cruzado.** La tarjeta del catálogo une en SQL la versión vigente con el progreso y el marcador de
 quien pregunta (tablas de `library`) para no hacer una consulta por tarjeta. Es una lectura consciente del límite;
@@ -108,4 +112,5 @@ Detalle en `lesen-ui/CLAUDE.md` y `lesen-ui/docs/design-system/lesen/`.
 | Diccionario curado a mano: no escala a cualquier texto | Interfaz de proveedor (ADR-0005); la palabra sin entrada se publica igual y se dice honestamente |
 | «Palabras desconocidas» necesita saber qué se encontró | `vocabulary_encounter` al terminar cada lectura (fase 4); lo no terminado no cuenta como visto   |
 | Corrección asistida depende de un proveedor externo    | Sin clave, autoevaluación con la respuesta modelo; nunca un resultado inventado (ADR-0009)       |
-| Contenido de demostración en el classpath              | El estudio editorial (fase 6) publica a la base y las portadas irán a wasichai-files             |
+| Contenido de demostración en el classpath              | El estudio publica a la base; audio y portadas subidos van al almacén de `wasichai-files`        |
+| Sin generación de voz en el servidor                   | Audio subido con tiempos por palabra (WebVTT, SRT o JSON); proveedor de voz cuando haya uno real |

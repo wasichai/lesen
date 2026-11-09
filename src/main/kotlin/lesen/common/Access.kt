@@ -8,8 +8,8 @@ import wasichai.core.identity.CurrentUser
 import wasichai.core.metadata.MetadataService
 
 // quién llama y qué puede hacer (ADR-0002 §3). Los permisos los decide Wasichai sobre dos objetos ancla de
-// model/model.json, que no guardan datos: lectura (leer el catálogo) y cuaderno (lo personal de cada lector: perfil,
-// progreso, marcadores, notas, vocabulario). Aquí nunca se mira un nombre de rol
+// model/model.json, que no guardan datos: lectura (leer el catálogo), cuaderno (lo personal de cada lector: perfil,
+// progreso, marcadores, notas, vocabulario) y estudio (el editorial). Aquí nunca se mira un nombre de rol
 @Component
 class Access(
     private val currentUser: CurrentUser,
@@ -32,6 +32,15 @@ class Access(
     // escribir lo propio (crear, cambiar o borrar)
     suspend fun writeNotebook(): Learner = require(Actions.UPDATE, NOTEBOOK_ANCHOR)
 
+    // el estudio editorial (ADR-0012): ver los borradores y el historial
+    suspend fun studio(): Learner = require(Actions.READ, STUDIO_ANCHOR)
+
+    // escribir borradores, adjuntarles audio y enviarlos a revisión
+    suspend fun writeStudio(): Learner = require(Actions.UPDATE, STUDIO_ANCHOR)
+
+    // devolver un borrador en revisión o publicarlo: una acción propia del ancla, no la de escribir
+    suspend fun publish(): Learner = require(PUBLISH, STUDIO_ANCHOR)
+
     private suspend fun require(
         action: String,
         anchor: String,
@@ -44,6 +53,8 @@ class Access(
     companion object {
         const val READING_ANCHOR = "lectura"
         const val NOTEBOOK_ANCHOR = "cuaderno"
+        const val STUDIO_ANCHOR = "estudio"
+        const val PUBLISH = "PUBLICAR"
     }
 }
 

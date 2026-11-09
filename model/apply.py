@@ -3,7 +3,7 @@
 
 Solo biblioteca estándar. Idempotente: crea lo que falta y deja los permisos de cada rol en los declarados; nunca borra
 objetos ni cambia contraseñas. Es el mismo enfoque que model/apply.py de elearning-backend, reducido a lo que Lesen usa:
-dos objetos ancla de permisos, dos roles y las personas de la demostración.
+tres objetos ancla de permisos (uno con una acción propia), tres roles y las personas de la demostración.
 
 Uso:
   WASICHAI_EMAIL=admin@wasichai.local WASICHAI_PASSWORD=admin python3 model/apply.py --url http://127.0.0.1:8095 [--demo]
@@ -64,6 +64,11 @@ def validate(model: dict, roles: dict, users: dict) -> list[str]:
     for o in model["objects"]:
         if not o.get("apiOnly"):
             problems.append(f"objeto {o['name']}: las anclas de permisos son apiOnly")
+    declared = {o["name"]: {a["name"] for a in o.get("actions", [])} for o in model["objects"]}
+    for o, own in declared.items():
+        for a in own:
+            if a in ACTIONS or not a.isupper():
+                problems.append(f"objeto {o}: la acción propia {a} debe ir en mayúsculas y no ser predefinida")
     role_names = set()
     for r in roles["roles"]:
         role_names.add(r["name"])
@@ -73,7 +78,7 @@ def validate(model: dict, roles: dict, users: dict) -> list[str]:
             if p["object"] not in names:
                 problems.append(f"rol {r['name']}: objeto desconocido {p['object']}")
             for a in p["actions"]:
-                if a not in ACTIONS:
+                if a not in ACTIONS and a not in declared.get(p["object"], set()):
                     problems.append(f"rol {r['name']}: acción desconocida {a}")
     for u in users["users"]:
         for r in u["roles"]:
@@ -91,6 +96,15 @@ def apply_objects(client: Client, model: dict) -> None:
         body["fields"] = o.get("fields", [])
         client.call("POST", "/api/objects", body)
         print(f"  + objeto {o['name']}")
+    # las acciones propias de cada ancla (PUBLICAR en estudio); declararlas otra vez no cambia nada
+    for o in model["objects"]:
+        if not o.get("actions"):
+            continue
+        have = {a["name"] for a in client.call("GET", f"/api/metadata/objects/{o['name']}/actions") or []}
+        for action in o["actions"]:
+            if action["name"] not in have:
+                client.call("POST", f"/api/metadata/objects/{o['name']}/actions", {"name": action["name"], "label": action["label"]})
+                print(f"  + acción {o['name']}.{action['name']}")
 
 
 def apply_roles(client: Client, roles: dict) -> None:
