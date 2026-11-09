@@ -2,3 +2,4 @@ build/
 .gradle/
 node_modules/
 .claude/
+src/main/resources/demo/audio/

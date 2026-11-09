@@ -9,13 +9,15 @@ léxico de su idioma (la misma regla de palabra que `lesen.reading.Tokenizer`). 
 
 ## Archivos
 
-| Archivo                  | Contenido                                                                          |
-| ------------------------ | ---------------------------------------------------------------------------------- |
-| `topics.json`            | Árbol de temas: `[{slug, labels: {es, en}, children: [{slug, labels}]}]`           |
-| `collections.json`       | `[{slug, labels: {es, en}, descriptions: {es, en}, readings: [slug…]}]`            |
-| `readings/<slug>.json`   | Una lectura (forma abajo)                                                          |
-| `lexicon/<idioma>.jsonl` | Diccionario curado del idioma de estudio, una entrada JSON por línea (forma abajo) |
-| `covers/<archivo>.svg`   | Portada original, 600×800, sin texto incrustado                                    |
+| Archivo                     | Contenido                                                                          |
+| --------------------------- | ---------------------------------------------------------------------------------- |
+| `topics.json`               | Árbol de temas: `[{slug, labels: {es, en}, children: [{slug, labels}]}]`           |
+| `collections.json`          | `[{slug, labels: {es, en}, descriptions: {es, en}, readings: [slug…]}]`            |
+| `readings/<slug>.json`      | Una lectura (forma abajo)                                                          |
+| `lexicon/<idioma>.jsonl`    | Diccionario curado del idioma de estudio, una entrada JSON por línea (forma abajo) |
+| `covers/<archivo>.svg`      | Portada original, 600×800, sin texto incrustado                                    |
+| `audio/<slug>.mp3`          | Narración generada con eSpeak NG (`tools/generate_audio.py`, ADR-0008)             |
+| `audio/<slug>.timings.json` | Voz, duración y `timings`: id de token → `[inicio, fin]` en milisegundos           |
 
 ## Lectura
 
@@ -81,3 +83,10 @@ léxico de su idioma (la misma regla de palabra que `lesen.reading.Tokenizer`). 
 - `forms` incluye cada forma flexionada que aparece en las lecturas (la búsqueda ignora mayúsculas).
 - `translations` es obligatoria para cada idioma de interfaz distinto del idioma de la entrada; lo demás es opcional y
   solo se escribe cuando aporta.
+
+## Audio
+
+`python3 tools/generate_audio.py [slug…]` (necesita `apt install espeak-ng libespeak-ng1 ffmpeg`) vuelve a generar la
+narración y sus tiempos, idénticos byte a byte en cada ejecución. Velocidad por nivel: de 125 palabras por minuto en A1 a
+165 en C1. Al cambiar el texto de una lectura, hay que regenerar su audio: `tools/check_demo.py` y `DemoContentTest`
+fallan si los tiempos no casan con el texto.

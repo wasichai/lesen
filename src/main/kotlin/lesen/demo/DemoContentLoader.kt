@@ -1,6 +1,10 @@
 package lesen.demo
 
 import kotlinx.coroutines.runBlocking
+import lesen.audio.AudioService
+import lesen.audio.AudioSubmission
+import lesen.audio.Voice
+import lesen.audio.WordTiming
 import lesen.catalog.CatalogStore
 import lesen.catalog.Topic
 import lesen.common.Jsonb
@@ -21,6 +25,16 @@ data class TopicSeed(
     val children: List<TopicSeed> = emptyList(),
 )
 
+// lo que escribe tools/generate_audio.py junto a cada mp3 (docs/content/demo-content.md)
+data class AudioSeed(
+    val slug: String,
+    val file: String,
+    val format: String,
+    val durationMs: Int,
+    val voice: Voice,
+    val timings: Map<String, List<Int>>,
+)
+
 data class CollectionSeed(
     val slug: String,
     val labels: Map<String, String>,
@@ -37,6 +51,7 @@ class DemoContentLoader(
     private val catalog: CatalogStore,
     private val dictionary: DictionaryService,
     private val publisher: ReadingPublisher,
+    private val audio: AudioService,
 ) {
     private val log = LoggerFactory.getLogger(DemoContentLoader::class.java)
     private val resources = PathMatchingResourcePatternResolver()
@@ -64,16 +79,25 @@ class DemoContentLoader(
             log.info("léxico {}: {} entradas", language, entries.size)
         }
         var created = 0
+        var narrated = 0
         for (file in resources.getResources("classpath:demo/readings/*.json").sortedBy { it.filename }) {
             val draft = Jsonb.read<ReadingDraft>(file.inputStream.bufferedReader().readText())
             val result = publisher.publish(draft)
             if (result.created) created++
             if (result.unresolved.isNotEmpty()) log.warn("{}: sin entrada {}", draft.slug, result.unresolved)
+            // el audio de la versión vigente, con sus tiempos validados contra el texto publicado (ADR-0008)
+            val seed = resources.getResource("classpath:demo/audio/${draft.slug}.timings.json")
+            if (seed.exists()) {
+                val audioSeed = Jsonb.read<AudioSeed>(seed.inputStream.bufferedReader().readText())
+                val timings = audioSeed.timings.map { (token, range) -> WordTiming(token, range[0], range[1]) }
+                val submission = AudioSubmission(audioSeed.voice, audioSeed.file, audioSeed.format, audioSeed.durationMs, "GENERATED", timings)
+                if (audio.attach(draft.slug, result.version, submission)) narrated++
+            }
         }
         Jsonb.read<List<CollectionSeed>>(text("classpath:demo/collections.json")).forEachIndexed { i, c ->
             catalog.saveCollection(c.slug, c.labels, c.descriptions, i, c.readings)
         }
-        log.info("contenido de demostración listo ({} versiones nuevas)", created)
+        log.info("contenido de demostración listo ({} versiones nuevas, {} audios nuevos)", created, narrated)
     }
 
     private fun text(location: String) =

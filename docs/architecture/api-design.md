@@ -38,6 +38,13 @@ La tarjeta (`ReadingCard`) lleva slug, idioma, nivel, temas, destacada, versión
 portada, acento, palabras, minutos, fecha de publicación, si está marcada, el progreso de quien pregunta y cuántas
 personas la abrieron.
 
+## Audio
+
+| Método | Ruta                                 | Permiso | Notas                                                                                                                                                               |
+| ------ | ------------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GET    | `readings/{slug}/versions/{n}/audio` | lectura | `{assets[{id, voice, url, format, durationMs, origin, timings[[tokenId, inicio, fin]], sentences[{id, startMs, endMs}], paragraphs[…]}]}`; inmutable; 404 sin audio |
+| GET    | `public/audio/{archivo}`             | público | El archivo, con rangos (`Range` → 206) para saltar sin descargarlo entero                                                                                           |
+
 ## Biblioteca
 
 | Método | Ruta                         | Permiso  | Notas                                                                                                            |
@@ -77,7 +84,6 @@ personas la abrieron.
 
 ## Próximas fases (diseñado)
 
-- `readings/{slug}/versions/{n}/audio` → activos, voces y tiempos por palabra (fase 3).
 - `readings/{slug}/versions/{n}/assessment` y `assessments/{id}/attempts` (fase 4).
 - `vocabulary/reviews` (siguientes tarjetas y respuestas, fase 4).
 - `progress/dashboard` y `progress/activity` (fase 5).

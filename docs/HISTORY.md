@@ -2,6 +2,15 @@
 
 Lo entregado, lo más nuevo arriba.
 
+## 2026-11-09 — Fase 3: audio sincronizado
+
+- Esquema V4 (`audio_voice`, `audio_asset`, `word_timing`, `audio_alignment_report`) y capacidad `audio`: validación
+  de tiempos contra el texto congelado, tramos de oración y párrafo, `GET readings/{slug}/versions/{n}/audio` inmutable y
+  archivos públicos con rangos (206).
+- Narración de las 11 lecturas con eSpeak NG (`tools/generate_audio.py`): tiempos por palabra desde las marcas del motor,
+  recortados al tramo con voz, deterministas byte a byte. Voces de eSpeak NG y no MBROLA por la licencia de DE1 (ADR-0008).
+- `tools/check_demo.py` y `DemoContentTest` validan los tiempos y que los ids del generador son los del backend.
+
 ## 2026-11-09 — Primera entrega: fases 0, 1 y 2
 
 - **Fase 0.** Auditoría de `elearning-backend`, `elearning-frontend`, `wasichai` y `wasichai-ui`; requisitos, hoja de
