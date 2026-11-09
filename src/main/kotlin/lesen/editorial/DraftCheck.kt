@@ -36,8 +36,8 @@ data class CheckInput(
     val assembled: AssembledVersion?,
     val questions: List<Question>,
     val audio: DraftAudio?,
-    // la huella de la versión vigente, si la lectura ya existe
-    val currentHash: String?,
+    // el borrador daría lo mismo que la versión vigente (texto, entradas, traducciones y datos): no habrá versión nueva
+    val unchanged: Boolean,
     // las preguntas de la versión vigente y si ya las respondió alguien (entonces no cambian sin texto nuevo)
     val currentQuestions: List<Question>?,
     val currentAnswered: Boolean,
@@ -97,7 +97,7 @@ object DraftCheck {
             if (audio.multiWordCues > 0) warnings += Issue("AUDIO_MULTIWORD", null, audio.multiWordCues.toString())
         }
         // el mismo texto que la versión vigente: no habrá versión nueva, y sus preguntas solo cambian si nadie las respondió
-        if (input.currentHash != null && input.currentHash == assembled.hash) {
+        if (input.unchanged) {
             warnings += Issue("UNCHANGED")
             if (input.currentAnswered && input.currentQuestions != null && input.currentQuestions != input.questions) {
                 errors += Issue("QUESTIONS_LOCKED")

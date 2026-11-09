@@ -373,4 +373,20 @@ class StudioApiTest : LesenApiTest() {
         // descartado, la lectura admite un borrador nuevo
         send("POST", "/api/lesen/studio/drafts", redactora(), mapOf("slug" to slug, "language" to "de", "level" to "A2", "title" to "Otra vez"), 201)
     }
+
+    @Test
+    fun `a reading edited without changes keeps its version, even if it came with the demo content`() {
+        val editor = editor()
+        val before = get("/api/lesen/readings/der-fuchs-im-garten", lena())["reading"]["version"].asInt()
+        val draft = send("POST", "/api/lesen/studio/drafts", editor, mapOf("from" to "der-fuchs-im-garten"), 201)!!
+        val id = draft["id"].asString()
+        assertThat(draft["questions"].size()).isPositive()
+        assertThat(draft["audio"]["timedWords"].asInt()).isPositive()
+        val check = get("/api/lesen/studio/drafts/$id/check", editor)
+        assertThat(check["ready"].asBoolean()).isTrue()
+        assertThat(check["warnings"].values().map { it["code"].asString() }).contains("UNCHANGED")
+        send("POST", "/api/lesen/studio/drafts/$id/submit", editor, null, 200)
+        assertThat(send("POST", "/api/lesen/studio/drafts/$id/publish", editor, null, 200)!!["publishedVersion"].asInt()).isEqualTo(before)
+        assertThat(get("/api/lesen/readings/der-fuchs-im-garten", lena())["reading"]["version"].asInt()).isEqualTo(before)
+    }
 }

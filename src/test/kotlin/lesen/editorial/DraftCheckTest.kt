@@ -54,11 +54,11 @@ class DraftCheckTest {
     private fun input(
         questions: List<Question> = listOf(tf()),
         audio: DraftAudio? = null,
-        currentHash: String? = null,
+        unchanged: Boolean = false,
         currentQuestions: List<Question>? = null,
         answered: Boolean = false,
         problems: List<FieldViolation> = emptyList(),
-    ) = CheckInput("de", listOf("es", "en"), problems, if (problems.isEmpty()) assembled else null, questions, audio, currentHash, currentQuestions, answered)
+    ) = CheckInput("de", listOf("es", "en"), problems, if (problems.isEmpty()) assembled else null, questions, audio, unchanged, currentQuestions, answered)
 
     @Test
     fun `a draft with warnings only is ready, and each warning says where`() {
@@ -146,12 +146,12 @@ class DraftCheckTest {
 
     @Test
     fun `the same text keeps its version, and answered questions cannot change without a new text`() {
-        val same = DraftCheck.report(input(currentHash = assembled.hash, currentQuestions = listOf(tf()), answered = true))
+        val same = DraftCheck.report(input(unchanged = true, currentQuestions = listOf(tf()), answered = true))
         assertThat(same.ready).isTrue()
         assertThat(same.warnings).contains(Issue("UNCHANGED"))
-        val locked = DraftCheck.report(input(questions = listOf(tf(id = "q9")), currentHash = assembled.hash, currentQuestions = listOf(tf()), answered = true))
+        val locked = DraftCheck.report(input(questions = listOf(tf(id = "q9")), unchanged = true, currentQuestions = listOf(tf()), answered = true))
         assertThat(locked.errors).contains(Issue("QUESTIONS_LOCKED"))
-        val free = DraftCheck.report(input(questions = listOf(tf(id = "q9")), currentHash = assembled.hash, currentQuestions = listOf(tf()), answered = false))
+        val free = DraftCheck.report(input(questions = listOf(tf(id = "q9")), unchanged = true, currentQuestions = listOf(tf()), answered = false))
         assertThat(free.ready).isTrue()
     }
 }

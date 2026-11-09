@@ -31,9 +31,12 @@ ADR-0008, ADR-0009) y nada se inventa (ADR-0005).
 - **Permisos**: un ancla nueva, `estudio`. Ver y escribir borradores y enviarlos a revisión son READ y UPDATE; devolver y
   publicar es una acción propia del ancla, `PUBLICAR` (`model/model.json`, declarada por `model/apply.py`). Dos roles:
   `REDACTOR` (escribe y envía) y `EDITOR` (además devuelve y publica). El código nunca mira un rol.
-- **Publicar** es, en este orden, `ReadingPublisher.publish` (idempotente por la huella), las preguntas contra la versión
-  resultante (idempotente por su huella) y el audio (idempotente por versión y voz). Si un paso falla, publicar otra vez
-  termina el trabajo sin duplicar nada.
+- **Publicar** es, en este orden, la versión, las preguntas contra ella (idempotente por su huella) y el audio
+  (idempotente por versión y voz). Si lo que vería quien lee es lo de la versión vigente (el mismo texto con las mismas
+  entradas, las mismas traducciones y los mismos datos), no hay versión nueva y las preguntas y el audio van a la
+  vigente: se compara el contenido ensamblado y no la huella del documento, porque un borrador reconstruido desde una
+  versión puede escribirse distinto que el original. Si un paso falla, publicar otra vez termina el trabajo sin duplicar
+  nada.
 - **Audio subido, no generado en el servidor**: el estudio recibe el archivo (mp3, ogg o m4a, comprobado por su firma) y
   sus tiempos por palabra como WebVTT o SRT con una palabra por tramo, la salida habitual de los alineadores forzados y
   de la transcripción con marcas por palabra, o el JSON de `tools/generate_audio.py`. Lo dicho se casa con lo escrito

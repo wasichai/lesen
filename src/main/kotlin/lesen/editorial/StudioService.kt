@@ -361,24 +361,33 @@ class StudioService(
         val draft = find(id)
         requireStatus(draft, DraftStatus.IN_REVIEW)
         requireReady(check(draft))
-        val result = publisher.publish(draft.document)
-        val ref = versions.find(draft.slug, result.version)!!
+        // lo mismo que la versión vigente (aunque el documento se escribiera distinto): sin versión nueva; las preguntas y el
+        // audio van a la vigente
+        val current = versions.find(draft.slug)
+        val assembled = publisher.preview(draft.document)
+        val number =
+            if (current != null && sameAsCurrent(draft.document, assembled, current)) {
+                current.number
+            } else {
+                publisher.publish(draft.document).version
+            }
+        val ref = versions.find(draft.slug, number)!!
         if (draft.questions.isNotEmpty()) assessments.load(ref.versionId, draft.questions)
         draft.audio?.let { a ->
             val voice = Voice("studio-${draft.language}-${slugOf(a.voice)}", "studio", draft.language, a.voice, a.license)
-            audio.attach(draft.slug, result.version, AudioSubmission(voice, a.file, a.format, a.durationMs, "UPLOADED", a.timings))
+            audio.attach(draft.slug, number, AudioSubmission(voice, a.file, a.format, a.durationMs, "UPLOADED", a.timings))
         }
         if (!store.move(
                 id,
                 DraftStatus.IN_REVIEW,
                 DraftStatus.PUBLISHED,
                 me.user.email,
-                result.version,
+                number,
             )
         ) {
             throw ConflictException("This draft changed in the meantime")
         }
-        store.event(id, draft.slug, StudioAction.PUBLISHED, me.user.email, note.note, result.version)
+        store.event(id, draft.slug, StudioAction.PUBLISHED, me.user.email, note.note, number)
         return view(find(id))
     }
 
@@ -451,6 +460,7 @@ class StudioService(
             }
         fieldProblems += publisher.referenceProblems(draft.document)
         val current = versions.find(draft.slug)
+        val unchanged = assembled != null && current != null && sameAsCurrent(draft.document, assembled, current)
         return DraftCheck.report(
             CheckInput(
                 language = draft.language,
@@ -459,11 +469,40 @@ class StudioService(
                 assembled = assembled,
                 questions = draft.questions,
                 audio = draft.audio,
-                currentHash = current?.let { versions.meta(it.versionId)?.hash },
+                unchanged = unchanged,
                 currentQuestions = current?.let { assessments.questionsOf(it.versionId) },
                 currentAnswered = current?.let { assessments.answered(it.versionId) } ?: false,
             ),
         )
+    }
+
+    // lo que vería quien lee es lo de la versión vigente: el mismo texto con las mismas entradas, las mismas traducciones y
+    // los mismos datos. No se compara la huella del documento: uno reconstruido desde la versión puede escribirse distinto
+    private suspend fun sameAsCurrent(
+        document: ReadingDraft,
+        assembled: lesen.reading.AssembledVersion,
+        current: lesen.reading.VersionRef,
+    ): Boolean {
+        val meta = versions.meta(current.versionId) ?: return false
+        if (versions.content(current.versionId) != assembled.content) return false
+        if (meta.level != document.level || meta.topics != document.topics || meta.featured != document.featured) return false
+        if (meta.title != document.title.trim() || meta.subtitle != document.subtitle?.trim() || meta.summary != document.summary.trim()) return false
+        if (meta.cover != document.cover || meta.accent != document.accent) return false
+
+        fun key(unit: lesen.reading.TranslationUnit) = listOf(unit.unit, unit.ref, unit.language, unit.text.trim())
+        val wanted =
+            assembled.translations
+                .filter { it.text.isNotBlank() }
+                .map(::key)
+                .toSet()
+        val languages = wanted.map { it[2] }.toSet() + languages.all().filter { it.interfaceLanguage }.map { it.code }
+        val stored =
+            languages
+                .flatMap { lang -> listOf("SENTENCE", "PARAGRAPH").flatMap { unit -> versions.translations(current.versionId, unit, lang, null) } }
+                .filter { it.text.isNotBlank() }
+                .map(::key)
+                .toSet()
+        return wanted == stored
     }
 
     private fun requireReady(report: CheckReport) {
