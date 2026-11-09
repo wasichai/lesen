@@ -32,6 +32,12 @@ wasichai:
     # dominio). Wasichai trae http://localhost:* para cualquier entorno
     cors-allowed-origin-patterns: ${WASICHAI_CORS_ALLOWED_ORIGINS:}
 
+  # los archivos que se suben desde el estudio (audio y portadas, ADR-0012): disco local por defecto o S3
+  # (wasichai.files.store=s3 y wasichai.files.s3.*). Se respaldan junto con la base (docs/operations.md)
+  files:
+    local:
+      path: ${LESEN_FILES_PATH:./data/files}
+
 lesen:
   demo:
     # publica el contenido de src/main/resources/demo al arrancar (docs/content/demo-content.md)

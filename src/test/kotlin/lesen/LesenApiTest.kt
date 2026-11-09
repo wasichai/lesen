@@ -46,6 +46,8 @@ abstract class LesenApiTest : WasichaiIntegrationTest() {
 
     protected fun editor() = bearer("editor@demo.lesen.test", DEMO_PASSWORD)
 
+    protected fun redactora() = bearer("redactora@demo.lesen.test", DEMO_PASSWORD)
+
     protected fun get(
         path: String,
         token: String,

@@ -139,6 +139,14 @@ class AssessmentStore(
             .rowsUpdated()
             .awaitSingle() > 0
 
+    suspend fun answered(versionId: UUID): Boolean =
+        db
+            .sql("SELECT EXISTS (SELECT 1 FROM lesen.assessment_attempt a JOIN lesen.assessment s ON s.id = a.assessment_id WHERE s.version_id = :v)")
+            .bind("v", versionId)
+            .map { row, _ -> row.get(0, java.lang.Boolean::class.java)!!.booleanValue() }
+            .one()
+            .awaitSingle()
+
     suspend fun insertAttempt(
         o: UUID,
         u: UUID,

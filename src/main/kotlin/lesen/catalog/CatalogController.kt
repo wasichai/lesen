@@ -1,12 +1,15 @@
 package lesen.catalog
 
 import lesen.common.Access
+import lesen.common.Media
+import lesen.common.MediaKind
 import lesen.common.Page
 import lesen.common.PageRequest
 import lesen.common.requireLength
 import lesen.learner.ProfileService
 import lesen.reading.ReadingVersions
 import lesen.reading.TranslationUnit
+import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.Resource
 import org.springframework.http.CacheControl
@@ -150,6 +153,7 @@ class CatalogController(
 @RequestMapping("/api/lesen/public")
 class PublicCatalogController(
     private val catalog: CatalogService,
+    private val media: Media,
 ) {
     @GetMapping("/topics")
     suspend fun topics(): ResponseEntity<List<TopicNode>> =
@@ -158,17 +162,26 @@ class PublicCatalogController(
             .cacheControl(CacheControl.maxAge(Duration.ofMinutes(10)).cachePublic())
             .body(catalog.topicTree())
 
-    // las portadas del contenido de demostración; las del estudio editorial (fase 6) vivirán en wasichai-files
+    // las portadas: las de la demostración (SVG sin texto, del classpath) y las subidas desde el estudio (PNG, JPEG o WebP,
+    // del almacén de archivos). Nunca se sirve un SVG subido: podría llevar código
     @GetMapping("/covers/{file}")
-    fun cover(
+    suspend fun cover(
         @PathVariable file: String,
     ): ResponseEntity<Resource> {
         if (!COVER.matches(file)) throw NotFoundException("Cover not found")
-        val resource = ClassPathResource("demo/covers/$file")
-        if (!resource.exists()) throw NotFoundException("Cover not found")
+        val type: String
+        val resource: Resource
+        if (file.endsWith(".svg")) {
+            resource = ClassPathResource("demo/covers/$file").takeIf { it.exists() } ?: throw NotFoundException("Cover not found")
+            type = "image/svg+xml"
+        } else {
+            val stored = media.find(file)?.takeIf { it.kind == MediaKind.COVER } ?: throw NotFoundException("Cover not found")
+            resource = ByteArrayResource(media.bytes(stored) ?: throw NotFoundException("Cover not found"))
+            type = stored.contentType
+        }
         return ResponseEntity
             .ok()
-            .contentType(MediaType.valueOf("image/svg+xml"))
+            .contentType(MediaType.valueOf(type))
             .cacheControl(CacheControl.maxAge(Duration.ofDays(7)).cachePublic())
             .header("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'")
             .header("X-Content-Type-Options", "nosniff")
@@ -176,6 +189,6 @@ class PublicCatalogController(
     }
 
     companion object {
-        private val COVER = Regex("^[a-z0-9]+(-[a-z0-9]+)*\\.svg$")
+        private val COVER = Regex("^[a-z0-9]+(-[a-z0-9]+)*\\.(svg|png|jpg|webp)$")
     }
 }

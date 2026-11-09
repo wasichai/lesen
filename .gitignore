@@ -28,3 +28,6 @@ __pycache__/
 
 # archivos subidos en desarrollo (wasichai-files local)
 var/
+
+# archivos subidos desde el estudio en local (LESEN_FILES_PATH)
+data/

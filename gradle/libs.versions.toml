@@ -13,6 +13,7 @@ anthropic = "3.3.0"
 [libraries]
 wasichai-bom = { module = "wasichai:wasichai-bom", version.ref = "wasichai" }
 wasichai-starter = { module = "wasichai:wasichai-spring-boot-starter" }
+wasichai-starter-files = { module = "wasichai:wasichai-spring-boot-starter-files" }
 wasichai-test = { module = "wasichai:wasichai-test" }
 anthropic-java = { module = "com.anthropic:anthropic-java", version.ref = "anthropic" }
 springdoc-webflux-api = { module = "org.springdoc:springdoc-openapi-starter-webflux-api", version.ref = "springdoc" }

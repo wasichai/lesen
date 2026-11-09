@@ -1,6 +1,9 @@
 package lesen.audio
 
 import lesen.common.Access
+import lesen.common.Media
+import lesen.common.MediaKind
+import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.Resource
 import org.springframework.http.CacheControl
@@ -35,18 +38,27 @@ class AudioController(
     }
 }
 
-// los archivos de audio de la demostración, públicos como las portadas. Con rangos (206) para que el navegador pueda saltar
-// a cualquier punto sin descargar el archivo entero: los atiende el escritor de Resource de WebFlux
+// los archivos de audio, públicos como las portadas: los de la demostración, del classpath; los del estudio, del almacén
+// de archivos (lesen.media). Con rangos (206) para que el navegador pueda saltar a cualquier punto sin descargar el archivo
+// entero: los atiende el escritor de Resource de WebFlux
 @RestController
 @RequestMapping("/api/lesen/public/audio")
-class PublicAudioController {
+class PublicAudioController(
+    private val media: Media,
+) {
     @GetMapping("/{file}")
-    fun file(
+    suspend fun file(
         @PathVariable file: String,
     ): ResponseEntity<Resource> {
         if (!FILE.matches(file)) throw NotFoundException("Audio not found")
-        val resource = ClassPathResource("demo/audio/$file")
-        if (!resource.exists()) throw NotFoundException("Audio not found")
+        val demo = ClassPathResource("demo/audio/$file")
+        val resource: Resource =
+            if (demo.exists()) {
+                demo
+            } else {
+                val stored = media.find(file)?.takeIf { it.kind == MediaKind.AUDIO } ?: throw NotFoundException("Audio not found")
+                ByteArrayResource(media.bytes(stored) ?: throw NotFoundException("Audio not found"))
+            }
         return ResponseEntity
             .ok()
             .contentType(MediaType.parseMediaType(TYPES.getValue(file.substringAfterLast('.'))))

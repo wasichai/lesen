@@ -297,6 +297,12 @@ class AssessmentService(
         }
     }
 
+    // las preguntas guardadas de una versión (para volver a editarlas en el estudio) y si alguien ya las respondió:
+    // entonces ya no se pueden cambiar en esa versión (ADR-0009)
+    suspend fun questionsOf(versionId: UUID): List<Question>? = store.forVersion(versionId)?.questions
+
+    suspend fun answered(versionId: UUID): Boolean = store.answered(versionId)
+
     // lo corregido de quien pregunta en un idioma, para el panel de progreso
     suspend fun comprehension(
         organizationId: UUID,

@@ -60,7 +60,7 @@ oraciones las fija la autora. Un idioma con otra regla (sin espacios, por ejempl
 Los tiempos viven aparte del archivo y se anclan a los ids de token de una versión concreta: una versión nueva pide
 audio nuevo. Las oraciones y los párrafos toman el inicio de su primera palabra y el fin de la última; lo hablado que no
 está escrito (o al revés) queda en el informe, nunca se fuerza. La generación de audio desde el estudio (cola de
-trabajos) llega en la fase 6.
+trabajos) queda para cuando haya un proveedor de voz: el estudio sube audio con sus tiempos (ADR-0012).
 
 ## Diccionario
 
@@ -123,6 +123,18 @@ lector), inicio, actualización y fin. Repetir un informe deja el mismo estado. 
 Un día cuenta como activo si se leyó, se terminó algo, se guardó o repasó una palabra o se respondió un cuestionario.
 La racha es semanal y nunca se muestra como fracaso: la semana en curso solo suma y los días que la persona no eligió
 son de descanso.
+
+## Estudio editorial (hecho, ADR-0012)
+
+| Tabla          | Qué guarda                                                                                                                                 |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `studio_draft` | Lectura (slug, idioma, versión de partida), estado (`DRAFT`, `IN_REVIEW`, `PUBLISHED`, `DISCARDED`), documento, preguntas, audio, revisión |
+| `studio_event` | Solo inserciones: borrador, acción (`CREATED`, `SAVED`, `AUDIO_ATTACHED`, `SUBMITTED`, `RETURNED`, `PUBLISHED`…), quién, nota, versión     |
+| `media`        | Archivo subido (audio o portada): tipo comprobado por su firma, tamaño, huella SHA-256 y clave en el almacén de Wasichai                   |
+
+Un borrador abierto por lectura. Su documento tiene la forma de `ReadingDraft`; su audio, el archivo y los tiempos ya
+casados con los ids de palabra que tendrá la versión. Publicar crea la versión (si el texto cambió), carga las preguntas
+y adjunta el audio contra ella; el historial de una lectura son sus versiones y los eventos de sus borradores.
 
 ## Recomendación
 

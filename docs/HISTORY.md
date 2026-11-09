@@ -2,6 +2,20 @@
 
 Lo entregado, lo más nuevo arriba.
 
+## 2026-11-09 — Fase 6 (backend): estudio editorial y operación
+
+- Esquema V7 y capacidad `editorial` (ADR-0012): borradores con revisión optimista, un borrador abierto por lectura,
+  comprobación antes de publicar (`DraftCheck`, `QuestionCheck`), flujo borrador → revisión → publicada con notas,
+  historial solo de inserciones y publicación de la versión con sus preguntas y su audio, idempotente paso a paso.
+- Ancla `estudio` con la acción propia `PUBLICAR` y roles `REDACTOR` y `EDITOR`; persona de demostración «Rita»
+  (redactora).
+- Audio subido con tiempos por palabra en WebVTT, SRT o el JSON de `generate_audio.py`, casados con el texto por la
+  subsecuencia común más larga (`Transcripts`); audio y portadas en el almacén de `wasichai-files` (`common.Media`),
+  servidos públicos con rangos y `nosniff`.
+- Entradas nuevas del diccionario curado desde el estudio y borradores de lecturas publicadas con sus traducciones,
+  preguntas y audio.
+- `docs/operations.md`: despliegue, variables, permisos, respaldo de la base y del almacén, vigilancia.
+
 ## 2026-11-09 — Fase 5 (backend): progreso, metas amables, logros y listas propias
 
 - Esquema V6 y capacidad `progress` (ADR-0011): registro de actividad solo de inserciones e idempotente, emitido por

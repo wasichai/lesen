@@ -1,5 +1,5 @@
 {
-  "_comentario": "Lesen no guarda su dominio en Custom Objects (ADR-0002): sus tablas viven en el esquema lesen. Estos dos objetos son anclas de permisos de Wasichai y no guardan registros: lectura (leer el catálogo y el diccionario) y cuaderno (lo personal de cada lector). apiOnly: nadie crea registros por la API genérica.",
+  "_comentario": "Lesen no guarda su dominio en Custom Objects (ADR-0002): sus tablas viven en el esquema lesen. Estos objetos son anclas de permisos de Wasichai y no guardan registros: lectura (leer el catálogo y el diccionario), cuaderno (lo personal de cada lector) y estudio (el estudio editorial, con la acción propia PUBLICAR). apiOnly: nadie crea registros por la API genérica.",
   "enums": {},
   "objects": [
     {
@@ -8,7 +8,13 @@
       "pluralLabel": "Lecturas",
       "description": "Ancla de permisos del catálogo de Lesen: leer lecturas, temas y diccionario. No guarda registros.",
       "apiOnly": true,
-      "fields": [{ "name": "nota", "label": "Nota", "type": "TEXT" }]
+      "fields": [
+        {
+          "name": "nota",
+          "label": "Nota",
+          "type": "TEXT"
+        }
+      ]
     },
     {
       "name": "cuaderno",
@@ -16,7 +22,33 @@
       "pluralLabel": "Cuadernos",
       "description": "Ancla de permisos de lo personal de cada lector: perfil, progreso, marcadores, notas, vocabulario. No guarda registros.",
       "apiOnly": true,
-      "fields": [{ "name": "nota", "label": "Nota", "type": "TEXT" }]
+      "fields": [
+        {
+          "name": "nota",
+          "label": "Nota",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "name": "estudio",
+      "label": "Estudio",
+      "pluralLabel": "Estudios",
+      "description": "Ancla de permisos del estudio editorial de Lesen: leer, escribir y enviar a revisión borradores (READ, UPDATE) y publicar (PUBLICAR). No guarda registros.",
+      "apiOnly": true,
+      "actions": [
+        {
+          "name": "PUBLICAR",
+          "label": "Publicar"
+        }
+      ],
+      "fields": [
+        {
+          "name": "nota",
+          "label": "Nota",
+          "type": "TEXT"
+        }
+      ]
     }
   ],
   "relationships": []

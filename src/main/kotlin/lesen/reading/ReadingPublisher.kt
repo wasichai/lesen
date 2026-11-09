@@ -77,6 +77,14 @@ class ReadingPublisher(
     }
 
     private suspend fun requireReferences(draft: ReadingDraft) {
+        val problems = referenceProblems(draft)
+        if (problems.isNotEmpty()) throw ValidationException("Invalid reading", problems)
+    }
+
+    // lo que la base sabe y el borrador no: el idioma, los temas y que una lectura no cambia de idioma. El estudio lo
+    // comprueba antes de publicar
+    suspend fun referenceProblems(draft: ReadingDraft): List<FieldViolation> {
+        val problems = mutableListOf<FieldViolation>()
         val language =
             db
                 .sql("SELECT study FROM lesen.language WHERE code = :code")
@@ -84,7 +92,15 @@ class ReadingPublisher(
                 .map { row, _ -> row.get(0, java.lang.Boolean::class.java)!!.booleanValue() }
                 .one()
                 .awaitSingleOrNull()
-        if (language != true) throw ValidationException("Invalid reading", "language", "must be a language that can be studied")
+        if (language != true) problems += FieldViolation("language", "must be a language that can be studied")
+        val existing =
+            db
+                .sql("SELECT language FROM lesen.reading WHERE slug = :slug")
+                .bind("slug", draft.slug)
+                .map { row, _ -> row.get(0, String::class.java)!! }
+                .one()
+                .awaitSingleOrNull()
+        if (existing != null && existing != draft.language) problems += FieldViolation("language", "a reading keeps the language it was first published in")
         val known =
             db
                 .sql("SELECT slug FROM lesen.topic WHERE slug = ANY(:slugs)")
@@ -95,8 +111,16 @@ class ReadingPublisher(
                 .awaitSingle()
                 .toSet()
         val missing = draft.topics.filter { it !in known }
-        if (missing.isNotEmpty()) throw ValidationException("Invalid reading", listOf(FieldViolation("topics", "unknown topics: $missing")))
+        if (missing.isNotEmpty()) problems += FieldViolation("topics", "unknown topics: $missing")
+        return problems
     }
+
+    // la versión que saldría de este borrador, sin publicarla: lo que el estudio comprueba (ids, palabras sin entrada)
+    suspend fun preview(draft: ReadingDraft): AssembledVersion =
+        ReadingAssembler.assemble(draft, tokenizers.forLanguage(draft.language), resolvers.load(draft.language))
+
+    // la forma → la entrada que la publicación elegiría por defecto, para reconstruir las elecciones de una autora
+    suspend fun resolver(language: String): FormResolver = resolvers.load(language)
 
     private suspend fun upsertReading(draft: ReadingDraft): UUID {
         val id =
