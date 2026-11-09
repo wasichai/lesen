@@ -1,0 +1,36 @@
+[
+  {
+    "slug": "erste-schritte",
+    "labels": {
+      "es": "Primeros pasos en alemán",
+      "en": "First steps in German"
+    },
+    "descriptions": {
+      "es": "Historias cortas y cálidas para dar tus primeros pasos leyendo en alemán, del nivel A1 al A2.",
+      "en": "Short, warm stories to take your first steps reading German, from A1 to A2."
+    },
+    "readings": [
+      "ein-sonntag-bei-oma",
+      "brot-vom-baecker",
+      "der-alte-leuchtturm",
+      "der-fuchs-im-garten"
+    ]
+  },
+  {
+    "slug": "kurze-abenteuer",
+    "labels": {
+      "es": "Pequeñas aventuras",
+      "en": "Small adventures"
+    },
+    "descriptions": {
+      "es": "Tormentas, misterios, apagones y una máquina con memoria: aventuras breves para leer de un tirón.",
+      "en": "Storms, mysteries, blackouts and a machine with a memory: short adventures to read in one sitting."
+    },
+    "readings": [
+      "der-alte-leuchtturm",
+      "das-verschwundene-fahrrad",
+      "die-stimme-im-archiv",
+      "the-night-the-lights-went-out"
+    ]
+  }
+]

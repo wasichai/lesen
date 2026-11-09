@@ -1,0 +1,122 @@
+{
+  "slug": "the-night-the-lights-went-out",
+  "language": "en",
+  "level": "B1",
+  "topics": [
+    "history/modern"
+  ],
+  "featured": true,
+  "cover": "the-night-the-lights-went-out.svg",
+  "accent": "#23305A",
+  "title": "The Night the Lights Went Out",
+  "subtitle": "Remembering the great blackout of two thousand and three",
+  "summary": "When the power failed across a huge part of North America, one city street rediscovered its neighbours and its stars.",
+  "paragraphs": [
+    {
+      "translations": {
+        "es": "Una calurosa tarde de agosto de dos mil tres, la nevera de la cocina de mi abuela se quedó de repente en silencio. Lo mismo pasó con la radio, el ventilador y todos los semáforos de Toronto. En cuestión de minutos, unos cincuenta millones de personas de dos países se habían quedado sin electricidad."
+      },
+      "sentences": [
+        {
+          "text": "On a hot afternoon in August two thousand and three, the fridge in my grandmother's kitchen suddenly went quiet.",
+          "translations": {
+            "es": "Una calurosa tarde de agosto de dos mil tres, la nevera de la cocina de mi abuela se quedó de repente en silencio."
+          }
+        },
+        {
+          "text": "So did the radio, the fan and every traffic light in Toronto.",
+          "translations": {
+            "es": "Lo mismo pasó con la radio, el ventilador y todos los semáforos de Toronto."
+          }
+        },
+        {
+          "text": "Within minutes, around fifty million people in two countries had lost their electricity.",
+          "translations": {
+            "es": "En cuestión de minutos, unos cincuenta millones de personas de dos países se habían quedado sin electricidad."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Nadie sabía qué estaba pasando. Mi abuela, que se había criado sin televisión, simplemente abrió todas las ventanas y puso una olla de agua en su vieja cocina de gas. Fuera, en la calle, los oficinistas volvían a casa a pie en largas filas lentas, y gente corriente dirigía el tráfico en los cruces."
+      },
+      "sentences": [
+        {
+          "text": "Nobody knew what was happening.",
+          "translations": {
+            "es": "Nadie sabía qué estaba pasando."
+          }
+        },
+        {
+          "text": "My grandmother, who had grown up without a television, simply opened all the windows and put a pot of water on her old gas stove.",
+          "translations": {
+            "es": "Mi abuela, que se había criado sin televisión, simplemente abrió todas las ventanas y puso una olla de agua en su vieja cocina de gas."
+          }
+        },
+        {
+          "text": "Out in the street, office workers were walking home in long, slow lines, and ordinary people were directing traffic at the crossroads.",
+          "translations": {
+            "es": "Fuera, en la calle, los oficinistas volvían a casa a pie en largas filas lentas, y gente corriente dirigía el tráfico en los cruces."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Al caer la tarde, ocurrió algo extraño. Vecinos que nunca se habían dirigido la palabra sacaron sillas a la acera y compartieron todo lo que se estaba derritiendo en sus congeladores. Alguien trajo una guitarra, y un hombre del tercer piso enseñó a los niños a jugar a las cartas a la luz de las velas."
+      },
+      "sentences": [
+        {
+          "text": "As the evening came, something strange happened.",
+          "translations": {
+            "es": "Al caer la tarde, ocurrió algo extraño."
+          }
+        },
+        {
+          "text": "Neighbours who had never spoken to each other carried chairs onto the pavement and shared whatever was melting in their freezers.",
+          "translations": {
+            "es": "Vecinos que nunca se habían dirigido la palabra sacaron sillas a la acera y compartieron todo lo que se estaba derritiendo en sus congeladores."
+          }
+        },
+        {
+          "text": "Someone brought a guitar, and a man from the third floor taught the children how to play cards by candlelight.",
+          "translations": {
+            "es": "Alguien trajo una guitarra, y un hombre del tercer piso enseñó a los niños a jugar a las cartas a la luz de las velas."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Más tarde, mi abuela me llevó a la azotea. Sin el resplandor de la ciudad, el cielo estaba lleno de estrellas que yo nunca había visto, y un pálido río de luz se extendía sobre las torres a oscuras. La luz volvió al día siguiente, pero nunca he olvidado aquella noche. Durante unas horas, una ciudad enorme había recordado cómo ser un pueblo."
+      },
+      "sentences": [
+        {
+          "text": "Later, my grandmother took me up to the roof.",
+          "translations": {
+            "es": "Más tarde, mi abuela me llevó a la azotea."
+          }
+        },
+        {
+          "text": "Without the glow of the city, the sky was full of stars I had never seen before, and a pale river of light stretched over the dark towers.",
+          "translations": {
+            "es": "Sin el resplandor de la ciudad, el cielo estaba lleno de estrellas que yo nunca había visto, y un pálido río de luz se extendía sobre las torres a oscuras."
+          }
+        },
+        {
+          "text": "The power came back the next day, but I have never forgotten that night.",
+          "translations": {
+            "es": "La luz volvió al día siguiente, pero nunca he olvidado aquella noche."
+          }
+        },
+        {
+          "text": "For a few hours, a huge city had remembered how to be a village.",
+          "translations": {
+            "es": "Durante unas horas, una ciudad enorme había recordado cómo ser un pueblo."
+          }
+        }
+      ]
+    }
+  ]
+}

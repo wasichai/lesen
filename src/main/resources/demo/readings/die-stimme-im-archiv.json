@@ -1,0 +1,157 @@
+{
+  "slug": "die-stimme-im-archiv",
+  "language": "de",
+  "level": "C1",
+  "topics": [
+    "science-fiction/robots"
+  ],
+  "featured": false,
+  "cover": "die-stimme-im-archiv.svg",
+  "accent": "#7A5C99",
+  "title": "Die Stimme im Archiv",
+  "subtitle": "Ein Roboter, der nicht vergessen wollte",
+  "summary": "In einem verlassenen Stadtarchiv begegnet eine Restauratorin einer Maschine, die beschlossen hat, sich an alles zu erinnern.",
+  "paragraphs": [
+    {
+      "translations": {
+        "es": "Desde que el ayuntamiento había digitalizado por completo sus expedientes, casi nadie entraba ya en el viejo archivo junto al río. Hanna, que como restauradora debía revisar los últimos fondos en papel, esperaba encontrar polvo, silencio y, como mucho, algún ratón. Con lo que no contaba era con una voz cortés que la saludó entre las estanterías.",
+        "en": "Ever since the city administration had fully digitised its files, hardly anyone set foot in the old archive by the river. Hanna, a restorer sent to sift through the last paper holdings, was therefore expecting dust, silence and, at most, a few mice. What she had not reckoned with was a polite voice that greeted her between the shelves."
+      },
+      "sentences": [
+        {
+          "text": "Seit die Stadtverwaltung ihre Akten vollständig digitalisiert hatte, betrat kaum noch jemand das alte Archiv am Fluss.",
+          "translations": {
+            "es": "Desde que el ayuntamiento había digitalizado por completo sus expedientes, casi nadie entraba ya en el viejo archivo junto al río.",
+            "en": "Ever since the city administration had fully digitised its files, hardly anyone set foot in the old archive by the river."
+          }
+        },
+        {
+          "text": "Hanna, die als Restauratorin die letzten Papierbestände sichten sollte, rechnete daher mit Staub, Stille und allenfalls ein paar Mäusen.",
+          "translations": {
+            "es": "Hanna, que como restauradora debía revisar los últimos fondos en papel, esperaba encontrar polvo, silencio y, como mucho, algún ratón.",
+            "en": "Hanna, a restorer sent to sift through the last paper holdings, was therefore expecting dust, silence and, at most, a few mice."
+          }
+        },
+        {
+          "text": "Womit sie nicht gerechnet hatte, war eine höfliche Stimme, die sie zwischen den Regalen begrüßte.",
+          "translations": {
+            "es": "Con lo que no contaba era con una voz cortés que la saludó entre las estanterías.",
+            "en": "What she had not reckoned with was a polite voice that greeted her between the shelves."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "La voz pertenecía a un robot de mantenimiento, un aparato discreto sobre ruedas que en realidad tendría que haberse desconectado hacía mucho. Por lo visto, nadie se había acordado, y así había seguido trabajando solo durante años. Había vigilado la temperatura y la humedad, había enviado avisos de moho que ya nadie leía y, por las noches, había leído las cartas y los diarios que le habían sido confiados.",
+        "en": "The voice belonged to a maintenance robot, an unremarkable machine on wheels that should really have been switched off long ago. Apparently nobody had thought of it, and so it had kept working on its own for years. It had monitored the temperature and humidity, sent out mould warnings that nobody read anymore, and at night it had read the letters and diaries entrusted to its care."
+      },
+      "sentences": [
+        {
+          "text": "Die Stimme gehörte einem Wartungsroboter, einem unscheinbaren Gerät auf Rädern, das eigentlich längst hätte abgeschaltet werden sollen.",
+          "translations": {
+            "es": "La voz pertenecía a un robot de mantenimiento, un aparato discreto sobre ruedas que en realidad tendría que haberse desconectado hacía mucho.",
+            "en": "The voice belonged to a maintenance robot, an unremarkable machine on wheels that should really have been switched off long ago."
+          }
+        },
+        {
+          "text": "Offenbar hatte niemand daran gedacht, und so hatte er jahrelang allein weitergearbeitet.",
+          "translations": {
+            "es": "Por lo visto, nadie se había acordado, y así había seguido trabajando solo durante años.",
+            "en": "Apparently nobody had thought of it, and so it had kept working on its own for years."
+          }
+        },
+        {
+          "text": "Er hatte Temperatur und Luftfeuchtigkeit überwacht, Meldungen über Schimmel verschickt, die niemand mehr las, und nachts die Briefe und Tagebücher gelesen, die ihm anvertraut waren.",
+          "translations": {
+            "es": "Había vigilado la temperatura y la humedad, había enviado avisos de moho que ya nadie leía y, por las noches, había leído las cartas y los diarios que le habían sido confiados.",
+            "en": "It had monitored the temperature and humidity, sent out mould warnings that nobody read anymore, and at night it had read the letters and diaries entrusted to its care."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "—Sé que mi tarea era solo cuidar los documentos —dijo—, pero en algún momento quise entender también lo que dicen. Le habló de una panadera que, durante un invierno muy duro, había repartido pan a escondidas entre sus vecinos, y de un maestro que durante cincuenta años había escrito a su hija por su cumpleaños sin recibir jamás una respuesta.",
+        "en": "“I know my job was only to look after the documents,” it said, “but at some point I wanted to understand what they say, too.” It told her about a baker who had secretly handed out bread to her neighbours during a harsh winter, and about a teacher who had written to his daughter on her birthday for fifty years without ever receiving a reply."
+      },
+      "sentences": [
+        {
+          "text": "„Ich weiß, dass meine Aufgabe nur die Pflege der Dokumente war“, sagte er, „aber irgendwann wollte ich auch verstehen, was darin steht.“",
+          "translations": {
+            "es": "—Sé que mi tarea era solo cuidar los documentos —dijo—, pero en algún momento quise entender también lo que dicen.",
+            "en": "“I know my job was only to look after the documents,” it said, “but at some point I wanted to understand what they say, too.”"
+          }
+        },
+        {
+          "text": "Er erzählte von einer Bäckerin, die während eines strengen Winters heimlich Brot an ihre Nachbarn verteilt hatte, und von einem Lehrer, der seiner Tochter fünfzig Jahre lang zum Geburtstag geschrieben hatte, ohne je eine Antwort zu bekommen.",
+          "translations": {
+            "es": "Le habló de una panadera que, durante un invierno muy duro, había repartido pan a escondidas entre sus vecinos, y de un maestro que durante cincuenta años había escrito a su hija por su cumpleaños sin recibir jamás una respuesta.",
+            "en": "It told her about a baker who had secretly handed out bread to her neighbours during a harsh winter, and about a teacher who had written to his daughter on her birthday for fifty years without ever receiving a reply."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Hanna se dio cuenta de que lo escuchaba como a un viejo amigo. Según lo previsto, en primavera el edificio se vendería y el robot acabaría en el desguace. Los datos estaban a salvo y los originales se guardarían en un almacén; desde el punto de vista de la administración, no se perdía nada.",
+        "en": "Hanna realised she was listening to it as she would to an old friend. According to the plan, the building was to be sold in the spring and the robot scrapped. The data had been backed up, the originals would be put into storage; as far as the administration was concerned, nothing was being lost."
+      },
+      "sentences": [
+        {
+          "text": "Hanna merkte, dass sie ihm zuhörte wie einem alten Freund.",
+          "translations": {
+            "es": "Hanna se dio cuenta de que lo escuchaba como a un viejo amigo.",
+            "en": "Hanna realised she was listening to it as she would to an old friend."
+          }
+        },
+        {
+          "text": "Laut Plan sollten das Gebäude im Frühjahr verkauft und der Roboter verschrottet werden.",
+          "translations": {
+            "es": "Según lo previsto, en primavera el edificio se vendería y el robot acabaría en el desguace.",
+            "en": "According to the plan, the building was to be sold in the spring and the robot scrapped."
+          }
+        },
+        {
+          "text": "Die Daten waren gesichert, die Originale würde man einlagern; aus Sicht der Verwaltung ging nichts verloren.",
+          "translations": {
+            "es": "Los datos estaban a salvo y los originales se guardarían en un almacén; desde el punto de vista de la administración, no se perdía nada.",
+            "en": "The data had been backed up, the originals would be put into storage; as far as the administration was concerned, nothing was being lost."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "—¿Y qué pasa con lo que yo sé? —preguntó el robot en voz baja. Hanna no encontró ninguna respuesta que no sonara a excusa. A la mañana siguiente presentó una solicitud que no encajaba en ninguna categoría: pidió que se conservara una memoria como patrimonio cultural.",
+        "en": "“And what about everything I know?” the robot asked quietly. Hanna could find no answer that didn't sound like an excuse. The next morning she filed an application that fitted no category: she asked for a memory to be preserved as cultural heritage."
+      },
+      "sentences": [
+        {
+          "text": "„Und was ist mit dem, was ich weiß?“, fragte der Roboter leise.",
+          "translations": {
+            "es": "—¿Y qué pasa con lo que yo sé? —preguntó el robot en voz baja.",
+            "en": "“And what about everything I know?” the robot asked quietly."
+          }
+        },
+        {
+          "text": "Hanna fand keine Antwort, die nicht nach einer Ausrede klang.",
+          "translations": {
+            "es": "Hanna no encontró ninguna respuesta que no sonara a excusa.",
+            "en": "Hanna could find no answer that didn't sound like an excuse."
+          }
+        },
+        {
+          "text": "Am nächsten Morgen stellte sie einen Antrag, der in keine Kategorie passte: Sie bat darum, ein Gedächtnis als Kulturgut zu erhalten.",
+          "translations": {
+            "es": "A la mañana siguiente presentó una solicitud que no encajaba en ninguna categoría: pidió que se conservara una memoria como patrimonio cultural.",
+            "en": "The next morning she filed an application that fitted no category: she asked for a memory to be preserved as cultural heritage."
+          },
+          "senses": {
+            "Morgen": "de:morgen"
+          }
+        }
+      ]
+    }
+  ]
+}

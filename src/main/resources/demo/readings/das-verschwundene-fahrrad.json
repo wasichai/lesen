@@ -1,0 +1,175 @@
+{
+  "slug": "das-verschwundene-fahrrad",
+  "language": "de",
+  "level": "B1",
+  "topics": [
+    "mysteries-adventures/detectives"
+  ],
+  "featured": false,
+  "cover": "das-verschwundene-fahrrad.svg",
+  "accent": "#3E7CB1",
+  "title": "Das verschwundene Fahrrad",
+  "subtitle": "Eine Spur aus Kreide und Krümeln",
+  "summary": "Als Emils Fahrrad verschwindet, folgt er mit seiner Nachbarin einer seltsamen Spur quer durch das Viertel.",
+  "paragraphs": [
+    {
+      "translations": {
+        "es": "El lunes por la mañana, Emil está delante de casa mirando fijamente un hueco vacío. Su bicicleta azul ha desaparecido, pero el candado sigue en el suelo, abierto e intacto. ¿Se le olvidó ayer cerrarla con el candado?",
+        "en": "On Monday morning Emil stands in front of the house, staring at an empty spot. His blue bicycle is gone, but the lock is still lying on the ground, open and undamaged. Did he forget to lock it yesterday?"
+      },
+      "sentences": [
+        {
+          "text": "Am Montagmorgen steht Emil vor dem Haus und starrt auf eine leere Stelle.",
+          "translations": {
+            "es": "El lunes por la mañana, Emil está delante de casa mirando fijamente un hueco vacío.",
+            "en": "On Monday morning Emil stands in front of the house, staring at an empty spot."
+          }
+        },
+        {
+          "text": "Sein blaues Fahrrad ist weg, aber das Schloss liegt noch auf dem Boden, offen und unbeschädigt.",
+          "translations": {
+            "es": "Su bicicleta azul ha desaparecido, pero el candado sigue en el suelo, abierto e intacto.",
+            "en": "His blue bicycle is gone, but the lock is still lying on the ground, open and undamaged."
+          }
+        },
+        {
+          "text": "Hat er gestern vergessen, es abzuschließen?",
+          "translations": {
+            "es": "¿Se le olvidó ayer cerrarla con el candado?",
+            "en": "Did he forget to lock it yesterday?"
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "La señora Krüger, de la planta baja, trabajó antes en la policía. Sale con sus gafas y una taza de café y examina el suelo con atención. —Mira —dice, y señala unas pequeñas rayas blancas de tiza.",
+        "en": "Mrs Krüger from the ground floor used to be in the police. She comes out with her glasses and a cup of coffee and studies the ground closely. “Look,” she says, pointing at small white chalk marks."
+      },
+      "sentences": [
+        {
+          "text": "Frau Krüger aus dem Erdgeschoss war früher bei der Polizei.",
+          "translations": {
+            "es": "La señora Krüger, de la planta baja, trabajó antes en la policía.",
+            "en": "Mrs Krüger from the ground floor used to be in the police."
+          }
+        },
+        {
+          "text": "Sie kommt mit ihrer Brille und einer Tasse Kaffee heraus und betrachtet den Boden genau.",
+          "translations": {
+            "es": "Sale con sus gafas y una taza de café y examina el suelo con atención.",
+            "en": "She comes out with her glasses and a cup of coffee and studies the ground closely."
+          }
+        },
+        {
+          "text": "„Schau mal“, sagt sie und zeigt auf kleine weiße Striche aus Kreide.",
+          "translations": {
+            "es": "—Mira —dice, y señala unas pequeñas rayas blancas de tiza.",
+            "en": "“Look,” she says, pointing at small white chalk marks."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Las rayas recorren la acera, doblan la esquina y llegan hasta el parque infantil. Por el camino encuentran además unas migas con un sospechoso aspecto de pastel de chocolate. La señora Krüger frunce el ceño, como si ya tuviera una idea.",
+        "en": "The marks lead along the pavement, around the corner and all the way to the playground. On the way they also find a few crumbs that look suspiciously like chocolate cake. Mrs Krüger frowns, as if she already had an idea."
+      },
+      "sentences": [
+        {
+          "text": "Die Striche führen den Gehweg entlang, um die Ecke und bis zum Spielplatz.",
+          "translations": {
+            "es": "Las rayas recorren la acera, doblan la esquina y llegan hasta el parque infantil.",
+            "en": "The marks lead along the pavement, around the corner and all the way to the playground."
+          }
+        },
+        {
+          "text": "Unterwegs finden sie außerdem ein paar Krümel, die verdächtig nach Schokoladenkuchen aussehen.",
+          "translations": {
+            "es": "Por el camino encuentran además unas migas con un sospechoso aspecto de pastel de chocolate.",
+            "en": "On the way they also find a few crumbs that look suspiciously like chocolate cake."
+          }
+        },
+        {
+          "text": "Frau Krüger runzelt die Stirn, als ob sie schon eine Idee hätte.",
+          "translations": {
+            "es": "La señora Krüger frunce el ceño, como si ya tuviera una idea.",
+            "en": "Mrs Krüger frowns, as if she already had an idea."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "En el parque está la bicicleta, bien apoyada contra un árbol. A su lado está sentada la hermana pequeña de Emil, con una caja de tizas y la conciencia intranquila. Hace tiempo que conoce la combinación del candado. Solo quería practicar a escondidas, explica, y las rayas tenían que mostrarle el camino de vuelta.",
+        "en": "The bicycle is standing in the playground, neatly leaning against a tree. Next to it sits Emil's little sister with a box of chalk and a guilty conscience. She has known the code for the lock for a long time. She only wanted to practise in secret, she explains, and the marks were meant to show her the way back."
+      },
+      "sentences": [
+        {
+          "text": "Auf dem Spielplatz steht das Fahrrad, ordentlich an einen Baum gelehnt.",
+          "translations": {
+            "es": "En el parque está la bicicleta, bien apoyada contra un árbol.",
+            "en": "The bicycle is standing in the playground, neatly leaning against a tree."
+          }
+        },
+        {
+          "text": "Daneben sitzt Emils kleine Schwester mit einer Schachtel Kreide und einem schlechten Gewissen.",
+          "translations": {
+            "es": "A su lado está sentada la hermana pequeña de Emil, con una caja de tizas y la conciencia intranquila.",
+            "en": "Next to it sits Emil's little sister with a box of chalk and a guilty conscience."
+          }
+        },
+        {
+          "text": "Den Code für das Schloss kennt sie schon lange.",
+          "translations": {
+            "es": "Hace tiempo que conoce la combinación del candado.",
+            "en": "She has known the code for the lock for a long time."
+          }
+        },
+        {
+          "text": "Sie wollte nur heimlich üben, erklärt sie, und die Striche sollten ihr den Weg zurück zeigen.",
+          "translations": {
+            "es": "Solo quería practicar a escondidas, explica, y las rayas tenían que mostrarle el camino de vuelta.",
+            "en": "She only wanted to practise in secret, she explains, and the marks were meant to show her the way back."
+          },
+          "senses": {
+            "ihr": "de:sie",
+            "Weg": "de:weg"
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Emil ya no está enfadado. Por la tarde le enseña a montar en bici, y los tres se reparten lo que queda del pastel. Caso resuelto.",
+        "en": "Emil isn't angry anymore. In the afternoon he teaches her to ride a bike, and all three of them share the rest of the cake. Case closed."
+      },
+      "sentences": [
+        {
+          "text": "Emil ist nicht mehr wütend.",
+          "translations": {
+            "es": "Emil ya no está enfadado.",
+            "en": "Emil isn't angry anymore."
+          }
+        },
+        {
+          "text": "Am Nachmittag bringt er ihr das Fahrradfahren bei, und alle drei teilen sich den Rest des Kuchens.",
+          "translations": {
+            "es": "Por la tarde le enseña a montar en bici, y los tres se reparten lo que queda del pastel.",
+            "en": "In the afternoon he teaches her to ride a bike, and all three of them share the rest of the cake."
+          },
+          "senses": {
+            "ihr": "de:sie"
+          }
+        },
+        {
+          "text": "Der Fall ist gelöst.",
+          "translations": {
+            "es": "Caso resuelto.",
+            "en": "Case closed."
+          }
+        }
+      ]
+    }
+  ]
+}

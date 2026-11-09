@@ -1,0 +1,185 @@
+{
+  "slug": "der-fuchs-im-garten",
+  "language": "de",
+  "level": "A2",
+  "topics": [
+    "nature/animals"
+  ],
+  "featured": false,
+  "cover": "der-fuchs-im-garten.svg",
+  "accent": "#D9732B",
+  "title": "Der Fuchs im Garten",
+  "subtitle": "Ein leiser Besuch in der Nacht",
+  "summary": "In einer Nacht ohne Schlaf entdeckt Jonas einen Fuchs im Garten und lernt, geduldig zu warten.",
+  "paragraphs": [
+    {
+      "translations": {
+        "es": "Jonas no puede dormir. Es tarde y la luna entra por la ventana. Entonces oye un ruido en el jardín.",
+        "en": "Jonas can't sleep. It is late, and the moon is shining through the window. Then he hears a noise in the garden."
+      },
+      "sentences": [
+        {
+          "text": "Jonas kann nicht schlafen.",
+          "translations": {
+            "es": "Jonas no puede dormir.",
+            "en": "Jonas can't sleep."
+          }
+        },
+        {
+          "text": "Es ist spät, und der Mond scheint durch das Fenster.",
+          "translations": {
+            "es": "Es tarde y la luna entra por la ventana.",
+            "en": "It is late, and the moon is shining through the window."
+          }
+        },
+        {
+          "text": "Da hört er ein Geräusch im Garten.",
+          "translations": {
+            "es": "Entonces oye un ruido en el jardín.",
+            "en": "Then he hears a noise in the garden."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Se levanta sin hacer ruido y mira hacia fuera. Junto al manzano hay un zorro sentado. Tiene el pelaje rojo y la cola larga y suave. Sus ojos brillan a la luz de la luna.",
+        "en": "Quietly he gets up and looks outside. A fox is sitting next to the apple tree. Its fur is red, and its tail is long and soft. Its eyes glow in the moonlight."
+      },
+      "sentences": [
+        {
+          "text": "Leise steht er auf und schaut hinaus.",
+          "translations": {
+            "es": "Se levanta sin hacer ruido y mira hacia fuera.",
+            "en": "Quietly he gets up and looks outside."
+          }
+        },
+        {
+          "text": "Neben dem Apfelbaum sitzt ein Fuchs.",
+          "translations": {
+            "es": "Junto al manzano hay un zorro sentado.",
+            "en": "A fox is sitting next to the apple tree."
+          }
+        },
+        {
+          "text": "Sein Fell ist rot, und sein Schwanz ist lang und weich.",
+          "translations": {
+            "es": "Tiene el pelaje rojo y la cola larga y suave.",
+            "en": "Its fur is red, and its tail is long and soft."
+          }
+        },
+        {
+          "text": "Seine Augen leuchten im Mondlicht.",
+          "translations": {
+            "es": "Sus ojos brillan a la luz de la luna.",
+            "en": "Its eyes glow in the moonlight."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "El zorro busca algo en la hierba. Luego levanta la cabeza y mira directamente hacia la casa. Jonas contiene la respiración. Durante un minuto, nadie se mueve. Luego el zorro salta la valla y desaparece.",
+        "en": "The fox is looking for something in the grass. Then it lifts its head and looks straight at the house. Jonas holds his breath. For a whole minute, nobody moves. Then the fox jumps over the fence and is gone."
+      },
+      "sentences": [
+        {
+          "text": "Der Fuchs sucht etwas im Gras.",
+          "translations": {
+            "es": "El zorro busca algo en la hierba.",
+            "en": "The fox is looking for something in the grass."
+          }
+        },
+        {
+          "text": "Dann hebt er den Kopf und schaut direkt zum Haus.",
+          "translations": {
+            "es": "Luego levanta la cabeza y mira directamente hacia la casa.",
+            "en": "Then it lifts its head and looks straight at the house."
+          }
+        },
+        {
+          "text": "Jonas hält den Atem an.",
+          "translations": {
+            "es": "Jonas contiene la respiración.",
+            "en": "Jonas holds his breath."
+          }
+        },
+        {
+          "text": "Eine Minute lang bewegt sich niemand.",
+          "translations": {
+            "es": "Durante un minuto, nadie se mueve.",
+            "en": "For a whole minute, nobody moves."
+          }
+        },
+        {
+          "text": "Dann springt der Fuchs über den Zaun und ist weg.",
+          "translations": {
+            "es": "Luego el zorro salta la valla y desaparece.",
+            "en": "Then the fox jumps over the fence and is gone."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "A la mañana siguiente, Jonas se lo cuenta todo a su madre. Ella no se ríe. —Los zorros también viven en la ciudad —explica—; son tímidos, pero curiosos.",
+        "en": "The next morning Jonas tells his mother everything. She doesn't laugh. “Foxes live in the city too,” she explains. “They are shy, but curious.”"
+      },
+      "sentences": [
+        {
+          "text": "Am nächsten Morgen erzählt Jonas seiner Mutter alles.",
+          "translations": {
+            "es": "A la mañana siguiente, Jonas se lo cuenta todo a su madre.",
+            "en": "The next morning Jonas tells his mother everything."
+          },
+          "senses": {
+            "Morgen": "de:morgen"
+          }
+        },
+        {
+          "text": "Sie lacht nicht.",
+          "translations": {
+            "es": "Ella no se ríe.",
+            "en": "She doesn't laugh."
+          }
+        },
+        {
+          "text": "„Füchse leben auch in der Stadt“, erklärt sie, „sie sind scheu, aber neugierig.“",
+          "translations": {
+            "es": "—Los zorros también viven en la ciudad —explica—; son tímidos, pero curiosos.",
+            "en": "“Foxes live in the city too,” she explains. “They are shy, but curious.”"
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Desde entonces, Jonas se sienta cada noche un rato junto a la ventana. El zorro no viene todas las noches. Pero cuando viene, es como un pequeño regalo.",
+        "en": "From then on, Jonas sits by the window for a while every evening. The fox doesn't come every night. But when it does, it feels like a little gift."
+      },
+      "sentences": [
+        {
+          "text": "Von da an sitzt Jonas jeden Abend eine Weile am Fenster.",
+          "translations": {
+            "es": "Desde entonces, Jonas se sienta cada noche un rato junto a la ventana.",
+            "en": "From then on, Jonas sits by the window for a while every evening."
+          }
+        },
+        {
+          "text": "Nicht jede Nacht kommt der Fuchs.",
+          "translations": {
+            "es": "El zorro no viene todas las noches.",
+            "en": "The fox doesn't come every night."
+          }
+        },
+        {
+          "text": "Aber wenn er kommt, ist es wie ein kleines Geschenk.",
+          "translations": {
+            "es": "Pero cuando viene, es como un pequeño regalo.",
+            "en": "But when it does, it feels like a little gift."
+          }
+        }
+      ]
+    }
+  ]
+}
