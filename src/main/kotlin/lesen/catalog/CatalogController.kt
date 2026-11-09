@@ -1,0 +1,181 @@
+package lesen.catalog
+
+import lesen.common.Access
+import lesen.common.Page
+import lesen.common.PageRequest
+import lesen.common.requireLength
+import lesen.learner.ProfileService
+import lesen.reading.ReadingVersions
+import lesen.reading.TranslationUnit
+import org.springframework.core.io.ClassPathResource
+import org.springframework.core.io.Resource
+import org.springframework.http.CacheControl
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
+import wasichai.core.common.NotFoundException
+import wasichai.core.common.ValidationException
+import java.time.Duration
+
+data class ContentToken(
+    val id: String,
+    val text: String,
+    val kind: String,
+    val space: Boolean,
+    val entry: String?,
+)
+
+data class ContentSentence(
+    val id: String,
+    val tokens: List<ContentToken>,
+)
+
+data class ContentParagraph(
+    val id: String,
+    val sentences: List<ContentSentence>,
+)
+
+// el texto de una versión, listo para pintar palabra por palabra
+data class ReadingContentView(
+    val slug: String,
+    val version: Int,
+    val language: String,
+    val current: Boolean,
+    val paragraphs: List<ContentParagraph>,
+)
+
+data class TranslationView(
+    val unit: String,
+    val ref: String,
+    val language: String,
+    val text: String,
+)
+
+@RestController
+@RequestMapping("/api/lesen")
+class CatalogController(
+    private val access: Access,
+    private val catalog: CatalogService,
+    private val versions: ReadingVersions,
+    private val profiles: ProfileService,
+) {
+    @GetMapping("/discover")
+    suspend fun discover(): Discover = catalog.discover(access.reader())
+
+    @GetMapping("/readings")
+    suspend fun readings(
+        @RequestParam language: String?,
+        @RequestParam level: List<String>?,
+        @RequestParam topic: String?,
+        @RequestParam minMinutes: Int?,
+        @RequestParam maxMinutes: Int?,
+        @RequestParam q: String?,
+        @RequestParam status: ReadingStatus?,
+        @RequestParam featured: Boolean?,
+        @RequestParam sort: ReadingSort?,
+        @RequestParam page: Int?,
+        @RequestParam size: Int?,
+    ): Page<ReadingCard> {
+        val me = access.reader()
+        requireLength(q, "q", 64)
+        requireLength(topic, "topic", 120)
+        if ((level?.size ?: 0) > 6) throw ValidationException("Invalid level", "level", "at most 6 levels")
+        val query = CatalogQuery(language, level.orEmpty(), topic, minMinutes, maxMinutes, q, status, featured, sort ?: ReadingSort.RECENT)
+        return catalog.search(me, query, PageRequest.of(page, size))
+    }
+
+    @GetMapping("/readings/{slug}")
+    suspend fun detail(
+        @PathVariable slug: String,
+    ): ReadingDetail = catalog.detail(access.reader(), slug)
+
+    // una versión publicada no cambia nunca (ADR-0003): se puede guardar en caché para siempre
+    @GetMapping("/readings/{slug}/versions/{number}/content")
+    suspend fun content(
+        @PathVariable slug: String,
+        @PathVariable number: Int,
+    ): ResponseEntity<ReadingContentView> {
+        access.reader()
+        val ref = versions.find(slug, number) ?: throw NotFoundException("Reading version not found")
+        val content = versions.content(ref.versionId)
+        val view =
+            ReadingContentView(
+                ref.slug,
+                ref.number,
+                ref.language,
+                ref.current,
+                content.paragraphs.map { p ->
+                    ContentParagraph(
+                        p.id,
+                        p.sentences.map { s -> ContentSentence(s.id, s.tokens.map { ContentToken(it.id, it.text, it.kind.name, it.space, it.entry) }) },
+                    )
+                },
+            )
+        return ResponseEntity
+            .ok()
+            .eTag("\"${ref.versionId}\"")
+            .cacheControl(CacheControl.maxAge(Duration.ofDays(365)).cachePrivate().immutable())
+            .body(view)
+    }
+
+    // traducciones escritas por una persona para una oración o un párrafo. Sin traducción: 404, nunca una inventada
+    @GetMapping("/readings/{slug}/versions/{number}/translations")
+    suspend fun translations(
+        @PathVariable slug: String,
+        @PathVariable number: Int,
+        @RequestParam unit: String,
+        @RequestParam ref: String?,
+        @RequestParam language: String?,
+    ): List<TranslationView> {
+        val me = access.reader()
+        if (unit !in setOf("SENTENCE", "PARAGRAPH")) throw ValidationException("Invalid unit", "unit", "must be SENTENCE or PARAGRAPH")
+        requireLength(ref, "ref", 32)
+        val into =
+            language
+                ?: profiles.find(me.organizationId, me.userId)?.interfaceLanguage
+                ?: throw ValidationException("Missing language", "language", "required while there is no learner profile")
+        val version = versions.find(slug, number) ?: throw NotFoundException("Reading version not found")
+        val found: List<TranslationUnit> = versions.translations(version.versionId, unit, into, ref)
+        if (ref != null && found.isEmpty()) throw NotFoundException("No translation for this $unit in $into")
+        return found.map { TranslationView(it.unit, it.ref, it.language, it.text) }
+    }
+}
+
+// lo público y cacheable del catálogo: el árbol de temas y las portadas
+@RestController
+@RequestMapping("/api/lesen/public")
+class PublicCatalogController(
+    private val catalog: CatalogService,
+) {
+    @GetMapping("/topics")
+    suspend fun topics(): ResponseEntity<List<TopicNode>> =
+        ResponseEntity
+            .ok()
+            .cacheControl(CacheControl.maxAge(Duration.ofMinutes(10)).cachePublic())
+            .body(catalog.topicTree())
+
+    // las portadas del contenido de demostración; las del estudio editorial (fase 6) vivirán en wasichai-files
+    @GetMapping("/covers/{file}")
+    fun cover(
+        @PathVariable file: String,
+    ): ResponseEntity<Resource> {
+        if (!COVER.matches(file)) throw NotFoundException("Cover not found")
+        val resource = ClassPathResource("demo/covers/$file")
+        if (!resource.exists()) throw NotFoundException("Cover not found")
+        return ResponseEntity
+            .ok()
+            .contentType(MediaType.valueOf("image/svg+xml"))
+            .cacheControl(CacheControl.maxAge(Duration.ofDays(7)).cachePublic())
+            .header("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'")
+            .header("X-Content-Type-Options", "nosniff")
+            .body(resource)
+    }
+
+    companion object {
+        private val COVER = Regex("^[a-z0-9]+(-[a-z0-9]+)*\\.svg$")
+    }
+}
