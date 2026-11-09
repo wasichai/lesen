@@ -1,0 +1,9 @@
+# Solo desarrollo local: usuario admin@wasichai.local / admin de la semilla de Wasichai. Nunca en otro entorno.
+wasichai:
+  seed:
+    dev: true
+  web:
+    cors-allowed-origin-patterns: http://localhost:*
+lesen:
+  demo:
+    enabled: true
