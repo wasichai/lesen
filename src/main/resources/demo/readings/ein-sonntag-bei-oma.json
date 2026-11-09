@@ -2,9 +2,7 @@
   "slug": "ein-sonntag-bei-oma",
   "language": "de",
   "level": "A1",
-  "topics": [
-    "everyday-life/home"
-  ],
+  "topics": ["everyday-life/home"],
   "featured": false,
   "cover": "ein-sonntag-bei-oma.svg",
   "accent": "#C8553D",

@@ -2,9 +2,7 @@
   "slug": "the-night-the-lights-went-out",
   "language": "en",
   "level": "B1",
-  "topics": [
-    "history/modern"
-  ],
+  "topics": ["history/modern"],
   "featured": true,
   "cover": "the-night-the-lights-went-out.svg",
   "accent": "#23305A",

@@ -2,9 +2,7 @@
   "slug": "a-morning-in-lisbon",
   "language": "en",
   "level": "A2",
-  "topics": [
-    "travel/cities"
-  ],
+  "topics": ["travel/cities"],
   "featured": false,
   "cover": "a-morning-in-lisbon.svg",
   "accent": "#E2A93B",

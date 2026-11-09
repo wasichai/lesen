@@ -2,9 +2,7 @@
   "slug": "der-fuchs-im-garten",
   "language": "de",
   "level": "A2",
-  "topics": [
-    "nature/animals"
-  ],
+  "topics": ["nature/animals"],
   "featured": false,
   "cover": "der-fuchs-im-garten.svg",
   "accent": "#D9732B",

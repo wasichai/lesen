@@ -9,13 +9,13 @@ léxico de su idioma (la misma regla de palabra que `lesen.reading.Tokenizer`). 
 
 ## Archivos
 
-| Archivo                | Contenido                                                                                  |
-| ---------------------- | ------------------------------------------------------------------------------------------ |
-| `topics.json`          | Árbol de temas: `[{slug, labels: {es, en}, children: [{slug, labels}]}]`                   |
-| `collections.json`     | `[{slug, labels: {es, en}, descriptions: {es, en}, readings: [slug…]}]`                    |
-| `readings/<slug>.json` | Una lectura (forma abajo)                                                                  |
-| `lexicon/<idioma>.jsonl` | Diccionario curado del idioma de estudio, una entrada JSON por línea (forma abajo)       |
-| `covers/<archivo>.svg` | Portada original, 600×800, sin texto incrustado                                            |
+| Archivo                  | Contenido                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------- |
+| `topics.json`            | Árbol de temas: `[{slug, labels: {es, en}, children: [{slug, labels}]}]`           |
+| `collections.json`       | `[{slug, labels: {es, en}, descriptions: {es, en}, readings: [slug…]}]`            |
+| `readings/<slug>.json`   | Una lectura (forma abajo)                                                          |
+| `lexicon/<idioma>.jsonl` | Diccionario curado del idioma de estudio, una entrada JSON por línea (forma abajo) |
+| `covers/<archivo>.svg`   | Portada original, 600×800, sin texto incrustado                                    |
 
 ## Lectura
 

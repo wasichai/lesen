@@ -2,9 +2,7 @@
   "slug": "das-verschwundene-fahrrad",
   "language": "de",
   "level": "B1",
-  "topics": [
-    "mysteries-adventures/detectives"
-  ],
+  "topics": ["mysteries-adventures/detectives"],
   "featured": false,
   "cover": "das-verschwundene-fahrrad.svg",
   "accent": "#3E7CB1",

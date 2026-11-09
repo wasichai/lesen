@@ -2,10 +2,7 @@
   "slug": "der-alte-leuchtturm",
   "language": "de",
   "level": "A2",
-  "topics": [
-    "travel/coasts",
-    "nature"
-  ],
+  "topics": ["travel/coasts", "nature"],
   "featured": true,
   "cover": "der-alte-leuchtturm.svg",
   "accent": "#2F5D62",

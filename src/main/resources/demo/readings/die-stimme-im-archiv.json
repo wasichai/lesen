@@ -2,9 +2,7 @@
   "slug": "die-stimme-im-archiv",
   "language": "de",
   "level": "C1",
-  "topics": [
-    "science-fiction/robots"
-  ],
+  "topics": ["science-fiction/robots"],
   "featured": false,
   "cover": "die-stimme-im-archiv.svg",
   "accent": "#7A5C99",

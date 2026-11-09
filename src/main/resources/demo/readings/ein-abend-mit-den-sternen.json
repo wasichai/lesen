@@ -2,9 +2,7 @@
   "slug": "ein-abend-mit-den-sternen",
   "language": "de",
   "level": "B1",
-  "topics": [
-    "science/space"
-  ],
+  "topics": ["science/space"],
   "featured": true,
   "cover": "ein-abend-mit-den-sternen.svg",
   "accent": "#2E3A6B",

@@ -2,9 +2,7 @@
   "slug": "brot-vom-baecker",
   "language": "de",
   "level": "A1",
-  "topics": [
-    "culture/food"
-  ],
+  "topics": ["culture/food"],
   "featured": false,
   "cover": "brot-vom-baecker.svg",
   "accent": "#B7793F",

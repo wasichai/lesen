@@ -2,9 +2,7 @@
   "slug": "warum-wir-gewohnheiten-brauchen",
   "language": "de",
   "level": "B2",
-  "topics": [
-    "psychology/habits"
-  ],
+  "topics": ["psychology/habits"],
   "featured": false,
   "cover": "warum-wir-gewohnheiten-brauchen.svg",
   "accent": "#6A8D73",
