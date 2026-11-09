@@ -1,0 +1,145 @@
+{
+  "reading": "der-alte-leuchtturm",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "DETAIL",
+      "difficulty": 1,
+      "prompt": { "es": "¿Por qué hoy el faro ya no necesita farero?", "en": "Why does the lighthouse no longer need a keeper today?" },
+      "explanation": {
+        "es": "El texto lo explica: „die Lampe funktioniert automatisch“, la lámpara funciona sola.",
+        "en": "The text explains it: „die Lampe funktioniert automatisch“, the lamp works by itself."
+      },
+      "refs": ["p2s1"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "Porque ya no pasan barcos", "en": "Because no ships pass by anymore" } },
+          { "id": "b", "text": { "es": "Porque la lámpara funciona automáticamente", "en": "Because the lamp works automatically" } },
+          { "id": "c", "text": { "es": "Porque el faro está cerrado", "en": "Because the lighthouse is closed" } },
+          { "id": "d", "text": { "es": "Porque el abuelo tiene la llave", "en": "Because the grandfather has the key" } }
+        ],
+        "correct": ["b"]
+      }
+    },
+    {
+      "id": "q2",
+      "type": "TRUE_FALSE",
+      "difficulty": 1,
+      "prompt": { "es": "Antes, el abuelo de Mia trabajaba como farero.", "en": "Mia's grandfather used to work as a lighthouse keeper." },
+      "explanation": {
+        "es": "Verdadero: „Früher war er dort Leuchtturmwärter“, antes era el farero de allí.",
+        "en": "True: „Früher war er dort Leuchtturmwärter“, he used to be the lighthouse keeper there."
+      },
+      "refs": ["p1s3"],
+      "spec": { "correct": true }
+    },
+    {
+      "id": "q3",
+      "type": "VOCABULARY_IN_CONTEXT",
+      "difficulty": 2,
+      "prompt": {
+        "es": "En „der Großvater hat noch einen Schlüssel“, ¿qué significa „Schlüssel“?",
+        "en": "In „der Großvater hat noch einen Schlüssel“, what does „Schlüssel“ mean?"
+      },
+      "explanation": {
+        "es": "„Schlüssel“ es la llave: con ella el abuelo todavía puede entrar en el faro.",
+        "en": "„Schlüssel“ is the key: with it the grandfather can still get into the lighthouse."
+      },
+      "refs": ["p2s2"],
+      "spec": {
+        "token": "p2s2t7",
+        "options": [
+          { "id": "a", "text": { "es": "una llave", "en": "a key" } },
+          { "id": "b", "text": { "es": "una lámpara", "en": "a lamp" } },
+          { "id": "c", "text": { "es": "una escalera", "en": "a staircase" } },
+          { "id": "d", "text": { "es": "un barco", "en": "a boat" } }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q4",
+      "type": "COMPLETION",
+      "difficulty": 1,
+      "prompt": { "es": "Completa la oración con las palabras del texto.", "en": "Complete the sentence with the words from the text." },
+      "explanation": {
+        "es": "Mientras suben, „Mia zählt hundert Stufen“: Mia cuenta cien escalones.",
+        "en": "While they climb, „Mia zählt hundert Stufen“: Mia counts a hundred steps."
+      },
+      "refs": ["p2s4"],
+      "spec": {
+        "sentence": "p2s4",
+        "blanks": ["p2s4t2", "p2s4t4"],
+        "bank": ["zählt", "Stufen", "öffnet", "Wolken"]
+      }
+    },
+    {
+      "id": "q5",
+      "type": "MATCHING",
+      "difficulty": 2,
+      "prompt": { "es": "Une cada palabra del texto con su significado.", "en": "Match each word from the text with its meaning." },
+      "explanation": {
+        "es": "„Leuchtturm“ es el faro, „Treppe“ la escalera, „Schalter“ el interruptor rojo y „Hafen“ el puerto adonde llega el barco.",
+        "en": "„Leuchtturm“ is the lighthouse, „Treppe“ the staircase, „Schalter“ the red switch and „Hafen“ the harbour the ship sails into."
+      },
+      "refs": ["p1s2", "p2s3", "p4s2", "p5s2"],
+      "spec": {
+        "left": [
+          { "id": "1", "text": "Leuchtturm" },
+          { "id": "2", "text": "Treppe" },
+          { "id": "3", "text": "Schalter" },
+          { "id": "4", "text": "Hafen" }
+        ],
+        "right": [
+          { "id": "w", "text": { "es": "el interruptor", "en": "the switch" } },
+          { "id": "x", "text": { "es": "el puerto", "en": "the harbour" } },
+          { "id": "y", "text": { "es": "el faro", "en": "the lighthouse" } },
+          { "id": "z", "text": { "es": "la escalera", "en": "the staircase" } },
+          { "id": "v", "text": { "es": "la ola", "en": "the wave" } }
+        ],
+        "pairs": { "1": "y", "2": "z", "3": "w", "4": "x" }
+      }
+    },
+    {
+      "id": "q6",
+      "type": "ORDERING",
+      "difficulty": 2,
+      "prompt": { "es": "Ordena lo que pasa esa noche.", "en": "Put the events of that night in order." },
+      "explanation": {
+        "es": "Primero suben la escalera („steigen … die Treppe hinauf“), luego se apaga la luz („geht das Licht aus“), Mia pulsa el interruptor y al final ven un barco.",
+        "en": "First they climb the stairs („steigen … die Treppe hinauf“), then the light goes out („geht das Licht aus“), Mia presses the switch and finally they see a ship."
+      },
+      "refs": ["p2s3", "p3s4", "p4s4", "p5s1"],
+      "spec": {
+        "items": [
+          { "id": "a", "text": { "es": "Se apaga la luz.", "en": "The light goes out." } },
+          { "id": "b", "text": { "es": "Ven un barco pequeño a lo lejos.", "en": "They see a small ship far out." } },
+          { "id": "c", "text": { "es": "Mia y su abuelo suben la escalera.", "en": "Mia and her grandfather climb the stairs." } },
+          { "id": "d", "text": { "es": "Mia pulsa el interruptor rojo.", "en": "Mia presses the red switch." } }
+        ],
+        "order": ["c", "a", "d", "b"]
+      }
+    },
+    {
+      "id": "q7",
+      "type": "SHORT_ANSWER",
+      "difficulty": 3,
+      "prompt": { "es": "¿Por qué crees que Mia está un poco orgullosa al final?", "en": "Why do you think Mia is a little proud at the end?" },
+      "explanation": {
+        "es": "Mia pulsa el interruptor y „die Lampe leuchtet wieder“; gracias a la luz, el barco entra „langsam und sicher in den Hafen“.",
+        "en": "Mia presses the switch and „die Lampe leuchtet wieder“; thanks to the light, the ship sails „langsam und sicher in den Hafen“."
+      },
+      "refs": ["p4s4", "p5s2", "p5s4"],
+      "spec": {
+        "model": {
+          "es": "Porque ella pulsó el interruptor, la lámpara volvió a brillar y el barco pudo entrar seguro en el puerto.",
+          "en": "Because she pressed the switch, the lamp shone again and the ship could sail safely into the harbour."
+        },
+        "rubric": {
+          "es": "Una buena respuesta dice que Mia encendió de nuevo la luz (pulsó el interruptor) y lo relaciona con que el barco llega seguro al puerto. Puede responderse en español, en inglés o en alemán.",
+          "en": "A good answer says that Mia turned the light back on (she pressed the switch) and links it to the ship reaching the harbour safely. It may be answered in Spanish, English or German."
+        }
+      }
+    }
+  ]
+}

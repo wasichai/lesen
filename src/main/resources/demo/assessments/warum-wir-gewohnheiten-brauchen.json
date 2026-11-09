@@ -1,0 +1,164 @@
+{
+  "reading": "warum-wir-gewohnheiten-brauchen",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "MAIN_IDEA",
+      "difficulty": 2,
+      "prompt": { "es": "¿Cuál es la idea central del texto?", "en": "What is the main idea of the text?" },
+      "explanation": {
+        "es": "El texto explica que los hábitos ahorran atención y concluye: „Sie sind Werkzeuge, und wir können lernen, sie bewusst zu gestalten.“",
+        "en": "The text explains that habits save attention and concludes: „Sie sind Werkzeuge, und wir können lernen, sie bewusst zu gestalten.“"
+      },
+      "refs": ["p2s1", "p2s2", "p5s3"],
+      "spec": {
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "Los hábitos son rutinas automáticas que nos ahorran esfuerzo y que podemos aprender a moldear",
+              "en": "Habits are automatic routines that save us effort and that we can learn to shape"
+            }
+          },
+          {
+            "id": "b",
+            "text": { "es": "Los malos hábitos demuestran que tenemos poca fuerza de voluntad", "en": "Bad habits show that we have little willpower" }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "Conviene evitar los hábitos para decidirlo todo de forma consciente",
+              "en": "It is best to avoid habits so we decide everything consciously"
+            }
+          },
+          {
+            "id": "d",
+            "text": { "es": "Lavarse los dientes es el hábito más importante del día", "en": "Brushing your teeth is the most important habit of the day" }
+          }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q2",
+      "type": "ORDERING",
+      "difficulty": 2,
+      "prompt": {
+        "es": "Ordena los pasos del ciclo de un hábito con el ejemplo del café.",
+        "en": "Put the steps of the habit loop in order, using the coffee example."
+      },
+      "explanation": {
+        "es": "Primero el „Auslöser“ (el aroma), luego la „Handlung“ (coger la taza), después la „Belohnung“ (el calor) y, con cada repetición, la conexión se hace „fester“.",
+        "en": "First the „Auslöser“ (the smell), then the „Handlung“ (reaching for the cup), then the „Belohnung“ (the warmth), and with each repetition the connection grows „fester“."
+      },
+      "refs": ["p3s1", "p3s2", "p3s3"],
+      "spec": {
+        "items": [
+          { "id": "c", "text": { "es": "El primer sorbo da una sensación de calor (recompensa)", "en": "The first sip gives a feeling of warmth (reward)" } },
+          { "id": "a", "text": { "es": "Notamos el aroma del café (desencadenante)", "en": "We notice the smell of coffee (trigger)" } },
+          { "id": "d", "text": { "es": "Al repetirse el ciclo, la conexión se vuelve más firme", "en": "As the loop repeats, the connection grows stronger" } },
+          { "id": "b", "text": { "es": "Cogemos la taza (acción)", "en": "We reach for the cup (action)" } }
+        ],
+        "order": ["a", "b", "c", "d"]
+      }
+    },
+    {
+      "id": "q3",
+      "type": "VOCABULARY_IN_CONTEXT",
+      "difficulty": 2,
+      "prompt": {
+        "es": "„Statt sich nur zusammenzureißen …“: ¿qué significa aquí „sich zusammenreißen“?",
+        "en": "„Statt sich nur zusammenzureißen …“: what does „sich zusammenreißen“ mean here?"
+      },
+      "explanation": {
+        "es": "„Sich zusammenreißen“ es obligarse a uno mismo con fuerza de voluntad; el texto propone algo más útil: cambiar el desencadenante.",
+        "en": "„Sich zusammenreißen“ means forcing yourself through willpower; the text suggests something more useful: changing the trigger."
+      },
+      "refs": ["p4s3"],
+      "spec": {
+        "token": "p4s3t4",
+        "options": [
+          { "id": "a", "text": { "es": "Contenerse a base de fuerza de voluntad", "en": "To hold back through sheer willpower" } },
+          { "id": "b", "text": { "es": "Romper algo en pedazos", "en": "To tear something to pieces" } },
+          { "id": "c", "text": { "es": "Reunirse con otras personas", "en": "To get together with other people" } },
+          { "id": "d", "text": { "es": "Relajarse y descansar", "en": "To relax and rest" } }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q4",
+      "type": "INFERENCE",
+      "difficulty": 3,
+      "prompt": {
+        "es": "Lea mira el móvil todas las noches en la cama y quiere dejar de hacerlo. Según el texto, ¿qué le convendría más?",
+        "en": "Lea checks her phone in bed every night and wants to stop. According to the text, what would help her most?"
+      },
+      "explanation": {
+        "es": "El texto dice que no luchamos contra „einen schwachen Willen“, sino contra un sistema, y que es „sinnvoller, den Auslöser zu verändern“: por ejemplo, dejar el móvil fuera de la habitación.",
+        "en": "The text says we are not fighting „einen schwachen Willen“ but a system, and that it is „sinnvoller, den Auslöser zu verändern“: for example, leaving the phone outside the bedroom."
+      },
+      "refs": ["p4s2", "p4s3"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "Dejar el móvil fuera del dormitorio por la noche", "en": "Leave the phone outside the bedroom at night" } },
+          { "id": "b", "text": { "es": "Prometerse con más firmeza que no lo mirará", "en": "Promise herself more firmly that she won't look at it" } },
+          { "id": "c", "text": { "es": "Esperar a que su voluntad se haga más fuerte", "en": "Wait until her willpower gets stronger" } },
+          { "id": "d", "text": { "es": "Castigarse cada vez que lo mire", "en": "Punish herself every time she looks at it" } }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q5",
+      "type": "MATCHING",
+      "difficulty": 2,
+      "prompt": { "es": "Une cada expresión alemana con su significado en el texto.", "en": "Match each German expression with its meaning in the text." },
+      "explanation": {
+        "es": "En el texto, la decisión se vuelve automática „nach und nach“, un desencadenante pone una acción „in Gang“ y cuesta „loszuwerden“ los malos hábitos.",
+        "en": "In the text, a decision becomes automatic „nach und nach“, a trigger sets an action „in Gang“, and bad habits are hard „loszuwerden“."
+      },
+      "refs": ["p2s2", "p3s1", "p4s1"],
+      "spec": {
+        "left": [
+          { "id": "1", "text": "nach und nach" },
+          { "id": "2", "text": "in Gang setzen" },
+          { "id": "3", "text": "der Auslöser" },
+          { "id": "4", "text": "loswerden" }
+        ],
+        "right": [
+          { "id": "w", "text": { "es": "el desencadenante", "en": "the trigger" } },
+          { "id": "x", "text": { "es": "poco a poco", "en": "little by little" } },
+          { "id": "y", "text": { "es": "deshacerse de algo", "en": "to get rid of something" } },
+          { "id": "z", "text": { "es": "poner en marcha", "en": "to set in motion" } },
+          { "id": "v", "text": { "es": "la recompensa", "en": "the reward" } }
+        ],
+        "pairs": { "1": "x", "2": "z", "3": "w", "4": "y" }
+      }
+    },
+    {
+      "id": "q6",
+      "type": "SHORT_ANSWER",
+      "difficulty": 3,
+      "prompt": {
+        "es": "¿Por qué dos minutos de estiramientos después de lavarse los dientes son más fáciles de mantener que una hora de deporte?",
+        "en": "Why are two minutes of stretching after brushing your teeth easier to keep up than an hour of sport?"
+      },
+      "explanation": {
+        "es": "El texto aconseja „klein anfangen“ y unir el hábito „an etwas Bestehendes“; la hora de deporte, en cambio, hay que planificarla „jedes Mal neu“.",
+        "en": "The text advises to „klein anfangen“ and tie the habit „an etwas Bestehendes“; the hour of sport, by contrast, has to be planned „jedes Mal neu“."
+      },
+      "refs": ["p5s1", "p5s2"],
+      "spec": {
+        "model": {
+          "es": "Porque es algo pequeño y va unido a un hábito que ya existe (lavarse los dientes), así que no hay que planificarlo cada vez.",
+          "en": "Because it is small and tied to an existing habit (brushing your teeth), so it doesn't have to be planned each time."
+        },
+        "rubric": {
+          "es": "Una buena respuesta menciona al menos dos ideas: que el hábito es pequeño, que se une a algo que ya hacemos y que no hay que planificarlo cada vez. Se puede responder en español, inglés o alemán.",
+          "en": "A good answer mentions at least two ideas: the habit is small, it is tied to something we already do, and it doesn't need planning every time. It may be answered in English, Spanish or German."
+        }
+      }
+    }
+  ]
+}

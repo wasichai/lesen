@@ -1,0 +1,118 @@
+{
+  "reading": "brot-vom-baecker",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "DETAIL",
+      "difficulty": 1,
+      "prompt": { "es": "¿A qué hora se levanta Tom cada mañana?", "en": "What time does Tom get up every morning?" },
+      "explanation": {
+        "es": "El texto dice „um sieben Uhr“: a las siete.",
+        "en": "The text says „um sieben Uhr“: at seven o'clock."
+      },
+      "refs": ["p1s1"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "A las seis", "en": "At six o'clock" } },
+          { "id": "b", "text": { "es": "A las siete", "en": "At seven o'clock" } },
+          { "id": "c", "text": { "es": "A las ocho", "en": "At eight o'clock" } }
+        ],
+        "correct": ["b"]
+      }
+    },
+    {
+      "id": "q2",
+      "type": "TRUE_FALSE",
+      "difficulty": 1,
+      "prompt": { "es": "La panadera no conoce a Tom.", "en": "The baker does not know Tom." },
+      "explanation": {
+        "es": "Falso: „Die Bäckerin kennt ihn schon“, la panadera ya lo conoce.",
+        "en": "False: „Die Bäckerin kennt ihn schon“, the baker already knows him."
+      },
+      "refs": ["p2s1"],
+      "spec": { "correct": false }
+    },
+    {
+      "id": "q3",
+      "type": "MULTIPLE_CHOICE",
+      "difficulty": 1,
+      "prompt": { "es": "¿Qué compra Tom siempre?", "en": "What does Tom always buy?" },
+      "explanation": {
+        "es": "„Tom nimmt immer zwei Brötchen und ein Brot“: dos panecillos y un pan.",
+        "en": "„Tom nimmt immer zwei Brötchen und ein Brot“: two bread rolls and a loaf of bread."
+      },
+      "refs": ["p2s3"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "Un panecillo y dos panes", "en": "One bread roll and two loaves" } },
+          { "id": "b", "text": { "es": "Un pastel", "en": "A cake" } },
+          { "id": "c", "text": { "es": "Dos panecillos y un pan", "en": "Two bread rolls and a loaf of bread" } },
+          { "id": "d", "text": { "es": "Mantequilla y miel", "en": "Butter and honey" } }
+        ],
+        "correct": ["c"]
+      }
+    },
+    {
+      "id": "q4",
+      "type": "DETAIL",
+      "difficulty": 1,
+      "prompt": { "es": "¿Qué le da hoy la panadera a Tom?", "en": "What does the baker give Tom today?" },
+      "explanation": {
+        "es": "Su pan de siempre ya no está, y ella le da „ein neues Brot mit Nüssen“: un pan nuevo con nueces.",
+        "en": "His usual bread is gone, so she gives him „ein neues Brot mit Nüssen“: a new bread with nuts."
+      },
+      "refs": ["p3s1", "p3s2"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "Un pan nuevo con nueces", "en": "A new bread with nuts" } },
+          { "id": "b", "text": { "es": "Su pan de siempre", "en": "His usual bread" } },
+          { "id": "c", "text": { "es": "Un tarro de miel", "en": "A jar of honey" } }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q5",
+      "type": "COMPLETION",
+      "difficulty": 1,
+      "prompt": { "es": "¿Con qué come Tom el pan en casa? Completa la oración.", "en": "What does Tom eat the bread with at home? Complete the sentence." },
+      "explanation": {
+        "es": "En casa, Tom come el pan „mit Butter und Honig“: con mantequilla y miel.",
+        "en": "At home Tom eats the bread „mit Butter und Honig“: with butter and honey."
+      },
+      "refs": ["p4s1"],
+      "spec": {
+        "sentence": "p4s1",
+        "blanks": ["p4s1t8", "p4s1t10"],
+        "bank": ["Butter", "Honig", "Ecke", "Uhr"]
+      }
+    },
+    {
+      "id": "q6",
+      "type": "MATCHING",
+      "difficulty": 1,
+      "prompt": { "es": "Une cada palabra con su significado.", "en": "Match each word with its meaning." },
+      "explanation": {
+        "es": "„Bäckerei“ es la panadería, „Brötchen“ el panecillo, „Brot“ el pan y „Honig“ la miel.",
+        "en": "„Bäckerei“ is the bakery, „Brötchen“ the bread roll, „Brot“ the bread and „Honig“ the honey."
+      },
+      "refs": ["p1s2", "p2s3", "p4s1"],
+      "spec": {
+        "left": [
+          { "id": "1", "text": "Bäckerei" },
+          { "id": "2", "text": "Brötchen" },
+          { "id": "3", "text": "Brot" },
+          { "id": "4", "text": "Honig" }
+        ],
+        "right": [
+          { "id": "w", "text": { "es": "el pan", "en": "the bread" } },
+          { "id": "x", "text": { "es": "la miel", "en": "the honey" } },
+          { "id": "y", "text": { "es": "la panadería", "en": "the bakery" } },
+          { "id": "z", "text": { "es": "el panecillo", "en": "the bread roll" } },
+          { "id": "v", "text": { "es": "el queso", "en": "the cheese" } }
+        ],
+        "pairs": { "1": "y", "2": "z", "3": "w", "4": "x" }
+      }
+    }
+  ]
+}

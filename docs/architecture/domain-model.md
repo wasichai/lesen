@@ -80,27 +80,29 @@ separable; el inglés, pasado y participio irregulares; otro idioma, lo suyo.
 `vocabulary_entry` (hecho): persona, entrada, idioma, idioma de traducción, forma tal como apareció, oración de
 contexto, lectura, versión y token de origen, estado, nota, fechas. Una entrada por persona y palabra.
 
-**Estados.** `SAVED` (hecho) → `LEARNING` → `FAMILIAR` → `MASTERED`, movidos solo por el repaso. «Encontrada» no es un
-estado del cuaderno: es un `vocabulary_encounter` (fase 4, diseñado: persona, entrada, versión, token, fecha) que se
-anota al terminar una lectura, y permite resaltar palabras nuevas sin confundir ver con recordar.
+**Estados (hecho, ADR-0010).** `SAVED` → `LEARNING` → `FAMILIAR` → `MASTERED`, movidos solo por el repaso: sin
+repasar, `SAVED`; en aprendizaje o con menos de 7 días de estabilidad, `LEARNING`; desde 7, `FAMILIAR`; desde 60,
+`MASTERED`. «Encontrada» no es un estado del cuaderno: es un `vocabulary_encounter` (hecho: persona, entrada, idioma,
+lectura, versión, primer token, fecha) que se anota al terminar una lectura, y permite resaltar palabras nuevas sin
+confundir ver con recordar.
 
-**Repaso (fase 4, diseñado).** FSRS-5 (Free Spaced Repetition Scheduler), con sus parámetros por defecto publicados.
-`vocabulary_review` guarda cada respuesta (de 1 a 4) y el estado de la tarjeta (estabilidad, dificultad, próxima
-fecha). Las fórmulas viven en una clase pura con pruebas contra los valores de referencia de FSRS.
+**Repaso (hecho).** FSRS-5 con sus parámetros por defecto publicados (`Fsrs`, pura, con pruebas contra los valores de
+sus fórmulas). La tarjeta vive en `vocabulary_entry` (estado, paso, estabilidad, dificultad, próxima fecha, último
+repaso, repasos, olvidos); `vocabulary_review` guarda cada respuesta (de 1 a 4), idempotente por el id del cliente.
 
-## Comprensión (fase 4, diseñado)
+## Comprensión (hecho, ADR-0009)
 
-| Entidad              | Campos                                                                                                                                                                                                                                                           |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `assessment`         | Versión de lectura (las preguntas son de un texto concreto), estado                                                                                                                                                                                              |
-| `question`           | Tipo (opción múltiple, verdadero/falso, completar, emparejar, ordenar, respuesta corta, vocabulario en contexto, idea principal, inferencia, detalle), enunciado por idioma, criterio de corrección, explicación, oraciones de referencia, dificultad, habilidad |
-| `question_option`    | Texto, si es correcta, orden                                                                                                                                                                                                                                     |
-| `assessment_attempt` | Persona, evaluación, inicio, fin, puntuación                                                                                                                                                                                                                     |
-| `answer`             | Intento, pregunta, respuesta, resultado (`CORRECT`, `PARTIAL`, `INCORRECT`), evaluador (`RULE`, `AI`), justificación con referencia al texto                                                                                                                     |
+| Entidad              | Campos                                                                                                                                                                        |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `assessment`         | Versión de lectura (las preguntas son de un texto concreto), preguntas (`jsonb`) y huella del origen                                                                          |
+| Pregunta             | Id, tipo (los diez), dificultad, enunciado y explicación por idioma, oraciones de referencia y la forma de su tipo (`spec`)                                                   |
+| `assessment_attempt` | Persona, evaluación, idioma de interfaz, fecha                                                                                                                                |
+| `assessment_answer`  | Intento, pregunta, tipo, respuesta, resultado (`CORRECT`, `PARTIAL`, `INCORRECT`, `PENDING`, `UNGRADED`), evaluador (`RULE`, `AI`, `SELF`), justificación y oraciones citadas |
+| `evaluation_job`     | La cola de la corrección asistida: estado, intentos, próxima ejecución, error                                                                                                 |
 
-La evaluación determinista corrige todo lo cerrado. La asistida por IA solo corrige respuestas abiertas, siempre con
-las oraciones de referencia en la entrada y la cita en la salida; sin proveedor, la respuesta abierta queda como
-autoevaluación con la respuesta modelo a la vista.
+La evaluación determinista corrige todo lo cerrado. La asistida solo corrige respuestas abiertas, siempre con las
+oraciones de referencia en la entrada y la cita en la salida; sin proveedor, o al pasar el límite, la respuesta abierta
+queda como autoevaluación con la respuesta modelo a la vista.
 
 ## Progreso (hecho en parte)
 

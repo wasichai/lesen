@@ -49,3 +49,15 @@ def reading_sentences(reading: dict) -> list[tuple[str, str, list[dict]]]:
             sid = f"p{p}s{s}"
             out.append((f"p{p}", sid, tokenize(sid, sentence["text"])))
     return out
+
+
+if __name__ == "__main__":
+    # imprime una lectura con sus ids (oraciones y palabras), para escribir preguntas o revisar tiempos:
+    # python3 tools/lesen_text.py src/main/resources/demo/readings/der-alte-leuchtturm.json
+    import json
+    import sys
+
+    data = json.loads(open(sys.argv[1], encoding="utf-8").read())
+    for paragraph_id, sentence_id, tokens in reading_sentences(data):
+        words = " ".join(f"{t['text']}[{t['id'].split('t')[-1]}]" for t in tokens if t["kind"] == "WORD")
+        print(f"{sentence_id}: {words}")

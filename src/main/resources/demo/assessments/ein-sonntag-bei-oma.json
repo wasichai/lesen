@@ -1,0 +1,118 @@
+{
+  "reading": "ein-sonntag-bei-oma",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "MAIN_IDEA",
+      "difficulty": 2,
+      "prompt": { "es": "¿De qué trata sobre todo la historia?", "en": "What is the story mainly about?" },
+      "explanation": {
+        "es": "Lena visita a su abuela un domingo y descubre una foto antigua: „Ja, das bin ich“, dice la abuela.",
+        "en": "Lena visits her grandmother on a Sunday and finds an old photo: „Ja, das bin ich“, says Grandma."
+      },
+      "refs": ["p1s2", "p3s2", "p4s2"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "Lena aprende a montar en bicicleta.", "en": "Lena learns to ride a bike." } },
+          {
+            "id": "b",
+            "text": {
+              "es": "Lena visita a su abuela y descubre una foto de ella de joven.",
+              "en": "Lena visits her grandmother and discovers a photo of her as a girl."
+            }
+          },
+          { "id": "c", "text": { "es": "La abuela prepara una fiesta en el jardín.", "en": "Grandma prepares a party in the garden." } }
+        ],
+        "correct": ["b"]
+      }
+    },
+    {
+      "id": "q2",
+      "type": "DETAIL",
+      "difficulty": 1,
+      "prompt": { "es": "¿Cómo va Lena a casa de su abuela?", "en": "How does Lena get to her grandmother's?" },
+      "explanation": {
+        "es": "Lena va „mit dem Bus“: en autobús.",
+        "en": "Lena goes „mit dem Bus“: by bus."
+      },
+      "refs": ["p1s2"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "En bicicleta", "en": "By bike" } },
+          { "id": "b", "text": { "es": "A pie", "en": "On foot" } },
+          { "id": "c", "text": { "es": "En autobús", "en": "By bus" } }
+        ],
+        "correct": ["c"]
+      }
+    },
+    {
+      "id": "q3",
+      "type": "TRUE_FALSE",
+      "difficulty": 1,
+      "prompt": { "es": "La abuela vive en una casa grande sin jardín.", "en": "Grandma lives in a big house without a garden." },
+      "explanation": {
+        "es": "Falso: vive „in einem kleinen Haus mit einem grünen Garten“, en una casa pequeña con un jardín verde.",
+        "en": "False: she lives „in einem kleinen Haus mit einem grünen Garten“, in a small house with a green garden."
+      },
+      "refs": ["p1s3"],
+      "spec": { "correct": false }
+    },
+    {
+      "id": "q4",
+      "type": "COMPLETION",
+      "difficulty": 1,
+      "prompt": { "es": "Completa la oración con las palabras del texto.", "en": "Complete the sentence with the words from the text." },
+      "explanation": {
+        "es": "„Oma macht Tee und Lena deckt den Tisch“: la abuela hace té y Lena pone la mesa.",
+        "en": "„Oma macht Tee und Lena deckt den Tisch“: Grandma makes tea and Lena sets the table."
+      },
+      "refs": ["p2s2"],
+      "spec": {
+        "sentence": "p2s2",
+        "blanks": ["p2s2t3", "p2s2t9"],
+        "bank": ["Tee", "Tisch", "Bus", "Foto"]
+      }
+    },
+    {
+      "id": "q5",
+      "type": "ORDERING",
+      "difficulty": 1,
+      "prompt": { "es": "Ordena lo que pasa el domingo.", "en": "Put the events of the Sunday in order." },
+      "explanation": {
+        "es": "Lena llega en autobús, comen juntas, „nach dem Essen“ la abuela trae una caja vieja y „am Abend“ Lena vuelve a casa con la foto.",
+        "en": "Lena arrives by bus, they eat together, „nach dem Essen“ Grandma fetches an old box and „am Abend“ Lena goes home with the photo."
+      },
+      "refs": ["p1s2", "p2s3", "p3s1", "p4s4"],
+      "spec": {
+        "items": [
+          { "id": "a", "text": { "es": "La abuela trae una caja vieja.", "en": "Grandma fetches an old box." } },
+          { "id": "b", "text": { "es": "Lena vuelve a casa con la foto.", "en": "Lena goes home with the photo." } },
+          { "id": "c", "text": { "es": "Lena va en autobús a casa de su abuela.", "en": "Lena takes the bus to her grandmother's." } },
+          { "id": "d", "text": { "es": "Comen juntas y hablan mucho.", "en": "They eat together and talk a lot." } }
+        ],
+        "order": ["c", "d", "a", "b"]
+      }
+    },
+    {
+      "id": "q6",
+      "type": "SHORT_ANSWER",
+      "difficulty": 2,
+      "prompt": { "es": "¿Quién es la chica de la bicicleta en la foto?", "en": "Who is the girl on the bike in the photo?" },
+      "explanation": {
+        "es": "La abuela responde „Ja, das bin ich“ y añade que entonces tenía la edad de Lena („so alt wie du“).",
+        "en": "Grandma answers „Ja, das bin ich“ and adds that she was Lena's age then („so alt wie du“)."
+      },
+      "refs": ["p3s3", "p4s2", "p4s3"],
+      "spec": {
+        "model": {
+          "es": "Es la abuela, cuando tenía la edad de Lena.",
+          "en": "It is Grandma, when she was as old as Lena."
+        },
+        "rubric": {
+          "es": "Una buena respuesta dice que la chica es la abuela de joven; mejor aún si menciona que tenía la misma edad que Lena. Puede responderse en español, en inglés o en alemán.",
+          "en": "A good answer says the girl is Grandma when she was young; even better if it mentions she was the same age as Lena. It may be answered in Spanish, English or German."
+        }
+      }
+    }
+  ]
+}

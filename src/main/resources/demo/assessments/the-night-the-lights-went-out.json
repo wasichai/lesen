@@ -1,0 +1,311 @@
+{
+  "reading": "the-night-the-lights-went-out",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "DETAIL",
+      "difficulty": 1,
+      "prompt": {
+        "es": "¿Cuántas personas se quedaron sin electricidad?",
+        "en": "How many people lost their electricity?"
+      },
+      "explanation": {
+        "es": "El texto dice «around fifty million people in two countries»: unos cincuenta millones de personas en dos países.",
+        "en": "The text says \"around fifty million people in two countries\"."
+      },
+      "refs": ["p1s3"],
+      "spec": {
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "Unos cinco millones, en una sola ciudad",
+              "en": "About five million, in just one city"
+            }
+          },
+          {
+            "id": "b",
+            "text": {
+              "es": "Unos cincuenta millones, en dos países",
+              "en": "About fifty million, in two countries"
+            }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "Cincuenta mil, solo en Toronto",
+              "en": "Fifty thousand, only in Toronto"
+            }
+          }
+        ],
+        "correct": ["b"]
+      }
+    },
+    {
+      "id": "q2",
+      "type": "TRUE_FALSE",
+      "difficulty": 1,
+      "prompt": {
+        "es": "La abuela encendió la televisión para saber qué pasaba.",
+        "en": "The grandmother turned on the television to find out what was happening."
+      },
+      "explanation": {
+        "es": "Es falso: no había electricidad y ella, que creció sin televisión, abrió las ventanas y puso agua en su vieja cocina de gas.",
+        "en": "False: there was no electricity, and she, who grew up without a television, opened the windows and put water on her old gas stove."
+      },
+      "refs": ["p2s2"],
+      "spec": {
+        "correct": false
+      }
+    },
+    {
+      "id": "q3",
+      "type": "MULTIPLE_CHOICE",
+      "difficulty": 2,
+      "prompt": {
+        "es": "¿Qué pasaba en la calle esa tarde? Marca todas las correctas.",
+        "en": "What was happening in the street that afternoon? Mark all that are correct."
+      },
+      "explanation": {
+        "es": "La oración lo cuenta: los oficinistas volvían a casa a pie en largas filas y gente corriente dirigía el tráfico en los cruces.",
+        "en": "The sentence tells us: office workers were walking home in long lines and ordinary people were directing traffic at the crossroads."
+      },
+      "refs": ["p2s3"],
+      "spec": {
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "Gente corriente dirigía el tráfico en los cruces",
+              "en": "Ordinary people were directing traffic at the crossroads"
+            }
+          },
+          {
+            "id": "b",
+            "text": {
+              "es": "Los oficinistas volvían a casa a pie en largas filas",
+              "en": "Office workers were walking home in long, slow lines"
+            }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "Los coches circulaban rápido porque no había semáforos",
+              "en": "Cars were driving fast because there were no traffic lights"
+            }
+          },
+          {
+            "id": "d",
+            "text": {
+              "es": "La gente esperaba el autobús dentro de las oficinas",
+              "en": "People were waiting for the bus inside their offices"
+            }
+          }
+        ],
+        "correct": ["a", "b"]
+      }
+    },
+    {
+      "id": "q4",
+      "type": "MATCHING",
+      "difficulty": 2,
+      "prompt": {
+        "es": "Une cada expresión del texto con su significado.",
+        "en": "Match each expression from the text with its meaning."
+      },
+      "explanation": {
+        "es": "El contexto ayuda: la nevera «went quiet» (dejó de sonar), las sillas van a la «pavement» (acera), las cartas se juegan «by candlelight» y sin el «glow» de la ciudad se ven las estrellas.",
+        "en": "Context helps: the fridge \"went quiet\", the chairs go onto the \"pavement\", cards are played \"by candlelight\", and without the city's \"glow\" the stars appear."
+      },
+      "refs": ["p1s1", "p3s2", "p3s3", "p4s2"],
+      "spec": {
+        "left": [
+          {
+            "id": "1",
+            "text": "went quiet"
+          },
+          {
+            "id": "2",
+            "text": "pavement"
+          },
+          {
+            "id": "3",
+            "text": "by candlelight"
+          },
+          {
+            "id": "4",
+            "text": "glow"
+          }
+        ],
+        "right": [
+          {
+            "id": "v",
+            "text": {
+              "es": "a la luz de las velas",
+              "en": "with only candles for light"
+            }
+          },
+          {
+            "id": "w",
+            "text": {
+              "es": "el tejado de un edificio",
+              "en": "the top of a building"
+            }
+          },
+          {
+            "id": "x",
+            "text": {
+              "es": "dejó de hacer ruido",
+              "en": "stopped making any sound"
+            }
+          },
+          {
+            "id": "y",
+            "text": {
+              "es": "resplandor, una luz suave y continua",
+              "en": "a soft, steady light"
+            }
+          },
+          {
+            "id": "z",
+            "text": {
+              "es": "la acera, junto a la calle",
+              "en": "the path at the side of a street"
+            }
+          }
+        ],
+        "pairs": {
+          "1": "x",
+          "2": "z",
+          "3": "v",
+          "4": "y"
+        }
+      }
+    },
+    {
+      "id": "q5",
+      "type": "ORDERING",
+      "difficulty": 2,
+      "prompt": {
+        "es": "Ordena los hechos de aquella noche.",
+        "en": "Put the events of that night in order."
+      },
+      "explanation": {
+        "es": "Primero se paró la nevera; luego la abuela abrió las ventanas; al anochecer los vecinos salieron con sillas; más tarde subieron al tejado; la luz volvió al día siguiente.",
+        "en": "First the fridge stopped; then the grandmother opened the windows; in the evening the neighbours came out with chairs; later they went up to the roof; the power came back the next day."
+      },
+      "refs": ["p1s1", "p2s2", "p3s2", "p4s1", "p4s3"],
+      "spec": {
+        "items": [
+          {
+            "id": "a",
+            "text": {
+              "es": "Los vecinos sacaron sillas a la acera.",
+              "en": "Neighbours carried chairs onto the pavement."
+            }
+          },
+          {
+            "id": "b",
+            "text": {
+              "es": "La luz volvió.",
+              "en": "The power came back."
+            }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "La nevera se quedó en silencio de repente.",
+              "en": "The fridge suddenly went quiet."
+            }
+          },
+          {
+            "id": "d",
+            "text": {
+              "es": "La abuela llevó a quien narra al tejado.",
+              "en": "The grandmother took the narrator up to the roof."
+            }
+          },
+          {
+            "id": "e",
+            "text": {
+              "es": "La abuela abrió todas las ventanas.",
+              "en": "The grandmother opened all the windows."
+            }
+          }
+        ],
+        "order": ["c", "e", "a", "d", "b"]
+      }
+    },
+    {
+      "id": "q6",
+      "type": "INFERENCE",
+      "difficulty": 3,
+      "prompt": {
+        "es": "¿Qué quiere decir la última oración: «a huge city had remembered how to be a village»?",
+        "en": "What does the last sentence mean: \"a huge city had remembered how to be a village\"?"
+      },
+      "explanation": {
+        "es": "En un pueblo la gente se conoce y se ayuda; esa noche, vecinos que nunca se habían hablado compartieron comida, música y juegos.",
+        "en": "In a village people know and help each other; that night, neighbours who had never spoken shared food, music and games."
+      },
+      "refs": ["p3s2", "p3s3", "p4s4"],
+      "spec": {
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "Que la gente se comportó como una pequeña comunidad, unida y cercana",
+              "en": "That people behaved like a small, close community"
+            }
+          },
+          {
+            "id": "b",
+            "text": {
+              "es": "Que la ciudad se hizo más pequeña de verdad",
+              "en": "That the city actually became smaller"
+            }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "Que muchas personas se mudaron al campo",
+              "en": "That many people moved to the countryside"
+            }
+          },
+          {
+            "id": "d",
+            "text": {
+              "es": "Que la ciudad estuvo sin luz durante años",
+              "en": "That the city had no power for years"
+            }
+          }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q7",
+      "type": "SHORT_ANSWER",
+      "difficulty": 3,
+      "prompt": {
+        "es": "¿Por qué crees que quien narra nunca ha olvidado aquella noche?",
+        "en": "Why do you think the narrator has never forgotten that night?"
+      },
+      "explanation": {
+        "es": "El texto muestra algo poco común: vecinos que nunca se habían hablado compartiendo la noche, y un cielo lleno de estrellas que nunca había visto.",
+        "en": "The text shows something unusual: neighbours who had never spoken sharing the evening, and a sky full of stars the narrator had never seen."
+      },
+      "refs": ["p3s2", "p3s3", "p4s2", "p4s3"],
+      "spec": {
+        "model": {
+          "es": "Porque fue una noche especial: los vecinos, que nunca se habían hablado, compartieron comida y música, y desde el tejado vio un cielo lleno de estrellas que nunca había visto.",
+          "en": "Because it was a special night: neighbours who had never spoken shared food and music, and from the roof the narrator saw a sky full of stars never seen before."
+        },
+        "rubric": {
+          "es": "Una buena respuesta menciona al menos una de estas dos cosas: los vecinos se juntaron y compartieron (comida, música, cartas) o el cielo lleno de estrellas visto desde el tejado. Se puede responder en español o en inglés.",
+          "en": "A good answer mentions at least one of these: the neighbours came together and shared (food, music, cards), or the sky full of stars seen from the roof. It may be answered in Spanish or English."
+        }
+      }
+    }
+  ]
+}

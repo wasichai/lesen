@@ -2,6 +2,18 @@
 
 Lo entregado, lo más nuevo arriba.
 
+## 2026-11-09 — Fase 4 (backend): comprensión, encuentros y repaso espaciado
+
+- Esquema V5 y capacidad `assessment`: preguntas por versión con los diez tipos, corrección determinista (`Grader`),
+  intentos con solución y explicación, cola de corrección asistida con Claude (SDK oficial, salida estructurada, cita
+  obligatoria) y autoevaluación cuando no hay asistente (ADR-0009).
+- 70 preguntas de demostración para las 11 lecturas, con los diez tipos; `tools/check_demo.py` valida su forma y sus
+  referencias, y `tools/lesen_text.py` imprime una lectura con sus ids.
+- Repaso espaciado FSRS-5 (`Fsrs`, ADR-0010): la tarjeta vive en la palabra, cada respuesta queda registrada y es
+  idempotente, y el estado del cuaderno solo lo mueve el repaso. Encuentros al terminar una lectura, sin tocar el
+  cuaderno. Endpoints `vocabulary/known`, `reviews/next`, `reviews` y `stats`.
+- Corrección de V4: el archivo de audio ya no es único, porque dos versiones con el mismo texto lo comparten.
+
 ## 2026-11-09 — Fase 3: audio sincronizado
 
 - Esquema V4 (`audio_voice`, `audio_asset`, `word_timing`, `audio_alignment_report`) y capacidad `audio`: validación

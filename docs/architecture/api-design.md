@@ -74,20 +74,34 @@ personas la abrieron.
 
 ## Vocabulario
 
-| Método | Ruta              | Permiso  | Notas                                                                                                               |
-| ------ | ----------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
-| GET    | `vocabulary`      | cuaderno | Filtros `reading`, `status`, `q`; página de 24 por defecto                                                          |
-| GET    | `vocabulary/keys` | cuaderno | Claves guardadas (para resaltar en el texto), con `language` opcional                                               |
-| POST   | `vocabulary`      | escribir | `{entryKey, reading?, version?, tokenRef?}`. 201 la primera vez, 200 si ya estaba. El token debe ser de esa entrada |
-| PATCH  | `vocabulary/{id}` | escribir | `{note}`                                                                                                            |
-| DELETE | `vocabulary/{id}` | escribir | 204; ajena, 404                                                                                                     |
+| Método | Ruta                      | Permiso  | Notas                                                                                                                                        |
+| ------ | ------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| GET    | `vocabulary`              | cuaderno | Filtros `reading`, `status`, `q`; página de 24 por defecto                                                                                   |
+| GET    | `vocabulary/keys`         | cuaderno | Claves guardadas (para resaltar en el texto), con `language` opcional                                                                        |
+| POST   | `vocabulary`              | escribir | `{entryKey, reading?, version?, tokenRef?}`. 201 la primera vez, 200 si ya estaba. El token debe ser de esa entrada                          |
+| PATCH  | `vocabulary/{id}`         | escribir | `{note}`                                                                                                                                     |
+| DELETE | `vocabulary/{id}`         | escribir | 204; ajena, 404                                                                                                                              |
+| GET    | `vocabulary/known`        | cuaderno | `?language=`: lo guardado con su estado y lo encontrado al terminar lecturas, para resaltar en el texto                                      |
+| GET    | `vocabulary/reviews/next` | cuaderno | `?language=&reading=&limit=` (≤ 50): palabras que tocan, con la fecha que daría cada respuesta (`preview`), cuántas tocan y la próxima fecha |
+| POST   | `vocabulary/reviews`      | escribir | `{vocabularyId, rating: AGAIN\|HARD\|GOOD\|EASY, clientId}`. FSRS-5 (ADR-0010); repetir el mismo `clientId` no repasa dos veces              |
+| GET    | `vocabulary/stats`        | cuaderno | Total, por estado, cuántas tocan, repasadas hoy y encontradas                                                                                |
+
+## Comprensión
+
+| Método | Ruta                                                 | Permiso  | Notas                                                                                                                                        |
+| ------ | ---------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| GET    | `readings/{slug}/versions/{n}/assessment`            | lectura  | Preguntas en el idioma de interfaz (`?language=`), sin respuestas; `lastAttempt` si quien pregunta tiene cuaderno. 404 sin preguntas         |
+| POST   | `assessments/{id}/attempts`                          | escribir | `{answers: [{questionId, options?, value?, blanks?, pairs?, order?, text?}]}`. 201 con lo cerrado corregido; lo no respondido es `INCORRECT` |
+| GET    | `attempts/{id}`                                      | cuaderno | El intento con cada respuesta, la solución, la explicación y sus oraciones. Con respuestas `PENDING`, la interfaz vuelve a pedirlo           |
+| POST   | `attempts/{id}/answers/{questionId}/self-assessment` | escribir | `{result: CORRECT\|PARTIAL\|INCORRECT}` sobre una respuesta `UNGRADED`; si no, 409                                                           |
+
+Resultados: `CORRECT`, `PARTIAL`, `INCORRECT`, `PENDING` (la corrige el asistente) y `UNGRADED` (abierta, para
+autoevaluar con la respuesta modelo). Evaluador: `RULE`, `AI` (con justificación y oraciones citadas) o `SELF` (ADR-0009).
 
 ## Próximas fases (diseñado)
 
-- `readings/{slug}/versions/{n}/assessment` y `assessments/{id}/attempts` (fase 4).
-- `vocabulary/reviews` (siguientes tarjetas y respuestas, fase 4).
 - `progress/dashboard` y `progress/activity` (fase 5).
 - `studio/readings/**` (borradores, revisión y publicación, fase 6).
 
-Las operaciones caras (generar audio, evaluar con IA) irán a la cola de trabajos con un límite por persona y
-devolverán 429 con `Retry-After` al pasarlo, como en elearning-backend.
+La generación de audio irá a una cola de trabajos con un límite por persona. La corrección asistida ya usa una cola
+(ADR-0009); al pasar su límite, la respuesta queda para autoevaluar en lugar de devolver 429.

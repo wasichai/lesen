@@ -1,6 +1,8 @@
 package lesen.demo
 
 import kotlinx.coroutines.runBlocking
+import lesen.assessment.AssessmentSeed
+import lesen.assessment.AssessmentService
 import lesen.audio.AudioService
 import lesen.audio.AudioSubmission
 import lesen.audio.Voice
@@ -13,6 +15,7 @@ import lesen.dictionary.DictionaryService
 import lesen.dictionary.LexiconEntry
 import lesen.reading.ReadingDraft
 import lesen.reading.ReadingPublisher
+import lesen.reading.ReadingVersions
 import org.slf4j.LoggerFactory
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
@@ -52,6 +55,8 @@ class DemoContentLoader(
     private val dictionary: DictionaryService,
     private val publisher: ReadingPublisher,
     private val audio: AudioService,
+    private val assessments: AssessmentService,
+    private val versions: ReadingVersions,
 ) {
     private val log = LoggerFactory.getLogger(DemoContentLoader::class.java)
     private val resources = PathMatchingResourcePatternResolver()
@@ -80,6 +85,7 @@ class DemoContentLoader(
         }
         var created = 0
         var narrated = 0
+        var questioned = 0
         for (file in resources.getResources("classpath:demo/readings/*.json").sortedBy { it.filename }) {
             val draft = Jsonb.read<ReadingDraft>(file.inputStream.bufferedReader().readText())
             val result = publisher.publish(draft)
@@ -93,11 +99,18 @@ class DemoContentLoader(
                 val submission = AudioSubmission(audioSeed.voice, audioSeed.file, audioSeed.format, audioSeed.durationMs, "GENERATED", timings)
                 if (audio.attach(draft.slug, result.version, submission)) narrated++
             }
+            // las preguntas de comprensión, contra la misma versión (ADR-0009)
+            val questions = resources.getResource("classpath:demo/assessments/${draft.slug}.json")
+            if (questions.exists()) {
+                val seed = Jsonb.read<AssessmentSeed>(questions.inputStream.bufferedReader().readText())
+                val version = versions.find(draft.slug, result.version)!!
+                if (assessments.load(version.versionId, seed.questions)) questioned++
+            }
         }
         Jsonb.read<List<CollectionSeed>>(text("classpath:demo/collections.json")).forEachIndexed { i, c ->
             catalog.saveCollection(c.slug, c.labels, c.descriptions, i, c.readings)
         }
-        log.info("contenido de demostración listo ({} versiones nuevas, {} audios nuevos)", created, narrated)
+        log.info("contenido de demostración listo ({} versiones nuevas, {} audios nuevos, {} cuestionarios nuevos)", created, narrated, questioned)
     }
 
     private fun text(location: String) =
