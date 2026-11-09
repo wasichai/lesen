@@ -47,18 +47,19 @@ escrito con lo hablado.
 apóstrofos o guiones (`don't`, `E-Mail`, `Nord-Ostsee-Kanal`). Los signos son tokens propios; los espacios no. Las
 oraciones las fija la autora. Un idioma con otra regla (sin espacios, por ejemplo) registra su tokenizador.
 
-## Audio (fase 3, diseñado)
+## Audio (hecho, ADR-0008)
 
-| Entidad               | Campos                                                                                                 |
-| --------------------- | ------------------------------------------------------------------------------------------------------ |
-| `audio_voice`         | Proveedor, idioma, nombre, licencia                                                                    |
-| `audio_asset`         | Versión de lectura, voz, archivo (wasichai-files), duración, formato, origen (`UPLOADED`, `GENERATED`) |
-| `word_timing`         | Activo de audio, id de token, inicio y fin en milisegundos, confianza                                  |
-| `audio_alignment_job` | Activo, motor, estado, informe (palabras sin alinear, desfases)                                        |
+| Entidad                  | Estado | Notas                                                                                 |
+| ------------------------ | ------ | ------------------------------------------------------------------------------------- |
+| `audio_voice`            | Hecho  | Proveedor, idioma, nombre y licencia de la voz                                        |
+| `audio_asset`            | Hecho  | Versión de lectura, voz, archivo, formato, duración, origen (`GENERATED`, `UPLOADED`) |
+| `word_timing`            | Hecho  | Activo, id de token, inicio y fin en milisegundos                                     |
+| `audio_alignment_report` | Hecho  | Palabras sin tiempo y avisos de la validación                                         |
 
 Los tiempos viven aparte del archivo y se anclan a los ids de token de una versión concreta: una versión nueva pide
-alineación nueva. Las oraciones y los párrafos toman el inicio de su primera palabra y el fin de la última; lo hablado
-que no está escrito (o al revés) queda en el informe, nunca se fuerza.
+audio nuevo. Las oraciones y los párrafos toman el inicio de su primera palabra y el fin de la última; lo hablado que no
+está escrito (o al revés) queda en el informe, nunca se fuerza. La generación de audio desde el estudio (cola de
+trabajos) llega en la fase 6.
 
 ## Diccionario
 
