@@ -1,0 +1,147 @@
+{
+  "slug": "ein-sonntag-bei-oma",
+  "language": "de",
+  "level": "A1",
+  "topics": ["everyday-life/home"],
+  "featured": false,
+  "cover": "ein-sonntag-bei-oma.svg",
+  "accent": "#C8553D",
+  "title": "Ein Sonntag bei Oma",
+  "subtitle": "Kuchen, Tee und ein altes Foto",
+  "summary": "Lena besucht am Sonntag ihre Oma und findet in einer alten Kiste ein besonderes Foto.",
+  "paragraphs": [
+    {
+      "translations": {
+        "es": "Es domingo. Lena va en autobús a casa de su abuela. La abuela vive en una casa pequeña con un jardín verde.",
+        "en": "It is Sunday. Lena takes the bus to her grandma's. Grandma lives in a small house with a green garden."
+      },
+      "sentences": [
+        {
+          "text": "Es ist Sonntag.",
+          "translations": {
+            "es": "Es domingo.",
+            "en": "It is Sunday."
+          }
+        },
+        {
+          "text": "Lena fährt mit dem Bus zu ihrer Oma.",
+          "translations": {
+            "es": "Lena va en autobús a casa de su abuela.",
+            "en": "Lena takes the bus to her grandma's."
+          }
+        },
+        {
+          "text": "Oma wohnt in einem kleinen Haus mit einem grünen Garten.",
+          "translations": {
+            "es": "La abuela vive en una casa pequeña con un jardín verde.",
+            "en": "Grandma lives in a small house with a green garden."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "La cocina huele a pastel. La abuela prepara té y Lena pone la mesa. Comen juntas y hablan mucho.",
+        "en": "The kitchen smells of cake. Grandma makes tea, and Lena sets the table. They eat together and talk a lot."
+      },
+      "sentences": [
+        {
+          "text": "Die Küche riecht nach Kuchen.",
+          "translations": {
+            "es": "La cocina huele a pastel.",
+            "en": "The kitchen smells of cake."
+          }
+        },
+        {
+          "text": "Oma macht Tee, und Lena deckt den Tisch.",
+          "translations": {
+            "es": "La abuela prepara té y Lena pone la mesa.",
+            "en": "Grandma makes tea, and Lena sets the table."
+          }
+        },
+        {
+          "text": "Sie essen zusammen und reden viel.",
+          "translations": {
+            "es": "Comen juntas y hablan mucho.",
+            "en": "They eat together and talk a lot."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Después de comer, la abuela trae una caja vieja. Dentro hay una foto. Una chica joven se ríe montada en una bicicleta. —¿Eres tú, abuela? —pregunta Lena.",
+        "en": "After the meal, Grandma fetches an old box. Inside there is a photo. A young girl is laughing on a bicycle. “Is that you, Grandma?” Lena asks."
+      },
+      "sentences": [
+        {
+          "text": "Nach dem Essen holt Oma eine alte Kiste.",
+          "translations": {
+            "es": "Después de comer, la abuela trae una caja vieja.",
+            "en": "After the meal, Grandma fetches an old box."
+          },
+          "senses": {
+            "Essen": "de:essen#meal"
+          }
+        },
+        {
+          "text": "Darin ist ein Foto.",
+          "translations": {
+            "es": "Dentro hay una foto.",
+            "en": "Inside there is a photo."
+          }
+        },
+        {
+          "text": "Ein junges Mädchen lacht auf einem Fahrrad.",
+          "translations": {
+            "es": "Una chica joven se ríe montada en una bicicleta.",
+            "en": "A young girl is laughing on a bicycle."
+          }
+        },
+        {
+          "text": "„Bist du das, Oma?“, fragt Lena.",
+          "translations": {
+            "es": "—¿Eres tú, abuela? —pregunta Lena.",
+            "en": "“Is that you, Grandma?” Lena asks."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "La abuela sonríe. —Sí, soy yo —dice. —Entonces tenía tu edad. Por la tarde, Lena vuelve a casa con la foto en el bolso.",
+        "en": "Grandma smiles. “Yes, that's me,” she says. “Back then I was as old as you.” In the evening Lena goes home with the photo in her bag."
+      },
+      "sentences": [
+        {
+          "text": "Oma lächelt.",
+          "translations": {
+            "es": "La abuela sonríe.",
+            "en": "Grandma smiles."
+          }
+        },
+        {
+          "text": "„Ja, das bin ich“, sagt sie.",
+          "translations": {
+            "es": "—Sí, soy yo —dice.",
+            "en": "“Yes, that's me,” she says."
+          }
+        },
+        {
+          "text": "„Damals war ich so alt wie du.“",
+          "translations": {
+            "es": "—Entonces tenía tu edad.",
+            "en": "“Back then I was as old as you.”"
+          }
+        },
+        {
+          "text": "Am Abend fährt Lena nach Hause, mit dem Foto in der Tasche.",
+          "translations": {
+            "es": "Por la tarde, Lena vuelve a casa con la foto en el bolso.",
+            "en": "In the evening Lena goes home with the photo in her bag."
+          }
+        }
+      ]
+    }
+  ]
+}

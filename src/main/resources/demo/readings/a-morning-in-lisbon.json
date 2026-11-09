@@ -1,0 +1,114 @@
+{
+  "slug": "a-morning-in-lisbon",
+  "language": "en",
+  "level": "A2",
+  "topics": ["travel/cities"],
+  "featured": false,
+  "cover": "a-morning-in-lisbon.svg",
+  "accent": "#E2A93B",
+  "title": "A Morning in Lisbon",
+  "subtitle": "Trams, tiles and a warm pastry",
+  "summary": "On her first morning in Lisbon, Sofia gets lost and finds something better than a map.",
+  "paragraphs": [
+    {
+      "translations": {
+        "es": "Sofia se despierta temprano en un pequeño hotel de Lisboa. Por la ventana oye pájaros, campanas y el tranvía amarillo que sube la colina. Coge su mapa y sale a la calle."
+      },
+      "sentences": [
+        {
+          "text": "Sofia wakes up early in a small hotel in Lisbon.",
+          "translations": {
+            "es": "Sofia se despierta temprano en un pequeño hotel de Lisboa."
+          }
+        },
+        {
+          "text": "Through the window she can hear birds, bells and the yellow tram on the hill.",
+          "translations": {
+            "es": "Por la ventana oye pájaros, campanas y el tranvía amarillo que sube la colina."
+          }
+        },
+        {
+          "text": "She takes her map and goes outside.",
+          "translations": {
+            "es": "Coge su mapa y sale a la calle."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Las calles son estrechas y empinadas, y muchas casas están cubiertas de azulejos azules y blancos. Sofia sube y baja, y al cabo de media hora ya no sabe dónde está. Su mapa no le sirve de nada."
+      },
+      "sentences": [
+        {
+          "text": "The streets are narrow and steep, and many houses are covered in blue and white tiles.",
+          "translations": {
+            "es": "Las calles son estrechas y empinadas, y muchas casas están cubiertas de azulejos azules y blancos."
+          }
+        },
+        {
+          "text": "Sofia walks up and down, and after half an hour she doesn't know where she is.",
+          "translations": {
+            "es": "Sofia sube y baja, y al cabo de media hora ya no sabe dónde está."
+          }
+        },
+        {
+          "text": "Her map is no help at all.",
+          "translations": {
+            "es": "Su mapa no le sirve de nada."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Entonces le llega un olor dulce. En un café diminuto, un anciano está sacando del horno unos pasteles de crema calentitos. Él sonríe y le da uno con una taza de café cargado."
+      },
+      "sentences": [
+        {
+          "text": "Then she smells something sweet.",
+          "translations": {
+            "es": "Entonces le llega un olor dulce."
+          }
+        },
+        {
+          "text": "In a tiny café, an old man is taking warm custard tarts out of the oven.",
+          "translations": {
+            "es": "En un café diminuto, un anciano está sacando del horno unos pasteles de crema calentitos."
+          }
+        },
+        {
+          "text": "He smiles and gives her one with a cup of strong coffee.",
+          "translations": {
+            "es": "Él sonríe y le da uno con una taza de café cargado."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Sofia se sienta junto a la puerta y mira cómo se despierta la ciudad. Sigue perdida, pero ya no está preocupada. Algunas mañanas, piensa, son mejores sin mapa."
+      },
+      "sentences": [
+        {
+          "text": "Sofia sits by the door and watches the city wake up.",
+          "translations": {
+            "es": "Sofia se sienta junto a la puerta y mira cómo se despierta la ciudad."
+          }
+        },
+        {
+          "text": "She is still lost, but she is not worried anymore.",
+          "translations": {
+            "es": "Sigue perdida, pero ya no está preocupada."
+          }
+        },
+        {
+          "text": "Some mornings, she thinks, are better without a map.",
+          "translations": {
+            "es": "Algunas mañanas, piensa, son mejores sin mapa."
+          }
+        }
+      ]
+    }
+  ]
+}

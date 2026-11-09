@@ -1,0 +1,169 @@
+{
+  "slug": "ein-abend-mit-den-sternen",
+  "language": "de",
+  "level": "B1",
+  "topics": ["science/space"],
+  "featured": true,
+  "cover": "ein-abend-mit-den-sternen.svg",
+  "accent": "#2E3A6B",
+  "title": "Ein Abend mit den Sternen",
+  "subtitle": "Was uns das alte Licht erzählt",
+  "summary": "Auf einem dunklen Feld entdeckt Paula mit ihrem Onkel, dass jeder Blick in den Himmel eine Reise in die Vergangenheit ist.",
+  "paragraphs": [
+    {
+      "translations": {
+        "es": "El tío de Paula tiene un telescopio casi tan viejo como ella. Una noche despejada de otoño se van al campo, lejos de las luces de la ciudad. Allí se tumban sobre una manta en la hierba y esperan a que sus ojos se acostumbren a la oscuridad.",
+        "en": "Paula's uncle has a telescope that is almost as old as she is. On a clear autumn evening they drive out to the countryside, far away from the city lights. There they lie down on a blanket in the grass and wait until their eyes have got used to the dark."
+      },
+      "sentences": [
+        {
+          "text": "Paulas Onkel hat ein Teleskop, das fast so alt ist wie sie selbst.",
+          "translations": {
+            "es": "El tío de Paula tiene un telescopio casi tan viejo como ella.",
+            "en": "Paula's uncle has a telescope that is almost as old as she is."
+          }
+        },
+        {
+          "text": "An einem klaren Herbstabend fahren sie aufs Land, weit weg von den Lichtern der Stadt.",
+          "translations": {
+            "es": "Una noche despejada de otoño se van al campo, lejos de las luces de la ciudad.",
+            "en": "On a clear autumn evening they drive out to the countryside, far away from the city lights."
+          }
+        },
+        {
+          "text": "Dort legen sie sich auf eine Decke ins Gras und warten, bis sich ihre Augen an die Dunkelheit gewöhnt haben.",
+          "translations": {
+            "es": "Allí se tumban sobre una manta en la hierba y esperan a que sus ojos se acostumbren a la oscuridad.",
+            "en": "There they lie down on a blanket in the grass and wait until their eyes have got used to the dark."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Poco a poco aparecen cada vez más estrellas. El tío señala un punto brillante sobre los árboles. —Eso no es una estrella, sino Júpiter, el planeta más grande de nuestro sistema solar —dice.",
+        "en": "Slowly, more and more stars appear. Her uncle points to a bright dot above the trees. “That isn't a star, it's Jupiter, the largest planet in our solar system,” he says."
+      },
+      "sentences": [
+        {
+          "text": "Langsam erscheinen immer mehr Sterne.",
+          "translations": {
+            "es": "Poco a poco aparecen cada vez más estrellas.",
+            "en": "Slowly, more and more stars appear."
+          }
+        },
+        {
+          "text": "Der Onkel zeigt auf einen hellen Punkt über den Bäumen.",
+          "translations": {
+            "es": "El tío señala un punto brillante sobre los árboles.",
+            "en": "Her uncle points to a bright dot above the trees."
+          }
+        },
+        {
+          "text": "„Das ist kein Stern, sondern Jupiter, der größte Planet unseres Sonnensystems“, sagt er.",
+          "translations": {
+            "es": "—Eso no es una estrella, sino Júpiter, el planeta más grande de nuestro sistema solar —dice.",
+            "en": "“That isn't a star, it's Jupiter, the largest planet in our solar system,” he says."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Luego apunta el telescopio hacia una mancha tenue y borrosa. —La luz de allí ha viajado durante más de dos millones de años —explica. —Cuando se puso en camino, todavía no había en la Tierra personas como nosotros.",
+        "en": "Then he points the telescope at a faint, misty smudge. “The light from there has been travelling for over two million years,” he explains. “When it set off, there were no people like us on Earth yet.”"
+      },
+      "sentences": [
+        {
+          "text": "Dann richtet er das Teleskop auf einen schwachen, nebligen Fleck.",
+          "translations": {
+            "es": "Luego apunta el telescopio hacia una mancha tenue y borrosa.",
+            "en": "Then he points the telescope at a faint, misty smudge."
+          }
+        },
+        {
+          "text": "„Das Licht von dort war über zwei Millionen Jahre unterwegs“, erklärt er.",
+          "translations": {
+            "es": "—La luz de allí ha viajado durante más de dos millones de años —explica.",
+            "en": "“The light from there has been travelling for over two million years,” he explains."
+          }
+        },
+        {
+          "text": "„Als es sich auf den Weg gemacht hat, gab es auf der Erde noch keine Menschen wie uns.“",
+          "translations": {
+            "es": "—Cuando se puso en camino, todavía no había en la Tierra personas como nosotros.",
+            "en": "“When it set off, there were no people like us on Earth yet.”"
+          },
+          "senses": {
+            "Weg": "de:weg"
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Paula mira largo rato por el ocular. De repente entiende que el cielo es una especie de máquina del tiempo: no vemos las estrellas como son ahora, sino como eran antes. Puede que algunas ya ni siquiera existan.",
+        "en": "Paula looks through the eyepiece for a long time. Suddenly she understands that the sky is a kind of time machine: we don't see the stars as they are now, but as they used to be. Some of them may not even exist anymore."
+      },
+      "sentences": [
+        {
+          "text": "Paula schaut lange durch das Okular.",
+          "translations": {
+            "es": "Paula mira largo rato por el ocular.",
+            "en": "Paula looks through the eyepiece for a long time."
+          }
+        },
+        {
+          "text": "Plötzlich versteht sie, dass der Himmel eine Art Zeitmaschine ist: Wir sehen die Sterne nicht, wie sie jetzt sind, sondern wie sie früher waren.",
+          "translations": {
+            "es": "De repente entiende que el cielo es una especie de máquina del tiempo: no vemos las estrellas como son ahora, sino como eran antes.",
+            "en": "Suddenly she understands that the sky is a kind of time machine: we don't see the stars as they are now, but as they used to be."
+          }
+        },
+        {
+          "text": "Manche von ihnen gibt es vielleicht gar nicht mehr.",
+          "translations": {
+            "es": "Puede que algunas ya ni siquiera existan.",
+            "en": "Some of them may not even exist anymore."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "En el viaje de vuelta, el coche está en completo silencio. Paula apoya la frente en la ventanilla fría y busca el punto brillante. —¿Repetimos el viernes que viene? —pregunta. Su tío solo sonríe y asiente.",
+        "en": "On the drive back, it is completely quiet in the car. Paula presses her forehead against the cold window and looks for the bright dot. “Again next Friday?” she asks. Her uncle just smiles and nods."
+      },
+      "sentences": [
+        {
+          "text": "Auf der Rückfahrt ist es im Auto ganz still.",
+          "translations": {
+            "es": "En el viaje de vuelta, el coche está en completo silencio.",
+            "en": "On the drive back, it is completely quiet in the car."
+          }
+        },
+        {
+          "text": "Paula drückt die Stirn an das kalte Fenster und sucht den hellen Punkt.",
+          "translations": {
+            "es": "Paula apoya la frente en la ventanilla fría y busca el punto brillante.",
+            "en": "Paula presses her forehead against the cold window and looks for the bright dot."
+          }
+        },
+        {
+          "text": "„Nächsten Freitag wieder?“, fragt sie.",
+          "translations": {
+            "es": "—¿Repetimos el viernes que viene? —pregunta.",
+            "en": "“Again next Friday?” she asks."
+          }
+        },
+        {
+          "text": "Ihr Onkel lächelt nur und nickt.",
+          "translations": {
+            "es": "Su tío solo sonríe y asiente.",
+            "en": "Her uncle just smiles and nods."
+          }
+        }
+      ]
+    }
+  ]
+}

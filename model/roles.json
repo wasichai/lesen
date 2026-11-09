@@ -1,0 +1,18 @@
+{
+  "_comentario": "Roles de Lesen. ADMIN es de Wasichai y tiene todo. LECTOR lee el catálogo y escribe solo lo suyo: cada consulta de lo personal filtra por su organización y su usuario (los dos del token). EDITOR prepara el estudio editorial de la fase 6; hoy solo lee.",
+  "roles": [
+    {
+      "name": "LECTOR",
+      "label": "Lector",
+      "permissions": [
+        { "object": "lectura", "actions": ["READ"] },
+        { "object": "cuaderno", "actions": ["READ", "UPDATE"] }
+      ]
+    },
+    {
+      "name": "EDITOR",
+      "label": "Editor",
+      "permissions": [{ "object": "lectura", "actions": ["READ"] }]
+    }
+  ]
+}

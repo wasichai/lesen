@@ -1,0 +1,136 @@
+{
+  "slug": "brot-vom-baecker",
+  "language": "de",
+  "level": "A1",
+  "topics": ["culture/food"],
+  "featured": false,
+  "cover": "brot-vom-baecker.svg",
+  "accent": "#B7793F",
+  "title": "Brot vom Bäcker",
+  "subtitle": "Ein Morgen in der Bäckerei",
+  "summary": "Jeden Morgen kauft Tom sein Brot an der Ecke, aber heute wartet eine kleine Überraschung auf ihn.",
+  "paragraphs": [
+    {
+      "translations": {
+        "es": "Tom se levanta cada mañana a las siete. Va a la panadería de la esquina. Allí huele a algo cálido y dulce.",
+        "en": "Tom gets up at seven o'clock every morning. He goes to the bakery on the corner. It smells warm and sweet in there."
+      },
+      "sentences": [
+        {
+          "text": "Tom steht jeden Morgen um sieben Uhr auf.",
+          "translations": {
+            "es": "Tom se levanta cada mañana a las siete.",
+            "en": "Tom gets up at seven o'clock every morning."
+          },
+          "senses": {
+            "Morgen": "de:morgen"
+          }
+        },
+        {
+          "text": "Er geht zur Bäckerei an der Ecke.",
+          "translations": {
+            "es": "Va a la panadería de la esquina.",
+            "en": "He goes to the bakery on the corner."
+          }
+        },
+        {
+          "text": "Dort riecht es warm und süß.",
+          "translations": {
+            "es": "Allí huele a algo cálido y dulce.",
+            "en": "It smells warm and sweet in there."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "La panadera ya lo conoce. —¡Buenos días! ¿Lo de siempre? —pregunta ella. Tom siempre se lleva dos panecillos y un pan.",
+        "en": "The baker already knows him. “Good morning! The usual?” she asks. Tom always takes two rolls and a loaf of bread."
+      },
+      "sentences": [
+        {
+          "text": "Die Bäckerin kennt ihn schon.",
+          "translations": {
+            "es": "La panadera ya lo conoce.",
+            "en": "The baker already knows him."
+          }
+        },
+        {
+          "text": "„Guten Morgen! Wie immer?“, fragt sie.",
+          "translations": {
+            "es": "—¡Buenos días! ¿Lo de siempre? —pregunta ella.",
+            "en": "“Good morning! The usual?” she asks."
+          },
+          "senses": {
+            "Morgen": "de:morgen"
+          }
+        },
+        {
+          "text": "Tom nimmt immer zwei Brötchen und ein Brot.",
+          "translations": {
+            "es": "Tom siempre se lleva dos panecillos y un pan.",
+            "en": "Tom always takes two rolls and a loaf of bread."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Pero hoy su pan ya se ha acabado. La panadera se ríe y le da un pan nuevo con nueces. —¡Pruébalo, es nuevo!",
+        "en": "But today his bread is already gone. The baker laughs and gives him a new bread with nuts. “Try it, it's new!”"
+      },
+      "sentences": [
+        {
+          "text": "Aber heute ist sein Brot schon weg.",
+          "translations": {
+            "es": "Pero hoy su pan ya se ha acabado.",
+            "en": "But today his bread is already gone."
+          }
+        },
+        {
+          "text": "Die Bäckerin lacht und gibt ihm ein neues Brot mit Nüssen.",
+          "translations": {
+            "es": "La panadera se ríe y le da un pan nuevo con nueces.",
+            "en": "The baker laughs and gives him a new bread with nuts."
+          }
+        },
+        {
+          "text": "„Probier mal, das ist neu!“",
+          "translations": {
+            "es": "—¡Pruébalo, es nuevo!",
+            "en": "“Try it, it's new!”"
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "En casa, Tom se come el pan con mantequilla y miel. Está buenísimo. Mañana lo volverá a comprar.",
+        "en": "At home Tom eats the bread with butter and honey. It is very good. Tomorrow he will buy it again."
+      },
+      "sentences": [
+        {
+          "text": "Zu Hause isst Tom das Brot mit Butter und Honig.",
+          "translations": {
+            "es": "En casa, Tom se come el pan con mantequilla y miel.",
+            "en": "At home Tom eats the bread with butter and honey."
+          }
+        },
+        {
+          "text": "Es ist sehr gut.",
+          "translations": {
+            "es": "Está buenísimo.",
+            "en": "It is very good."
+          }
+        },
+        {
+          "text": "Morgen kauft er es wieder.",
+          "translations": {
+            "es": "Mañana lo volverá a comprar.",
+            "en": "Tomorrow he will buy it again."
+          }
+        }
+      ]
+    }
+  ]
+}

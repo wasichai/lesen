@@ -1,0 +1,165 @@
+{
+  "slug": "warum-wir-gewohnheiten-brauchen",
+  "language": "de",
+  "level": "B2",
+  "topics": ["psychology/habits"],
+  "featured": false,
+  "cover": "warum-wir-gewohnheiten-brauchen.svg",
+  "accent": "#6A8D73",
+  "title": "Warum wir Gewohnheiten brauchen",
+  "subtitle": "Wie unser Gehirn Energie spart",
+  "summary": "Ein Blick darauf, warum Gewohnheiten unseren Alltag leichter machen und wie man neue Gewohnheiten klug aufbaut.",
+  "paragraphs": [
+    {
+      "translations": {
+        "es": "Imagine que cada mañana tuviera que pensar de nuevo cómo se lavan los dientes. ¿Qué mano sujeta el cepillo, cuánta pasta hace falta, por dónde se empieza? Antes incluso del desayuno ya estaría agotado.",
+        "en": "Imagine having to work out all over again every morning how to brush your teeth. Which hand holds the brush, how much toothpaste do you need, where do you start? You would be exhausted before breakfast."
+      },
+      "sentences": [
+        {
+          "text": "Stellen Sie sich vor, Sie müssten jeden Morgen neu überlegen, wie man sich die Zähne putzt.",
+          "translations": {
+            "es": "Imagine que cada mañana tuviera que pensar de nuevo cómo se lavan los dientes.",
+            "en": "Imagine having to work out all over again every morning how to brush your teeth."
+          },
+          "senses": {
+            "Morgen": "de:morgen"
+          }
+        },
+        {
+          "text": "Welche Hand hält die Bürste, wie viel Zahnpasta braucht man, wo fängt man an?",
+          "translations": {
+            "es": "¿Qué mano sujeta el cepillo, cuánta pasta hace falta, por dónde se empieza?",
+            "en": "Which hand holds the brush, how much toothpaste do you need, where do you start?"
+          }
+        },
+        {
+          "text": "Noch vor dem Frühstück wären Sie erschöpft.",
+          "translations": {
+            "es": "Antes incluso del desayuno ya estaría agotado.",
+            "en": "You would be exhausted before breakfast."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Por suerte, nuestro cerebro se encarga de esas tareas en cuanto las hemos repetido suficientes veces. Así, una decisión consciente se convierte poco a poco en una rutina automática que apenas requiere atención. Los investigadores creen que buena parte de nuestro día a día funciona de este modo.",
+        "en": "Luckily, our brain takes over tasks like these as soon as we have repeated them often enough. In this way a conscious decision gradually turns into an automatic routine that hardly takes any attention. Researchers believe that a large part of our everyday life runs this way."
+      },
+      "sentences": [
+        {
+          "text": "Zum Glück übernimmt unser Gehirn solche Aufgaben, sobald wir sie oft genug wiederholt haben.",
+          "translations": {
+            "es": "Por suerte, nuestro cerebro se encarga de esas tareas en cuanto las hemos repetido suficientes veces.",
+            "en": "Luckily, our brain takes over tasks like these as soon as we have repeated them often enough."
+          }
+        },
+        {
+          "text": "Aus einer bewussten Entscheidung wird so nach und nach ein automatischer Ablauf, der kaum noch Aufmerksamkeit kostet.",
+          "translations": {
+            "es": "Así, una decisión consciente se convierte poco a poco en una rutina automática que apenas requiere atención.",
+            "en": "In this way a conscious decision gradually turns into an automatic routine that hardly takes any attention."
+          }
+        },
+        {
+          "text": "Forscher vermuten, dass ein großer Teil unseres Alltags auf diese Weise abläuft.",
+          "translations": {
+            "es": "Los investigadores creen que buena parte de nuestro día a día funciona de este modo.",
+            "en": "Researchers believe that a large part of our everyday life runs this way."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Los hábitos suelen seguir un patrón sencillo: un desencadenante pone en marcha una acción y, al final, llega una recompensa. El aroma del café nos hace alcanzar la taza, y el primer sorbo nos premia con una sensación de calidez. Cuanto más se repite este ciclo, más sólida se vuelve la conexión.",
+        "en": "Habits usually follow a simple pattern: a trigger sets an action in motion, and at the end comes a reward. The smell of coffee makes us reach for the cup, and the first sip rewards us with a feeling of warmth. The more often this loop repeats, the stronger the connection becomes."
+      },
+      "sentences": [
+        {
+          "text": "Gewohnheiten folgen dabei meist einem einfachen Muster: Ein Auslöser setzt eine Handlung in Gang, und am Ende steht eine Belohnung.",
+          "translations": {
+            "es": "Los hábitos suelen seguir un patrón sencillo: un desencadenante pone en marcha una acción y, al final, llega una recompensa.",
+            "en": "Habits usually follow a simple pattern: a trigger sets an action in motion, and at the end comes a reward."
+          }
+        },
+        {
+          "text": "Der Duft von Kaffee lässt uns zur Tasse greifen, und der erste Schluck belohnt uns mit einem Gefühl von Wärme.",
+          "translations": {
+            "es": "El aroma del café nos hace alcanzar la taza, y el primer sorbo nos premia con una sensación de calidez.",
+            "en": "The smell of coffee makes us reach for the cup, and the first sip rewards us with a feeling of warmth."
+          }
+        },
+        {
+          "text": "Je öfter sich dieser Kreislauf wiederholt, desto fester wird die Verbindung.",
+          "translations": {
+            "es": "Cuanto más se repite este ciclo, más sólida se vuelve la conexión.",
+            "en": "The more often this loop repeats, the stronger the connection becomes."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Precisamente por eso cuesta tanto librarse de los malos hábitos. Quien coge el móvil por la noche de forma automática no lucha contra una voluntad débil, sino contra un sistema bien entrenado. Por eso, en lugar de limitarse a hacer un esfuerzo de voluntad, es más sensato cambiar el desencadenante.",
+        "en": "That is exactly why it is so hard to get rid of bad habits. If you automatically reach for your phone in the evening, you are not fighting weak willpower but a well-trained system. So instead of simply pulling yourself together, it makes more sense to change the trigger."
+      },
+      "sentences": [
+        {
+          "text": "Genau deshalb ist es so schwer, schlechte Gewohnheiten loszuwerden.",
+          "translations": {
+            "es": "Precisamente por eso cuesta tanto librarse de los malos hábitos.",
+            "en": "That is exactly why it is so hard to get rid of bad habits."
+          }
+        },
+        {
+          "text": "Wer abends automatisch zum Handy greift, kämpft nicht gegen einen schwachen Willen, sondern gegen ein gut trainiertes System.",
+          "translations": {
+            "es": "Quien coge el móvil por la noche de forma automática no lucha contra una voluntad débil, sino contra un sistema bien entrenado.",
+            "en": "If you automatically reach for your phone in the evening, you are not fighting weak willpower but a well-trained system."
+          }
+        },
+        {
+          "text": "Statt sich nur zusammenzureißen, ist es deshalb sinnvoller, den Auslöser zu verändern.",
+          "translations": {
+            "es": "Por eso, en lugar de limitarse a hacer un esfuerzo de voluntad, es más sensato cambiar el desencadenante.",
+            "en": "So instead of simply pulling yourself together, it makes more sense to change the trigger."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Quien quiera crear un hábito nuevo debería empezar poco a poco y vincularlo a algo que ya existe. Dos minutos de estiramientos después de lavarse los dientes son más fáciles de mantener que una hora de deporte que hay que planificar cada vez. Los hábitos no son, por tanto, ni buenos ni malos: son herramientas, y podemos aprender a moldearlos de forma consciente.",
+        "en": "Anyone who wants to build a new habit should start small and link it to something that already exists. Two minutes of stretching after brushing your teeth are easier to stick to than an hour of exercise you have to plan every single time. So habits are neither good nor bad: they are tools, and we can learn to shape them deliberately."
+      },
+      "sentences": [
+        {
+          "text": "Wer eine neue Gewohnheit aufbauen möchte, sollte klein anfangen und sie an etwas Bestehendes knüpfen.",
+          "translations": {
+            "es": "Quien quiera crear un hábito nuevo debería empezar poco a poco y vincularlo a algo que ya existe.",
+            "en": "Anyone who wants to build a new habit should start small and link it to something that already exists."
+          }
+        },
+        {
+          "text": "Zwei Minuten Dehnen nach dem Zähneputzen sind leichter durchzuhalten als eine Stunde Sport, die man jedes Mal neu planen muss.",
+          "translations": {
+            "es": "Dos minutos de estiramientos después de lavarse los dientes son más fáciles de mantener que una hora de deporte que hay que planificar cada vez.",
+            "en": "Two minutes of stretching after brushing your teeth are easier to stick to than an hour of exercise you have to plan every single time."
+          },
+          "senses": {
+            "Mal": "de:mal#time"
+          }
+        },
+        {
+          "text": "Gewohnheiten sind also weder gut noch schlecht: Sie sind Werkzeuge, und wir können lernen, sie bewusst zu gestalten.",
+          "translations": {
+            "es": "Los hábitos no son, por tanto, ni buenos ni malos: son herramientas, y podemos aprender a moldearlos de forma consciente.",
+            "en": "So habits are neither good nor bad: they are tools, and we can learn to shape them deliberately."
+          }
+        }
+      ]
+    }
+  ]
+}

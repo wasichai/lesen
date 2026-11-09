@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#121735"/><stop offset=".65" stop-color="#2E3A6B"/><stop offset="1" stop-color="#6C5A8E"/></linearGradient>
+<radialGradient id="band" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#C9C6F0" stop-opacity=".38"/><stop offset=".6" stop-color="#C9C6F0" stop-opacity=".14"/><stop offset="1" stop-color="#C9C6F0" stop-opacity="0"/></radialGradient>
+<radialGradient id="neb" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F3D6F0" stop-opacity=".9"/><stop offset="1" stop-color="#F3D6F0" stop-opacity="0"/></radialGradient>
+<radialGradient id="pl" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE7B0"/><stop offset=".35" stop-color="#FFE7B0" stop-opacity=".5"/><stop offset="1" stop-color="#FFE7B0" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="600" height="800" fill="url(#sky)"/>
+<ellipse cx="300" cy="330" rx="420" ry="70" transform="rotate(-35 300 330)" fill="url(#band)"/>
+<ellipse cx="430" cy="200" rx="46" ry="20" transform="rotate(-30 430 200)" fill="url(#neb)"/>
+<g fill="#FFFFFF"><circle cx="40" cy="60" r="1.5"/><circle cx="110" cy="200" r="1.5"/><circle cx="210" cy="40" r="1.2"/><circle cx="300" cy="120" r="1.5"/><circle cx="520" cy="90" r="1.5"/><circle cx="560" cy="300" r="1.2"/><circle cx="470" cy="380" r="1.5"/><circle cx="80" cy="400" r="1.2"/><circle cx="250" cy="300" r="1.5"/><circle cx="350" cy="420" r="1.2"/><circle cx="160" cy="470" r="1.2"/><circle cx="580" cy="460" r="1.5"/></g>
+<g stroke="#C9C3F0" stroke-width="2" opacity=".7" fill="none"><path d="M90 130L160 100 230 150 280 110 330 170"/><path d="M230 150L250 230 190 260"/></g>
+<g fill="#FFFFFF"><circle cx="90" cy="130" r="4"/><circle cx="160" cy="100" r="5"/><circle cx="230" cy="150" r="4"/><circle cx="280" cy="110" r="4"/><circle cx="330" cy="170" r="5"/><circle cx="250" cy="230" r="4"/><circle cx="190" cy="260" r="4"/></g>
+<circle cx="140" cy="360" r="40" fill="url(#pl)"/><circle cx="140" cy="360" r="7" fill="#FFF3D1"/>
+<path d="M0 620q120-70 260-40t340-50v270H0z" fill="#25264A"/>
+<path d="M0 680q200-50 360-20t240-20v160H0z" fill="#1A1B38"/>
+<g fill="#1A1B38"><path d="M500 600l20-80 20 80zM470 610l14-56 14 56z"/></g>
+<g transform="translate(330 520) rotate(-35)"><rect x="-20" y="-16" width="170" height="34" rx="10" fill="#E9B44C"/><rect x="140" y="-22" width="24" height="46" rx="6" fill="#C98F2E"/><rect x="-36" y="-8" width="20" height="18" rx="4" fill="#C98F2E"/></g>
+<g stroke="#E9B44C" stroke-width="7" stroke-linecap="round"><path d="M372 540l-50 110M372 540l40 110M372 540v120"/></g>
+<path d="M120 690q60-20 170-8l-14 34q-90-10-170 6z" fill="#B65F6B"/>
+<path d="M140 694q60-14 140-8" stroke="#E8919B" stroke-width="5" fill="none"/>
+<circle cx="190" cy="676" r="14" fill="#F2C9A6"/><path d="M176 672q14-20 30-2" fill="#3A2A3F"/>
+<path d="M200 686q40 0 70 4" stroke="#3E5C9A" stroke-width="14" stroke-linecap="round"/>
+</svg>

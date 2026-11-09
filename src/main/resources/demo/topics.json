@@ -1,0 +1,278 @@
+[
+  {
+    "slug": "science",
+    "labels": {
+      "es": "Ciencia",
+      "en": "Science"
+    },
+    "children": [
+      {
+        "slug": "space",
+        "labels": {
+          "es": "Espacio",
+          "en": "Space"
+        }
+      },
+      {
+        "slug": "biology",
+        "labels": {
+          "es": "Biología",
+          "en": "Biology"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "technology",
+    "labels": {
+      "es": "Tecnología",
+      "en": "Technology"
+    },
+    "children": [
+      {
+        "slug": "internet",
+        "labels": {
+          "es": "Internet",
+          "en": "The internet"
+        }
+      },
+      {
+        "slug": "inventions",
+        "labels": {
+          "es": "Inventos",
+          "en": "Inventions"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "history",
+    "labels": {
+      "es": "Historia",
+      "en": "History"
+    },
+    "children": [
+      {
+        "slug": "ancient",
+        "labels": {
+          "es": "Historia antigua",
+          "en": "Ancient history"
+        }
+      },
+      {
+        "slug": "modern",
+        "labels": {
+          "es": "Historia contemporánea",
+          "en": "Modern history"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "travel",
+    "labels": {
+      "es": "Viajes",
+      "en": "Travel"
+    },
+    "children": [
+      {
+        "slug": "cities",
+        "labels": {
+          "es": "Ciudades",
+          "en": "Cities"
+        }
+      },
+      {
+        "slug": "coasts",
+        "labels": {
+          "es": "Costas",
+          "en": "Coasts"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "nature",
+    "labels": {
+      "es": "Naturaleza",
+      "en": "Nature"
+    },
+    "children": [
+      {
+        "slug": "animals",
+        "labels": {
+          "es": "Animales",
+          "en": "Animals"
+        }
+      },
+      {
+        "slug": "seasons",
+        "labels": {
+          "es": "Estaciones",
+          "en": "Seasons"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "psychology",
+    "labels": {
+      "es": "Psicología",
+      "en": "Psychology"
+    },
+    "children": [
+      {
+        "slug": "habits",
+        "labels": {
+          "es": "Hábitos",
+          "en": "Habits"
+        }
+      },
+      {
+        "slug": "emotions",
+        "labels": {
+          "es": "Emociones",
+          "en": "Emotions"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "culture",
+    "labels": {
+      "es": "Cultura",
+      "en": "Culture"
+    },
+    "children": [
+      {
+        "slug": "food",
+        "labels": {
+          "es": "Gastronomía",
+          "en": "Food"
+        }
+      },
+      {
+        "slug": "festivals",
+        "labels": {
+          "es": "Fiestas",
+          "en": "Festivals"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "business",
+    "labels": {
+      "es": "Economía y trabajo",
+      "en": "Business"
+    },
+    "children": [
+      {
+        "slug": "work",
+        "labels": {
+          "es": "Trabajo",
+          "en": "Work"
+        }
+      },
+      {
+        "slug": "money",
+        "labels": {
+          "es": "Dinero",
+          "en": "Money"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "everyday-life",
+    "labels": {
+      "es": "Vida cotidiana",
+      "en": "Everyday life"
+    },
+    "children": [
+      {
+        "slug": "home",
+        "labels": {
+          "es": "En casa",
+          "en": "Home"
+        }
+      },
+      {
+        "slug": "shopping",
+        "labels": {
+          "es": "De compras",
+          "en": "Shopping"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "arts-literature",
+    "labels": {
+      "es": "Arte y literatura",
+      "en": "Arts & literature"
+    },
+    "children": [
+      {
+        "slug": "music",
+        "labels": {
+          "es": "Música",
+          "en": "Music"
+        }
+      },
+      {
+        "slug": "poetry",
+        "labels": {
+          "es": "Poesía",
+          "en": "Poetry"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "mysteries-adventures",
+    "labels": {
+      "es": "Misterios y aventuras",
+      "en": "Mysteries & adventures"
+    },
+    "children": [
+      {
+        "slug": "detectives",
+        "labels": {
+          "es": "Detectives",
+          "en": "Detectives"
+        }
+      },
+      {
+        "slug": "expeditions",
+        "labels": {
+          "es": "Expediciones",
+          "en": "Expeditions"
+        }
+      }
+    ]
+  },
+  {
+    "slug": "science-fiction",
+    "labels": {
+      "es": "Ciencia ficción",
+      "en": "Science fiction"
+    },
+    "children": [
+      {
+        "slug": "future",
+        "labels": {
+          "es": "El futuro",
+          "en": "The future"
+        }
+      },
+      {
+        "slug": "robots",
+        "labels": {
+          "es": "Robots",
+          "en": "Robots"
+        }
+      }
+    ]
+  }
+]

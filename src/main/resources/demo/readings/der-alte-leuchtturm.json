@@ -1,0 +1,187 @@
+{
+  "slug": "der-alte-leuchtturm",
+  "language": "de",
+  "level": "A2",
+  "topics": ["travel/coasts", "nature"],
+  "featured": true,
+  "cover": "der-alte-leuchtturm.svg",
+  "accent": "#2F5D62",
+  "title": "Der alte Leuchtturm",
+  "subtitle": "Eine stürmische Nacht an der Nordsee",
+  "summary": "Als in einer stürmischen Nacht das Licht ausgeht, darf Mia ihrem Großvater im alten Leuchtturm helfen.",
+  "paragraphs": [
+    {
+      "translations": {
+        "es": "Mia pasa el verano con su abuelo junto al mar del Norte. Él vive al lado de un viejo faro. Antes era el farero de allí.",
+        "en": "Mia is spending the summer with her grandfather by the North Sea. He lives next to an old lighthouse. He used to be the lighthouse keeper there."
+      },
+      "sentences": [
+        {
+          "text": "Mia verbringt den Sommer bei ihrem Großvater an der Nordsee.",
+          "translations": {
+            "es": "Mia pasa el verano con su abuelo junto al mar del Norte.",
+            "en": "Mia is spending the summer with her grandfather by the North Sea."
+          }
+        },
+        {
+          "text": "Er wohnt neben einem alten Leuchtturm.",
+          "translations": {
+            "es": "Él vive al lado de un viejo faro.",
+            "en": "He lives next to an old lighthouse."
+          }
+        },
+        {
+          "text": "Früher war er dort Leuchtturmwärter.",
+          "translations": {
+            "es": "Antes era el farero de allí.",
+            "en": "He used to be the lighthouse keeper there."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Hoy ya no hace falta farero, porque la lámpara funciona sola. Pero el abuelo todavía tiene una llave. Una tarde suben juntos la escalera. Mia cuenta cien escalones.",
+        "en": "Nowadays nobody needs a keeper anymore, because the lamp works automatically. But Grandpa still has a key. One evening they climb the stairs together. Mia counts a hundred steps."
+      },
+      "sentences": [
+        {
+          "text": "Heute braucht man keinen Wärter mehr, denn die Lampe funktioniert automatisch.",
+          "translations": {
+            "es": "Hoy ya no hace falta farero, porque la lámpara funciona sola.",
+            "en": "Nowadays nobody needs a keeper anymore, because the lamp works automatically."
+          }
+        },
+        {
+          "text": "Aber der Großvater hat noch einen Schlüssel.",
+          "translations": {
+            "es": "Pero el abuelo todavía tiene una llave.",
+            "en": "But Grandpa still has a key."
+          }
+        },
+        {
+          "text": "An einem Abend steigen sie zusammen die Treppe hinauf.",
+          "translations": {
+            "es": "Una tarde suben juntos la escalera.",
+            "en": "One evening they climb the stairs together."
+          }
+        },
+        {
+          "text": "Mia zählt hundert Stufen.",
+          "translations": {
+            "es": "Mia cuenta cien escalones.",
+            "en": "Mia counts a hundred steps."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Arriba el viento sopla muy fuerte. Unas nubes oscuras llegan sobre el mar y empieza a llover. Ahora el mar está gris y embravecido. De repente se apaga la luz.",
+        "en": "At the top the wind is very strong. Dark clouds come in over the sea, and it starts to rain. The sea is grey and wild now. Suddenly the light goes out."
+      },
+      "sentences": [
+        {
+          "text": "Oben ist der Wind sehr stark.",
+          "translations": {
+            "es": "Arriba el viento sopla muy fuerte.",
+            "en": "At the top the wind is very strong."
+          }
+        },
+        {
+          "text": "Dunkle Wolken kommen über das Meer, und es beginnt zu regnen.",
+          "translations": {
+            "es": "Unas nubes oscuras llegan sobre el mar y empieza a llover.",
+            "en": "Dark clouds come in over the sea, and it starts to rain."
+          }
+        },
+        {
+          "text": "Das Meer ist jetzt grau und wild.",
+          "translations": {
+            "es": "Ahora el mar está gris y embravecido.",
+            "en": "The sea is grey and wild now."
+          }
+        },
+        {
+          "text": "Plötzlich geht das Licht aus.",
+          "translations": {
+            "es": "De repente se apaga la luz.",
+            "en": "Suddenly the light goes out."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "El abuelo mantiene la calma. Abre una puertecita y le enseña a Mia un interruptor rojo. —Ahora tú —dice. Mia pulsa el interruptor y la lámpara vuelve a brillar con fuerza sobre el agua.",
+        "en": "Grandpa stays calm. He opens a small door and shows Mia a red switch. “Your turn,” he says. Mia presses the switch, and the lamp shines brightly over the water again."
+      },
+      "sentences": [
+        {
+          "text": "Der Großvater bleibt ruhig.",
+          "translations": {
+            "es": "El abuelo mantiene la calma.",
+            "en": "Grandpa stays calm."
+          }
+        },
+        {
+          "text": "Er öffnet eine kleine Tür und zeigt Mia einen roten Schalter.",
+          "translations": {
+            "es": "Abre una puertecita y le enseña a Mia un interruptor rojo.",
+            "en": "He opens a small door and shows Mia a red switch."
+          }
+        },
+        {
+          "text": "„Jetzt du“, sagt er.",
+          "translations": {
+            "es": "—Ahora tú —dice.",
+            "en": "“Your turn,” he says."
+          }
+        },
+        {
+          "text": "Mia drückt den Schalter, und die Lampe leuchtet wieder hell über das Wasser.",
+          "translations": {
+            "es": "Mia pulsa el interruptor y la lámpara vuelve a brillar con fuerza sobre el agua.",
+            "en": "Mia presses the switch, and the lamp shines brightly over the water again."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "A lo lejos, mar adentro, ven un barco pequeño. Entra despacio y sin peligro en el puerto. El abuelo la rodea con el brazo. Mia está un poco orgullosa.",
+        "en": "Far out at sea they see a small ship. It sails slowly and safely into the harbour. Grandpa puts his arm around her. Mia feels a little proud."
+      },
+      "sentences": [
+        {
+          "text": "Weit draußen sehen sie ein kleines Schiff.",
+          "translations": {
+            "es": "A lo lejos, mar adentro, ven un barco pequeño.",
+            "en": "Far out at sea they see a small ship."
+          }
+        },
+        {
+          "text": "Es fährt langsam und sicher in den Hafen.",
+          "translations": {
+            "es": "Entra despacio y sin peligro en el puerto.",
+            "en": "It sails slowly and safely into the harbour."
+          }
+        },
+        {
+          "text": "Der Großvater legt den Arm um sie.",
+          "translations": {
+            "es": "El abuelo la rodea con el brazo.",
+            "en": "Grandpa puts his arm around her."
+          }
+        },
+        {
+          "text": "Mia ist ein bisschen stolz.",
+          "translations": {
+            "es": "Mia está un poco orgullosa.",
+            "en": "Mia feels a little proud."
+          }
+        }
+      ]
+    }
+  ]
+}

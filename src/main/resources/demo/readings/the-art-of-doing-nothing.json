@@ -1,0 +1,139 @@
+{
+  "slug": "the-art-of-doing-nothing",
+  "language": "en",
+  "level": "B2",
+  "topics": ["psychology/habits"],
+  "featured": false,
+  "cover": "the-art-of-doing-nothing.svg",
+  "accent": "#5E9C8F",
+  "title": "The Art of Doing Nothing",
+  "subtitle": "Why a little boredom might be good for you",
+  "summary": "A short essay on why moments of idleness help us rest, think and come up with our best ideas.",
+  "paragraphs": [
+    {
+      "translations": {
+        "es": "¿Cuándo fue la última vez que no hiciste absolutamente nada? Sin deslizar el dedo por la pantalla, sin escuchar un pódcast, sin planear las comidas de mañana: simplemente sentado, dejando que tus pensamientos vaguen. Para muchos de nosotros, la respuesta sincera resulta incómoda."
+      },
+      "sentences": [
+        {
+          "text": "When was the last time you did absolutely nothing?",
+          "translations": {
+            "es": "¿Cuándo fue la última vez que no hiciste absolutamente nada?"
+          }
+        },
+        {
+          "text": "Not scrolling, not listening to a podcast, not planning tomorrow's meals, but simply sitting and letting your thoughts drift?",
+          "translations": {
+            "es": "Sin deslizar el dedo por la pantalla, sin escuchar un pódcast, sin planear las comidas de mañana: simplemente sentado, dejando que tus pensamientos vaguen."
+          }
+        },
+        {
+          "text": "For many of us, the honest answer is uncomfortable.",
+          "translations": {
+            "es": "Para muchos de nosotros, la respuesta sincera resulta incómoda."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Llenamos cada minuto libre con el móvil, en parte por costumbre y en parte porque el aburrimiento nos parece un problema que hay que resolver. Sin embargo, cada vez más psicólogos sugieren que el aburrimiento no es en absoluto un enemigo. Cuando la mente se queda a solas, no se apaga: empieza a divagar, conecta recuerdos, ordena preocupaciones y pone a prueba ideas."
+      },
+      "sentences": [
+        {
+          "text": "We fill every spare minute with our phones, partly out of habit and partly because boredom feels like a problem to be solved.",
+          "translations": {
+            "es": "Llenamos cada minuto libre con el móvil, en parte por costumbre y en parte porque el aburrimiento nos parece un problema que hay que resolver."
+          }
+        },
+        {
+          "text": "Yet psychologists increasingly suggest that boredom is not an enemy at all.",
+          "translations": {
+            "es": "Sin embargo, cada vez más psicólogos sugieren que el aburrimiento no es en absoluto un enemigo."
+          }
+        },
+        {
+          "text": "When the mind is left alone, it does not switch off; it starts to wander, connecting memories, sorting through worries and testing ideas.",
+          "translations": {
+            "es": "Cuando la mente se queda a solas, no se apaga: empieza a divagar, conecta recuerdos, ordena preocupaciones y pone a prueba ideas."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Por eso tantas buenas ideas llegan en la ducha o durante un largo paseo. En algunos estudios, las personas que antes habían realizado una tarea aburrida propusieron después soluciones más creativas que las que se habían mantenido ocupadas. Al parecer, la ociosidad le da al cerebro espacio para jugar."
+      },
+      "sentences": [
+        {
+          "text": "This is why so many good thoughts arrive in the shower or on a long walk.",
+          "translations": {
+            "es": "Por eso tantas buenas ideas llegan en la ducha o durante un largo paseo."
+          }
+        },
+        {
+          "text": "In some studies, people who had first completed a dull task came up with more creative solutions afterwards than those who had been kept busy.",
+          "translations": {
+            "es": "En algunos estudios, las personas que antes habían realizado una tarea aburrida propusieron después soluciones más creativas que las que se habían mantenido ocupadas."
+          }
+        },
+        {
+          "text": "Idleness, it seems, gives the brain room to play.",
+          "translations": {
+            "es": "Al parecer, la ociosidad le da al cerebro espacio para jugar."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Claro que no hacer nada es más difícil de lo que parece. Los primeros minutos pueden generar inquietud e incluso algo de culpa, sobre todo en una cultura que mide nuestro valor por lo productivos que somos. Pero, como cualquier habilidad, mejora con la práctica."
+      },
+      "sentences": [
+        {
+          "text": "Of course, doing nothing is harder than it sounds.",
+          "translations": {
+            "es": "Claro que no hacer nada es más difícil de lo que parece."
+          }
+        },
+        {
+          "text": "The first few minutes can feel restless, even slightly guilty, especially in a culture that measures our worth by how productive we are.",
+          "translations": {
+            "es": "Los primeros minutos pueden generar inquietud e incluso algo de culpa, sobre todo en una cultura que mide nuestro valor por lo productivos que somos."
+          }
+        },
+        {
+          "text": "But like any skill, it improves with practice.",
+          "translations": {
+            "es": "Pero, como cualquier habilidad, mejora con la práctica."
+          }
+        }
+      ]
+    },
+    {
+      "translations": {
+        "es": "Así que la próxima vez que estés esperando un tren, prueba a dejar el móvil en el bolsillo. Mira por la ventana, fíjate en la luz y deja que tu mente vaya adonde quiera. Puede que te sorprenda adónde te lleva."
+      },
+      "sentences": [
+        {
+          "text": "So the next time you are waiting for a train, try leaving your phone in your pocket.",
+          "translations": {
+            "es": "Así que la próxima vez que estés esperando un tren, prueba a dejar el móvil en el bolsillo."
+          }
+        },
+        {
+          "text": "Look out of the window, notice the light, and let your mind go wherever it wants.",
+          "translations": {
+            "es": "Mira por la ventana, fíjate en la luz y deja que tu mente vaya adonde quiera."
+          }
+        },
+        {
+          "text": "You may be surprised by where it takes you.",
+          "translations": {
+            "es": "Puede que te sorprenda adónde te lleva."
+          }
+        }
+      ]
+    }
+  ]
+}

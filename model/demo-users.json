@@ -1,0 +1,8 @@
+{
+  "_comentario": "Personas de la demostración (model/apply.py --demo). La contraseña sale de LESEN_DEMO_PASSWORD; nunca se escribe aquí.",
+  "users": [
+    { "email": "lena@demo.lesen.test", "displayName": "Lena", "roles": ["LECTOR"] },
+    { "email": "tomas@demo.lesen.test", "displayName": "Tomás", "roles": ["LECTOR"] },
+    { "email": "editor@demo.lesen.test", "displayName": "Edith", "roles": ["EDITOR"] }
+  ]
+}

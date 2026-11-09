@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFE3F2"/><stop offset="1" stop-color="#F4EEE2"/></linearGradient>
+<linearGradient id="road" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9DB2C4"/><stop offset="1" stop-color="#6F879C"/></linearGradient>
+</defs>
+<rect width="600" height="800" fill="url(#sky)"/>
+<path d="M0 120h150v330H0z" fill="#E7B7A3"/><path d="M450 80h150v370H450z" fill="#B9CBE0"/>
+<g fill="#FFFFFF" opacity=".8"><rect x="30" y="160" width="36" height="48" rx="4"/><rect x="90" y="160" width="36" height="48" rx="4"/><rect x="30" y="250" width="36" height="48" rx="4"/><rect x="90" y="250" width="36" height="48" rx="4"/><rect x="480" y="120" width="36" height="48" rx="4"/><rect x="540" y="120" width="36" height="48" rx="4"/><rect x="480" y="210" width="36" height="48" rx="4"/><rect x="540" y="210" width="36" height="48" rx="4"/></g>
+<path d="M0 450h600v350H0z" fill="url(#road)"/>
+<path d="M0 450h600v14H0z" fill="#5B7186"/>
+<rect x="388" y="230" width="26" height="240" fill="#7B5A43"/>
+<circle cx="400" cy="200" r="90" fill="#6FA37D"/><circle cx="340" cy="240" r="56" fill="#5C9170"/><circle cx="460" cy="240" r="56" fill="#5C9170"/>
+<g fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-dasharray="18 16" opacity=".9"><path d="M60 780q60-120 180-150t160-140"/></g>
+<g fill="#FFFFFF" opacity=".9"><path d="M392 492l14-8-4 16z"/></g>
+<g transform="translate(300 400)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="-30" cy="60" r="48" stroke="#2B3F55" stroke-width="10"/><circle cx="110" cy="60" r="48" stroke="#2B3F55" stroke-width="10"/>
+<path d="M-30 60L20 60 70 0H0zM20 60L-8-10M70 0l40 60M60-20l10 20" stroke="#3E7CB1" stroke-width="10"/>
+<path d="M-24-12h30M48-22h28" stroke="#2B3F55" stroke-width="10"/>
+</g>
+<g fill="#F6E7C8"><circle cx="190" cy="660" r="5"/><circle cx="206" cy="652" r="3.5"/><circle cx="250" cy="618" r="4"/><circle cx="330" cy="560" r="4"/></g>
+<g transform="translate(150 610) rotate(-30)"><circle r="54" fill="#DCEAF5" fill-opacity=".45" stroke="#C8553D" stroke-width="12"/><rect x="50" y="-10" width="80" height="20" rx="10" fill="#C8553D"/></g>
+</svg>
