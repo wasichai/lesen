@@ -1,5 +1,7 @@
 package lesen.demo
 
+import lesen.audio.Timings
+import lesen.audio.WordTiming
 import lesen.common.Jsonb
 import lesen.dictionary.LexiconEntry
 import lesen.reading.FormResolver
@@ -49,6 +51,28 @@ class DemoContentTest {
             lexicon(language).forEach { entry ->
                 entry.senses.forEach { sense -> wanted.forEach { assertThat(sense.translations[it]).describedAs("${entry.key} → $it").isNotEmpty() } }
             }
+        }
+    }
+
+    @Test
+    fun `every demo audio has valid timings for the text the backend assembles`() {
+        val readings = resources.getResources("classpath:demo/readings/*.json").map { Jsonb.read<ReadingDraft>(it.inputStream.bufferedReader().readText()) }
+        assertThat(readings).allSatisfy { draft ->
+            val seed =
+                Jsonb.read<AudioSeed>(
+                    resources
+                        .getResource("classpath:demo/audio/${draft.slug}.timings.json")
+                        .inputStream
+                        .bufferedReader()
+                        .readText(),
+                )
+            val content = ReadingAssembler.assemble(draft, UnicodeTokenizer(), FormResolver { null }).content
+            val timings = seed.timings.map { (token, range) -> WordTiming(token, range[0], range[1]) }
+            val check = Timings.check(content, timings, seed.durationMs)
+            assertThat(check.errors).describedAs(draft.slug).isEmpty()
+            assertThat(check.unaligned).describedAs(draft.slug).isEmpty()
+            assertThat(resources.getResource("classpath:demo/audio/${seed.file}").exists()).describedAs(seed.file).isTrue()
+            assertThat(seed.voice.language).isEqualTo(draft.language)
         }
     }
 }

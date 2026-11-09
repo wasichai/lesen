@@ -11,6 +11,9 @@ import sys
 import unicodedata
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from lesen_text import reading_sentences  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent / "src" / "main" / "resources" / "demo"
 # la misma expresión que lesen.reading.Tokenizer.WORD_PATTERN
 WORD = re.compile(r"[^\W_]+(?:['’\-][^\W_]+)*", re.UNICODE)
@@ -114,6 +117,31 @@ def main() -> int:
                 for w in WORD.findall(s.get("text", "")):
                     if norm(w) not in lexicon[lang]:
                         missing.setdefault(lang, set()).add(w)
+    # el audio de cada lectura (tools/generate_audio.py, ADR-0008): un tiempo por palabra, en orden, sin solaparse, dentro
+    # del audio, y nunca en un signo. Los ids son los del tokenizador (tools/lesen_text.py, igual que el del backend)
+    for file in sorted((ROOT / "readings").glob("*.json")):
+        r = json.loads(file.read_text())
+        meta_path = ROOT / "audio" / f"{r['slug']}.timings.json"
+        if not meta_path.exists():
+            problems.append(f"{r['slug']}: sin audio")
+            continue
+        meta = json.loads(meta_path.read_text())
+        if not (ROOT / "audio" / meta["file"]).exists():
+            problems.append(f"{r['slug']}: falta {meta['file']}")
+        if meta["voice"]["language"] != r["language"]:
+            problems.append(f"{r['slug']}: la voz no habla {r['language']}")
+        timings = meta["timings"]
+        words = [t["id"] for _, _, tokens in reading_sentences(r) for t in tokens if t["kind"] == "WORD"]
+        if set(timings) != set(words):
+            problems.append(f"{r['slug']}: tiempos para {len(timings)} tokens, la lectura tiene {len(words)} palabras")
+        previous_end = 0
+        for word in words:
+            start, end = timings.get(word, (previous_end, previous_end + 1))
+            if start < previous_end or end <= start or end > meta["durationMs"]:
+                problems.append(f"{r['slug']}: tiempo inválido en {word} ({start}–{end})")
+                break
+            previous_end = end
+
     for c in json.loads((ROOT / "collections.json").read_text()):
         for s in c["readings"]:
             if s not in slugs:
