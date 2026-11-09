@@ -28,7 +28,7 @@ sobre `cuaderno`.
 
 | Método | Ruta                                        | Permiso | Notas                                                                                                                                                                                                                                                                |
 | ------ | ------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| GET    | `discover`                                  | lectura | `{continueReading, featured, recommended[{reading, reasons}], fresh, collections, topics}`; 404 sin perfil                                                                                                                                                           |
+| GET    | `discover`                                  | lectura | `{continueReading, featured, recommended[{reading, reasons}], thisWeek[{reading, readers}], fresh, collections, topics}`; 404 sin perfil                                                                                                                             |
 | GET    | `readings`                                  | lectura | Filtros `language`, `level` (repetible), `topic` (incluye subtemas), `minMinutes`, `maxMinutes`, `q`, `status` (`BOOKMARKED`, `IN_PROGRESS`, `COMPLETED`, `NOT_STARTED`), `featured`; `sort` (`RECENT`, `POPULAR`, `LEVEL`, `DURATION`, `TITLE`); página de tarjetas |
 | GET    | `readings/{slug}`                           | lectura | `{reading, paragraphs, related[], collections[]}`                                                                                                                                                                                                                    |
 | GET    | `readings/{slug}/versions/{n}/content`      | lectura | Párrafos → oraciones → tokens. `Cache-Control: private, max-age=31536000, immutable` y ETag                                                                                                                                                                          |
@@ -58,6 +58,20 @@ personas la abrieron.
 | GET    | `readings/{slug}/notes`      | cuaderno | Notas propias                                                                                                    |
 | POST   | `readings/{slug}/notes`      | escribir | `{version, sentenceRef, note?}`; la cita sale del texto publicado; 201                                           |
 | DELETE | `notes/{id}`                 | escribir | 204; ajena o inexistente, 404                                                                                    |
+
+## Listas propias
+
+| Método | Ruta                         | Permiso  | Notas                                                                                    |
+| ------ | ---------------------------- | -------- | ---------------------------------------------------------------------------------------- |
+| GET    | `lists`                      | cuaderno | `[{id, name, count, contains, updatedAt}]`; con `?reading=slug`, `contains` dice si está |
+| POST   | `lists`                      | escribir | `{name}` (1–80, único por persona sin distinguir mayúsculas: 409); hasta 50 listas; 201  |
+| GET    | `lists/{id}`                 | cuaderno | `{id, name, updatedAt, readings[ReadingCard]}`, de la última añadida a la primera        |
+| PATCH  | `lists/{id}`                 | escribir | `{name}`                                                                                 |
+| DELETE | `lists/{id}`                 | escribir | 204                                                                                      |
+| PUT    | `lists/{id}/readings/{slug}` | escribir | 204; idempotente; hasta 200 lecturas por lista                                           |
+| DELETE | `lists/{id}/readings/{slug}` | escribir | 204                                                                                      |
+
+Una lista de otra persona o inexistente es 404.
 
 ## Diccionario
 
@@ -98,9 +112,23 @@ personas la abrieron.
 Resultados: `CORRECT`, `PARTIAL`, `INCORRECT`, `PENDING` (la corrige el asistente) y `UNGRADED` (abierta, para
 autoevaluar con la respuesta modelo). Evaluador: `RULE`, `AI` (con justificación y oraciones citadas) o `SELF` (ADR-0009).
 
+## Progreso
+
+| Método | Ruta                    | Permiso  | Notas                                                                                                                                                                          |
+| ------ | ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| GET    | `progress/dashboard`    | cuaderno | `?language=` (por defecto el de estudio). `{language, timeZone, today, goal, streak, days[28], reading, vocabulary, comprehension, level, recentAchievements}`; 404 sin perfil |
+| GET    | `progress/weekly`       | cuaderno | `?week=AAAA-MM-DD` (la semana, de lunes a domingo, que contiene ese día; por defecto la en curso): días, totales, días activos, meta semanal, racha y logros de esa semana     |
+| GET    | `progress/achievements` | cuaderno | Todos los logros con su regla (`kind`, `threshold`), cuánto se lleva (`value`, hasta el umbral) y `earnedAt` o null                                                            |
+| GET    | `progress/goals`        | cuaderno | `{dailyMinutes, weeklyDays, timeZone, weeklySummary, configured}`                                                                                                              |
+| PUT    | `progress/goals`        | escribir | Lo que se mande de `{dailyMinutes (al perfil), weeklyDays 1–7, timeZone IANA, weeklySummary}`; cambiar de zona reconstruye la proyección                                       |
+
+Cada cifra es `{value, kind}` con `kind` `MEASURED` (contado) o `ESTIMATED` (inferido: palabras leídas, aprendiendo,
+dominadas, nivel). La racha (`{current, best, weeksMet, target, activeThisWeek, metThisWeek}`) es semanal y nunca dice
+que se perdió nada. La actividad la registran los endpoints de siempre (progreso, terminar, guardar, repasar, enviar un
+intento); no hay un endpoint para inventarla (ADR-0011).
+
 ## Próximas fases (diseñado)
 
-- `progress/dashboard` y `progress/activity` (fase 5).
 - `studio/readings/**` (borradores, revisión y publicación, fase 6).
 
 La generación de audio irá a una cola de trabajos con un límite por persona. La corrección asistida ya usa una cola

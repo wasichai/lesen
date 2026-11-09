@@ -45,10 +45,63 @@ data class EvaluationJob(
     val tries: Int,
 )
 
+// respuestas ya corregidas de una persona por tipo de pregunta y nivel de la lectura
+data class ComprehensionCount(
+    val type: QuestionType,
+    val level: String,
+    val correct: Int,
+    val partial: Int,
+    val incorrect: Int,
+) {
+    val answered get() = correct + partial + incorrect
+}
+
 @Repository
 class AssessmentStore(
     private val db: DatabaseClient,
 ) {
+    // solo el primer intento de cada cuestionario: repetirlo con la solución vista no mide la comprensión. Lo pendiente
+    // o sin corregir no cuenta
+    suspend fun comprehension(
+        o: UUID,
+        u: UUID,
+        language: String,
+    ): List<ComprehensionCount> =
+        db
+            .sql(
+                """
+                WITH first AS (
+                  SELECT DISTINCT ON (a.assessment_id) a.id, r.level
+                  FROM lesen.assessment_attempt a
+                  JOIN lesen.assessment s ON s.id = a.assessment_id
+                  JOIN lesen.reading_version v ON v.id = s.version_id
+                  JOIN lesen.reading r ON r.id = v.reading_id
+                  WHERE a.organization_id = :o AND a.user_id = :u AND r.language = :l
+                  ORDER BY a.assessment_id, a.submitted_at, a.id
+                )
+                SELECT ans.question_type, f.level,
+                       count(*) FILTER (WHERE ans.result = 'CORRECT') AS correct,
+                       count(*) FILTER (WHERE ans.result = 'PARTIAL') AS partial,
+                       count(*) FILTER (WHERE ans.result = 'INCORRECT') AS incorrect
+                FROM first f JOIN lesen.assessment_answer ans ON ans.attempt_id = f.id
+                WHERE ans.result IN ('CORRECT', 'PARTIAL', 'INCORRECT')
+                GROUP BY ans.question_type, f.level
+                """.trimIndent(),
+            ).bind("o", o)
+            .bind("u", u)
+            .bind("l", language)
+            .map { row, _ ->
+                ComprehensionCount(
+                    QuestionType.valueOf(row.get("question_type", String::class.java)!!),
+                    row.get("level", String::class.java)!!,
+                    row.get("correct", Number::class.java)!!.toInt(),
+                    row.get("partial", Number::class.java)!!.toInt(),
+                    row.get("incorrect", Number::class.java)!!.toInt(),
+                )
+            }.all()
+            .collectList()
+            .awaitSingle()
+
     suspend fun forVersion(versionId: UUID): StoredAssessment? =
         db
             .sql("SELECT id, version_id, questions::text AS questions, fingerprint FROM lesen.assessment WHERE version_id = :v")

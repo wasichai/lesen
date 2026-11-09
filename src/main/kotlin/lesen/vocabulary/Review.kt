@@ -3,7 +3,11 @@ package lesen.vocabulary
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import lesen.common.Access
+import lesen.common.ActivityType
 import lesen.common.Learner
+import lesen.common.LearningActivity
+import lesen.common.LearningActivityListener
+import lesen.common.emit
 import lesen.common.requireLength
 import lesen.dictionary.DictionaryService
 import lesen.dictionary.DictionaryStore
@@ -377,6 +381,7 @@ class ReviewService(
     private val entries: DictionaryStore,
     private val tx: TransactionalOperator,
     private val clock: Clock,
+    private val activity: List<LearningActivityListener>,
 ) {
     suspend fun known(
         me: Learner,
@@ -433,6 +438,8 @@ class ReviewService(
                 store.log(me.organizationId, me.userId, row.id, request, elapsed, card, status)
                 store.forUpdate(me.organizationId, me.userId, row.id)!! to row.status
             }
+        // el mismo clientId es el mismo repaso: para el progreso también cuenta una vez
+        activity.emit(LearningActivity(me.organizationId, me.userId, ActivityType.WORD_REVIEWED, now, row.language, "review:${request.clientId}"))
         val into = dictionary.translationLanguage(me, null)
         return ReviewOutcome(vocabulary.item(row, entries.entry(row.entryKey)!!, into), row.card.state, previous)
     }

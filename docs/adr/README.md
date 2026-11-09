@@ -14,3 +14,4 @@ Una ADR aceptada no se edita: si cambia la decisión, se escribe otra que la ree
 | [0008](0008-audio-y-sincronizacion.md)              | Audio con tiempos por palabra, aparte del archivo                          |
 | [0009](0009-comprension-y-correccion-asistida.md)   | Comprensión: reglas, asistente con cita y autoevaluación de respaldo       |
 | [0010](0010-repaso-espaciado-fsrs.md)               | Repaso espaciado FSRS-5; los estados del cuaderno solo los mueve el repaso |
+| [0011](0011-progreso-eventos-y-metas-amables.md)    | Progreso por eventos, proyección diaria y metas que no castigan            |

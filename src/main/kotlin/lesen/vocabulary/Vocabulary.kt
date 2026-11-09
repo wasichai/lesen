@@ -4,9 +4,13 @@ import io.r2dbc.spi.Readable
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
 import lesen.common.Access
+import lesen.common.ActivityType
 import lesen.common.Learner
+import lesen.common.LearningActivity
+import lesen.common.LearningActivityListener
 import lesen.common.Page
 import lesen.common.PageRequest
+import lesen.common.emit
 import lesen.common.requireLength
 import lesen.dictionary.DictionaryService
 import lesen.dictionary.DictionaryStore
@@ -302,6 +306,7 @@ class VocabularyService(
     private val dictionary: DictionaryService,
     private val entries: DictionaryStore,
     private val versions: ReadingVersions,
+    private val activity: List<LearningActivityListener>,
 ) {
     // idempotente por (persona, entrada): guardar dos veces la misma palabra devuelve la que ya estaba
     suspend fun save(
@@ -333,7 +338,13 @@ class VocabularyService(
             token = found.second.id
         }
         val created = store.insert(me.organizationId, me.userId, entry.key, entry.language, into, surface, context, readingId, version, token)
-        return SavedWord(item(me, store.byKey(me.organizationId, me.userId, entry.key)!!, into), created)
+        val row = store.byKey(me.organizationId, me.userId, entry.key)!!
+        if (created) {
+            activity.emit(
+                LearningActivity(me.organizationId, me.userId, ActivityType.WORD_SAVED, row.savedAt, row.language, "saved:${row.id}", readingId),
+            )
+        }
+        return SavedWord(item(me, row, into), created)
     }
 
     suspend fun list(

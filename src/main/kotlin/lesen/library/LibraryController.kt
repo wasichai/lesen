@@ -6,8 +6,12 @@ import lesen.catalog.ReadingCard
 import lesen.catalog.ReadingSort
 import lesen.catalog.ReadingStatus
 import lesen.common.Access
+import lesen.common.ActivityType
 import lesen.common.Learner
+import lesen.common.LearningActivity
+import lesen.common.LearningActivityListener
 import lesen.common.PageRequest
+import lesen.common.emit
 import lesen.common.requireLength
 import lesen.reading.ReadingCompletionListener
 import lesen.reading.ReadingVersions
@@ -65,6 +69,7 @@ class LibraryService(
     private val catalog: CatalogService,
     private val clock: Clock,
     private val completionListeners: List<ReadingCompletionListener>,
+    private val activity: List<LearningActivityListener>,
 ) {
     suspend fun progress(
         me: Learner,
@@ -87,8 +92,10 @@ class LibraryService(
             }
         }
         if (report.percent !in 0..100) throw ValidationException("Invalid percent", "percent", "must be between 0 and 100")
-        val merged = ProgressPolicy.merge(store.progress(me.organizationId, me.userId, version.readingId), report, clock.instant())
+        val previous = store.progress(me.organizationId, me.userId, version.readingId)
+        val merged = ProgressPolicy.merge(previous, report, clock.instant())
         store.saveProgress(me.organizationId, me.userId, version.readingId, merged)
+        recordReading(me, version, previous, merged, 0)
         return merged.view()
     }
 
@@ -98,16 +105,37 @@ class LibraryService(
         request: CompletionRequest,
     ): ProgressView {
         val version = version(slug, request.version)
-        val done =
-            ProgressPolicy.complete(
-                store.progress(me.organizationId, me.userId, version.readingId),
-                request.version,
-                request.secondsRead,
-                clock.instant(),
-            )
+        val previous = store.progress(me.organizationId, me.userId, version.readingId)
+        val done = ProgressPolicy.complete(previous, request.version, request.secondsRead, clock.instant())
         store.saveProgress(me.organizationId, me.userId, version.readingId, done)
         completionListeners.forEach { it.completed(me.organizationId, me.userId, version) }
+        val words =
+            if (previous?.completedAt == null) versions.content(version.versionId).words.size else 0
+        recordReading(me, version, previous, done, words)
         return done.view()
+    }
+
+    // lo que cuenta para el progreso: empezar (una vez), los segundos nuevos sobre el total guardado y terminar (una vez,
+    // con las palabras de la versión). Repetir un informe no registra nada: no hay segundos nuevos
+    private suspend fun recordReading(
+        me: Learner,
+        version: VersionRef,
+        previous: ProgressState?,
+        now: ProgressState,
+        words: Int,
+    ) {
+        fun event(
+            type: ActivityType,
+            key: String?,
+            seconds: Int = 0,
+            words: Int = 0,
+        ) = LearningActivity(me.organizationId, me.userId, type, now.updatedAt, version.language, key, version.readingId, seconds, words)
+        if (previous == null) activity.emit(event(ActivityType.READING_STARTED, "started:${version.readingId}"))
+        val seconds = now.secondsRead - (previous?.secondsRead ?: 0)
+        if (seconds > 0) activity.emit(event(ActivityType.PROGRESS, null, seconds = seconds))
+        if (previous?.completedAt == null && now.completedAt != null) {
+            activity.emit(event(ActivityType.READING_COMPLETED, "completed:${version.readingId}", words = words))
+        }
     }
 
     suspend fun bookmark(
