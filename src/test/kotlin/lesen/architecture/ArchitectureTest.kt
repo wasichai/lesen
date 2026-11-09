@@ -81,6 +81,7 @@ class ArchitectureTest {
                 "vocabulary" to setOf("common", "dictionary", "reading"),
                 "audio" to setOf("common", "reading"),
                 "assessment" to setOf("common", "learner", "reading"),
+                "progress" to setOf("common", "learner", "catalog", "vocabulary", "assessment"),
                 "demo" to setOf("common", "assessment", "audio", "catalog", "dictionary", "reading"),
             )
     }

@@ -13,6 +13,7 @@ class CatalogService(
     private val store: CatalogStore,
     private val profiles: ProfileService,
     private val clock: Clock,
+    private val signals: List<LearnerSignalsSource>,
 ) {
     suspend fun topicTree(): List<TopicNode> {
         val topics = store.topics()
@@ -56,6 +57,20 @@ class CatalogService(
         return ReadingDetail(card, store.paragraphs(slug), related, collections)
     }
 
+    // las tarjetas de unas lecturas concretas, en el orden pedido; las que no existen se omiten
+    suspend fun cards(
+        me: Learner,
+        slugs: List<String>,
+    ): List<ReadingCard> {
+        if (slugs.isEmpty()) return emptyList()
+        val found =
+            store
+                .cards(me.organizationId, me.userId, CatalogQuery(slugs = slugs), PageRequest(0, slugs.size))
+                .first
+                .associateBy { it.slug }
+        return slugs.mapNotNull { found[it] }
+    }
+
     suspend fun discover(me: Learner): Discover {
         val profile = profiles.find(me.organizationId, me.userId) ?: throw NotFoundException("No learner profile yet")
         val target = profile.targetLanguage
@@ -71,10 +86,16 @@ class CatalogService(
                 val readings = store.collectionReadings()[slug].orEmpty().mapNotNull { bySlug[it] }
                 if (readings.isEmpty()) null else CollectionView(slug, labels, descriptions, readings)
             }
+        val learned = signals.firstOrNull()?.signals(me.organizationId, me.userId, profile) ?: LearnerSignals.NONE
         return Discover(
             continueReading = continueReading,
             featured = all.filter { it.featured && it.progress?.completed != true }.ifEmpty { all.filter { it.featured } },
-            recommended = Recommender.recommend(profile, all, clock.instant()),
+            recommended = Recommender.recommend(profile, all, clock.instant(), learned),
+            thisWeek =
+                all
+                    .mapNotNull { card -> learned.trending[card.slug]?.let { TrendingReading(card, it) } }
+                    .sortedWith(compareByDescending<TrendingReading> { it.readers }.thenBy { it.reading.title })
+                    .take(6),
             fresh = all.sortedByDescending { it.publishedAt }.take(6),
             collections = collections,
             topics = store.topicCounts(target),

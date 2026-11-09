@@ -53,26 +53,30 @@ flowchart BT
   vocabulary --> dictionary & reading
   audio --> reading
   assessment --> learner & reading
+  progress --> learner & catalog & vocabulary & assessment
   demo --> assessment & audio & catalog & dictionary & reading
 ```
 
-| Capacidad    | Responsabilidad                                                                                         |
-| ------------ | ------------------------------------------------------------------------------------------------------- |
-| `common`     | Configuración, `Access` (permisos), cadena de seguridad de lo público, paginación, jsonb                |
-| `language`   | Idiomas de interfaz y de estudio, niveles del MCER                                                      |
-| `learner`    | Perfil de aprendizaje (onboarding)                                                                      |
-| `reading`    | Contenido: borrador, tokenizador, ensamblado, publicación de versiones inmutables, lectura de versiones |
-| `catalog`    | Temas, colecciones, tarjetas filtradas, ficha, descubrir, recomendación                                 |
-| `library`    | Progreso, terminar, marcadores, notas, biblioteca personal                                              |
-| `dictionary` | Diccionario curado, consulta en contexto, búsqueda en dos sentidos, historial, favoritas                |
-| `vocabulary` | Cuaderno de vocabulario                                                                                 |
-| `audio`      | Narración: activos, voces, tiempos por palabra validados contra el texto, archivos con rangos           |
-| `assessment` | Preguntas de comprensión, corrección por reglas, cola de corrección asistida, autoevaluación            |
-| `demo`       | Carga del contenido de demostración a través de la publicación real                                     |
+| Capacidad    | Responsabilidad                                                                                          |
+| ------------ | -------------------------------------------------------------------------------------------------------- |
+| `common`     | Configuración, `Access` (permisos), cadena de seguridad de lo público, paginación, jsonb                 |
+| `language`   | Idiomas de interfaz y de estudio, niveles del MCER                                                       |
+| `learner`    | Perfil de aprendizaje (onboarding)                                                                       |
+| `reading`    | Contenido: borrador, tokenizador, ensamblado, publicación de versiones inmutables, lectura de versiones  |
+| `catalog`    | Temas, colecciones, tarjetas filtradas, ficha, descubrir, recomendación                                  |
+| `library`    | Progreso de cada lectura, terminar, marcadores, notas, biblioteca personal y listas propias              |
+| `dictionary` | Diccionario curado, consulta en contexto, búsqueda en dos sentidos, historial, favoritas                 |
+| `vocabulary` | Cuaderno de vocabulario                                                                                  |
+| `audio`      | Narración: activos, voces, tiempos por palabra validados contra el texto, archivos con rangos            |
+| `assessment` | Preguntas de comprensión, corrección por reglas, cola de corrección asistida, autoevaluación             |
+| `progress`   | Actividad, proyección diaria, panel, resumen semanal, metas, racha semanal, logros, señales de historial |
+| `demo`       | Carga del contenido de demostración a través de la publicación real                                      |
 
 `vocabulary` también lleva el repaso FSRS y los encuentros: `library` le avisa al terminar una lectura por
-`ReadingCompletionListener`, una interfaz de `reading`, sin depender de ella. Fases siguientes: `progress` (lee eventos de
-`library`, `vocabulary` y `assessment`) y `editorial` (escribe a través de `reading`).
+`ReadingCompletionListener`, una interfaz de `reading`, sin depender de ella. Del mismo modo, `library`, `vocabulary` y
+`assessment` emiten su actividad por `LearningActivityListener` (en `common`) y `catalog` pide las señales del historial
+por `LearnerSignalsSource`; `progress` implementa las dos (ADR-0011) y nadie depende de él. Fase siguiente: `editorial`
+(escribe a través de `reading`).
 
 **Modelo de lectura cruzado.** La tarjeta del catálogo une en SQL la versión vigente con el progreso y el marcador de
 quien pregunta (tablas de `library`) para no hacer una consulta por tarjeta. Es una lectura consciente del límite;

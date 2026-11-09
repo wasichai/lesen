@@ -2,6 +2,18 @@
 
 Lo entregado, lo más nuevo arriba.
 
+## 2026-11-09 — Fase 5 (backend): progreso, metas amables, logros y listas propias
+
+- Esquema V6 y capacidad `progress` (ADR-0011): registro de actividad solo de inserciones e idempotente, emitido por
+  `library`, `vocabulary` y `assessment` a través de `LearningActivityListener`; proyección diaria en la zona horaria de
+  cada persona que se reconstruye igual que se calcula; V6 rellena lo anterior desde las tablas de las fases 2–4.
+- `progress/dashboard` (lectura, vocabulario y comprensión, cada cifra medida o estimada; nivel siempre estimado),
+  `progress/weekly`, `progress/achievements` y `progress/goals`. Meta diaria amable y racha semanal con días de descanso
+  que nunca la rompen; 13 logros como datos, concedidos una vez.
+- Recomendación v1: la comprensión mueve la banda de nivel, cuentan los temas de lo terminado y lo que la organización
+  terminó esta semana (agregado anónimo); Descubrir trae `thisWeek`.
+- Listas de lecturas propias (`lists/**`) en `library`, solo para su dueña.
+
 ## 2026-11-09 — Fase 4 (backend): comprensión, encuentros y repaso espaciado
 
 - Esquema V5 y capacidad `assessment`: preguntas por versión con los diez tipos, corrección determinista (`Grader`),

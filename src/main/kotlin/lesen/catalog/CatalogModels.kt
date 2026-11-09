@@ -61,14 +61,22 @@ data class ReadingDetail(
 
 data class Recommendation(
     val reading: ReadingCard,
-    // por qué se recomienda: LEVEL, TOPIC, NEW (la interfaz lo explica con sus palabras)
+    // por qué se recomienda: LEVEL, COMPREHENSION (nivel ajustado por lo que entendió), TOPIC, HISTORY (tema de algo que
+    // terminó), NEW y TRENDING (se lee esta semana). La interfaz lo explica con sus palabras
     val reasons: List<String>,
+)
+
+// lo que se lee esta semana: cuántas personas de la organización la terminaron en los últimos 7 días, sin decir quiénes
+data class TrendingReading(
+    val reading: ReadingCard,
+    val readers: Int,
 )
 
 data class Discover(
     val continueReading: List<ReadingCard>,
     val featured: List<ReadingCard>,
     val recommended: List<Recommendation>,
+    val thisWeek: List<TrendingReading>,
     val fresh: List<ReadingCard>,
     val collections: List<CollectionView>,
     val topics: List<TopicCount>,
@@ -94,4 +102,6 @@ data class CatalogQuery(
     val status: ReadingStatus? = null,
     val featured: Boolean? = null,
     val sort: ReadingSort = ReadingSort.RECENT,
+    // solo estas lecturas (las de una lista propia)
+    val slugs: List<String>? = null,
 )

@@ -1,7 +1,11 @@
 package lesen.assessment
 
+import lesen.common.ActivityType
 import lesen.common.Learner
+import lesen.common.LearningActivity
+import lesen.common.LearningActivityListener
 import lesen.common.LesenProperties
+import lesen.common.emit
 import lesen.common.localized
 import lesen.common.requireLength
 import lesen.learner.Profiles
@@ -129,6 +133,7 @@ class AssessmentService(
     private val evaluator: AnswerEvaluator,
     private val properties: LesenProperties,
     private val tx: TransactionalOperator,
+    private val activity: List<LearningActivityListener>,
 ) {
     private val log = LoggerFactory.getLogger(AssessmentService::class.java)
 
@@ -201,7 +206,20 @@ class AssessmentService(
                 }
                 id
             }
-        return attempt(me, attemptId)
+        val view = attempt(me, attemptId)
+        val reading = versions.find(view.slug, view.version)!!
+        activity.emit(
+            LearningActivity(
+                me.organizationId,
+                me.userId,
+                ActivityType.ASSESSMENT_SUBMITTED,
+                view.submittedAt,
+                reading.language,
+                "attempt:$attemptId",
+                reading.readingId,
+            ),
+        )
+        return view
     }
 
     suspend fun attempt(
@@ -278,6 +296,13 @@ class AssessmentService(
             }
         }
     }
+
+    // lo corregido de quien pregunta en un idioma, para el panel de progreso
+    suspend fun comprehension(
+        organizationId: UUID,
+        userId: UUID,
+        language: String,
+    ): List<ComprehensionCount> = store.comprehension(organizationId, userId, language)
 
     // carga las preguntas del contenido de demostración contra la versión dada; idempotente por la huella del origen
     suspend fun load(

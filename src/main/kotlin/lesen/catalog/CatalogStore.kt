@@ -221,6 +221,10 @@ class CatalogStore(
             clauses += "v.minutes <= :maxMinutes"
             binds["maxMinutes"] = it
         }
+        query.slugs?.let {
+            clauses += "r.slug = ANY(:slugs)"
+            binds["slugs"] = it.toTypedArray()
+        }
         query.featured?.let {
             clauses += "r.featured = :featured"
             binds["featured"] = it

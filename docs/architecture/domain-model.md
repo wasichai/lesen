@@ -15,7 +15,8 @@ construirlo, con una ADR si cambia una decisión.
 
 `learner_profile` (hecho), clave (organización, usuario): idioma de interfaz ≠ idioma de estudio, nivel, si el nivel es
 una estimación, objetivos, temas, minutos diarios y dificultad (`COMFORTABLE`, `BALANCED`, `CHALLENGING`). Varios
-idiomas de estudio a la vez (fase 5) separarán `learner_language` del perfil.
+idiomas de estudio a la vez separarán `learner_language` del perfil cuando haga falta; el panel de progreso ya acepta
+un idioma.
 
 ## Lecturas
 
@@ -104,16 +105,29 @@ La evaluación determinista corrige todo lo cerrado. La asistida solo corrige re
 oraciones de referencia en la entrada y la cita en la salida; sin proveedor, o al pasar el límite, la respuesta abierta
 queda como autoevaluación con la respuesta modelo a la vista.
 
-## Progreso (hecho en parte)
+## Progreso (hecho, ADR-0011)
 
-`reading_progress` (hecho): versión, posición (oración), porcentaje máximo de esa versión, segundos leídos (total que
-cuenta el lector), inicio, actualización y fin. Repetir un informe deja el mismo estado. `reading_bookmark` y
-`reading_note` (hechos). Fase 5, diseñado: `learning_activity` (eventos por día), `daily_progress` (proyección),
-`achievement` y `learner_achievement`; la racha es una proyección que nunca se muestra como fracaso.
+`reading_progress`: versión, posición (oración), porcentaje máximo de esa versión, segundos leídos (total que cuenta el
+lector), inicio, actualización y fin. Repetir un informe deja el mismo estado. `reading_bookmark` y `reading_note`.
+
+| Tabla                 | Qué guarda                                                                                                                  |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `learning_activity`   | Un evento por fila, solo inserciones: tipo, momento, idioma, lectura, segundos nuevos, palabras, clave de idempotencia      |
+| `daily_progress`      | Proyección por (persona, día local, idioma): segundos, empezadas, terminadas, palabras leídas, guardadas, repasos, intentos |
+| `progress_settings`   | Días de lectura por semana (1–7), zona horaria IANA y si se quiere el resumen semanal                                       |
+| `achievement`         | Logro como dato: código, qué cuenta (`READINGS_COMPLETED`, `MINUTES`, `WORDS_SAVED`…) y desde cuánto                        |
+| `learner_achievement` | Logro conseguido y cuándo; una vez, nunca se retira                                                                         |
+| `reading_list`        | Lista propia con nombre (único por persona sin distinguir mayúsculas); hasta 50                                             |
+| `reading_list_item`   | Lectura de una lista y cuándo se añadió; hasta 200 por lista                                                                |
+
+Un día cuenta como activo si se leyó, se terminó algo, se guardó o repasó una palabra o se respondió un cuestionario.
+La racha es semanal y nunca se muestra como fracaso: la semana en curso solo suma y los días que la persona no eligió
+son de descanso.
 
 ## Recomendación
 
-Recomendación v0 (hecha, `Recommender`): solo lecturas del idioma que se estudia y aún no terminadas. Suma cercanía a la
-banda de nivel (el nivel propio y, según la dificultad preferida, uno por debajo o por encima), coincidencia de temas,
-novedad y haber empezado. Cada recomendación devuelve por qué (`LEVEL`, `TOPIC`, `NEW`). Es una heurística, y se
-presenta como tal.
+Recomendación v1 (hecha, `Recommender`): solo lecturas del idioma que se estudia y aún no terminadas. Suma cercanía a la
+banda de nivel (el nivel propio y, según la dificultad preferida, uno por debajo o por encima; la banda se mueve un
+nivel si la comprensión medida lo sugiere), coincidencia de temas elegidos o de temas de lo ya terminado, novedad, lo
+que la organización terminó en los últimos 7 días y haber empezado. Cada recomendación devuelve por qué (`LEVEL`,
+`COMPREHENSION`, `TOPIC`, `HISTORY`, `NEW`, `TRENDING`). Es una heurística, y se presenta como tal.

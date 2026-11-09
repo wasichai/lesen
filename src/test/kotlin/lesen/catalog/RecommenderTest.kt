@@ -64,4 +64,34 @@ class RecommenderTest {
         assertThat(result.first().reasons).containsExactly("LEVEL", "TOPIC")
         assertThat(result.last().reasons).containsExactly("NEW")
     }
+
+    @Test
+    fun `measured comprehension moves the band and says so`() {
+        assertThat(Recommender.band(profile, 1)).containsExactly("B1")
+        assertThat(Recommender.band(profile, -1)).containsExactly("A1")
+        assertThat(Recommender.band(profile.copy(level = "C2"), 1)).containsExactly("C2")
+        val result = Recommender.recommend(profile, listOf(card("a2", "A2"), card("b1", "B1")), now, LearnerSignals(bandShift = 1))
+        assertThat(result.first().reading.slug).isEqualTo("b1")
+        assertThat(result.first().reasons).containsExactly("COMPREHENSION")
+    }
+
+    @Test
+    fun `topics of finished readings and what others read this week count, with reasons`() {
+        val result =
+            Recommender.recommend(
+                profile.copy(topics = emptyList()),
+                listOf(
+                    card("done", "A2", listOf("nature/forest"), completed = true),
+                    card("plain", "A2", listOf("history")),
+                    card("same-topic", "A2", listOf("nature")),
+                    card("popular", "A2", listOf("history")),
+                ),
+                now,
+                LearnerSignals(trending = mapOf("popular" to 3, "done" to 5)),
+            )
+        assertThat(result.map { it.reading.slug }).containsExactly("same-topic", "popular", "plain")
+        assertThat(result[0].reasons).containsExactly("LEVEL", "HISTORY")
+        assertThat(result[1].reasons).containsExactly("LEVEL", "TRENDING")
+        assertThat(result[2].reasons).containsExactly("LEVEL")
+    }
 }
