@@ -18,6 +18,7 @@ léxico de su idioma (la misma regla de palabra que `lesen.reading.Tokenizer`). 
 | `covers/<archivo>.svg`      | Portada original, 600×800, sin texto incrustado                                    |
 | `audio/<slug>.mp3`          | Narración generada con eSpeak NG (`tools/generate_audio.py`, ADR-0008)             |
 | `audio/<slug>.timings.json` | Voz, duración y `timings`: id de token → `[inicio, fin]` en milisegundos           |
+| `assessments/<slug>.json`   | Preguntas de comprensión de la lectura (forma abajo)                               |
 
 ## Lectura
 
@@ -90,3 +91,49 @@ léxico de su idioma (la misma regla de palabra que `lesen.reading.Tokenizer`). 
 narración y sus tiempos, idénticos byte a byte en cada ejecución. Velocidad por nivel: de 125 palabras por minuto en A1 a
 165 en C1. Al cambiar el texto de una lectura, hay que regenerar su audio: `tools/check_demo.py` y `DemoContentTest`
 fallan si los tiempos no casan con el texto.
+
+## Preguntas
+
+`assessments/<slug>.json` tiene las preguntas de comprensión de una lectura (fase 4, ADR-0009). Se publican contra la
+versión vigente: los ids de oración y de palabra son los de esa versión (`python3 tools/lesen_text.py <lectura.json>`
+los imprime).
+
+```json
+{
+  "reading": "der-alte-leuchtturm",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "DETAIL",
+      "difficulty": 1,
+      "prompt": { "es": "¿Dónde pasa Mia el verano?", "en": "Where does Mia spend the summer?" },
+      "explanation": { "es": "La primera oración lo dice: an der Nordsee.", "en": "The first sentence says so: an der Nordsee." },
+      "refs": ["p1s1"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "En la montaña", "en": "In the mountains" } },
+          { "id": "b", "text": { "es": "En el mar del Norte", "en": "By the North Sea" } },
+          { "id": "c", "text": { "es": "En la ciudad", "en": "In the city" } }
+        ],
+        "correct": ["b"]
+      }
+    }
+  ]
+}
+```
+
+- De 5 a 7 preguntas por lectura, con al menos 3 tipos; entre todas las lecturas, los 10 tipos.
+- `prompt` y `explanation` en cada idioma de interfaz. Un texto de opción o elemento es una cadena si va en el idioma
+  de la lectura y `{es, en}` si va en el de la persona.
+- `refs`: las oraciones donde está la respuesta. La explicación y la corrección asistida se apoyan en ellas.
+- `difficulty`: 1 (literal), 2 (relacionar), 3 (inferir).
+
+| Tipo                                                  | `spec`                                                                                                                                                                                 | Respuesta                     |
+| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| `MULTIPLE_CHOICE`, `MAIN_IDEA`, `INFERENCE`, `DETAIL` | `options` (3–5, `{id, text}`) y `correct` (ids; más de uno pide marcar todas)                                                                                                          | `{"options": ["b"]}`          |
+| `VOCABULARY_IN_CONTEXT`                               | Lo mismo y `token`, la palabra de una oración de `refs` por la que se pregunta                                                                                                         | `{"options": ["b"]}`          |
+| `TRUE_FALSE`                                          | `correct`: true o false (`prompt` es la afirmación)                                                                                                                                    | `{"value": true}`             |
+| `COMPLETION`                                          | `sentence` (de `refs`), `blanks` (1–3 palabras de esa oración que se ocultan), `accepted` (variantes por hueco, además de la palabra del texto) y `bank` (palabras a elegir, opcional) | `{"blanks": {"p2s3t4": "…"}}` |
+| `MATCHING`                                            | `left` y `right` (`{id, text}`, al menos 3) y `pairs` (id de `left` → id de `right`)                                                                                                   | `{"pairs": {"1": "x"}}`       |
+| `ORDERING`                                            | `items` (3–6, presentados en un orden que no es el correcto) y `order` (ids en el orden correcto)                                                                                      | `{"order": ["c", "a", "b"]}`  |
+| `SHORT_ANSWER`                                        | `model` (respuesta modelo) y `rubric` (qué debe contener), los dos en cada idioma de interfaz                                                                                          | `{"text": "…"}`               |

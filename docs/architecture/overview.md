@@ -51,7 +51,9 @@ flowchart BT
   dictionary --> learner & reading
   library --> catalog & reading
   vocabulary --> dictionary & reading
-  demo --> catalog & dictionary & reading
+  audio --> reading
+  assessment --> learner & reading
+  demo --> assessment & audio & catalog & dictionary & reading
 ```
 
 | Capacidad    | Responsabilidad                                                                                         |
@@ -64,10 +66,13 @@ flowchart BT
 | `library`    | Progreso, terminar, marcadores, notas, biblioteca personal                                              |
 | `dictionary` | Diccionario curado, consulta en contexto, búsqueda en dos sentidos, historial, favoritas                |
 | `vocabulary` | Cuaderno de vocabulario                                                                                 |
+| `audio`      | Narración: activos, voces, tiempos por palabra validados contra el texto, archivos con rangos           |
+| `assessment` | Preguntas de comprensión, corrección por reglas, cola de corrección asistida, autoevaluación            |
 | `demo`       | Carga del contenido de demostración a través de la publicación real                                     |
 
-Fases siguientes: `audio` (depende de `reading`), `assessment` (de `reading`), `progress` (lee eventos de `library`,
-`vocabulary` y `assessment`) y `editorial` (escribe a través de `reading`).
+`vocabulary` también lleva el repaso FSRS y los encuentros: `library` le avisa al terminar una lectura por
+`ReadingCompletionListener`, una interfaz de `reading`, sin depender de ella. Fases siguientes: `progress` (lee eventos de
+`library`, `vocabulary` y `assessment`) y `editorial` (escribe a través de `reading`).
 
 **Modelo de lectura cruzado.** La tarjeta del catálogo une en SQL la versión vigente con el progreso y el marcador de
 quien pregunta (tablas de `library`) para no hacer una consulta por tarjeta. Es una lectura consciente del límite;
@@ -97,5 +102,6 @@ Detalle en `lesen-ui/CLAUDE.md` y `lesen-ui/docs/design-system/lesen/`.
 | Wasichai no tiene registro público de cuentas          | Alta por administración (`/api/users`) y personas de demostración; registro pedido aguas arriba  |
 | Paquetes de Wasichai solo en GitHub Packages           | CI con `PACKAGES_TOKEN` (o acceso del repositorio a los paquetes)                                |
 | Diccionario curado a mano: no escala a cualquier texto | Interfaz de proveedor (ADR-0005); la palabra sin entrada se publica igual y se dice honestamente |
-| «Palabras desconocidas» necesita saber qué se encontró | Tabla de encuentros en la fase 4; la ayuda no se ofrece hasta entonces                           |
+| «Palabras desconocidas» necesita saber qué se encontró | `vocabulary_encounter` al terminar cada lectura (fase 4); lo no terminado no cuenta como visto   |
+| Corrección asistida depende de un proveedor externo    | Sin clave, autoevaluación con la respuesta modelo; nunca un resultado inventado (ADR-0009)       |
 | Contenido de demostración en el classpath              | El estudio editorial (fase 6) publica a la base y las portadas irán a wasichai-files             |
