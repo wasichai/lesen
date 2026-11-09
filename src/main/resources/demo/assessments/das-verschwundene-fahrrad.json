@@ -1,0 +1,132 @@
+{
+  "reading": "das-verschwundene-fahrrad",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "DETAIL",
+      "difficulty": 1,
+      "prompt": { "es": "¿Qué tiene de raro el candado que encuentra Emil?", "en": "What is strange about the lock Emil finds?" },
+      "explanation": {
+        "es": "El texto dice que el candado está en el suelo „offen und unbeschädigt“: abierto, pero sin ningún daño.",
+        "en": "The text says the lock is on the ground „offen und unbeschädigt“: open, but not damaged at all."
+      },
+      "refs": ["p1s2"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "Está roto en dos trozos", "en": "It is broken in two pieces" } },
+          { "id": "b", "text": { "es": "Está abierto en el suelo, pero intacto", "en": "It is lying open on the ground, but undamaged" } },
+          { "id": "c", "text": { "es": "Ha desaparecido junto con la bici", "en": "It has disappeared together with the bike" } },
+          { "id": "d", "text": { "es": "Sigue cerrado alrededor de un árbol", "en": "It is still locked around a tree" } }
+        ],
+        "correct": ["b"]
+      }
+    },
+    {
+      "id": "q2",
+      "type": "TRUE_FALSE",
+      "difficulty": 1,
+      "prompt": { "es": "Frau Krüger trabajó antes en la policía.", "en": "Frau Krüger used to work for the police." },
+      "explanation": {
+        "es": "¡Verdadero! El texto dice: „Frau Krüger … war früher bei der Polizei“.",
+        "en": "True! The text says: „Frau Krüger … war früher bei der Polizei“."
+      },
+      "refs": ["p2s1"],
+      "spec": { "correct": true }
+    },
+    {
+      "id": "q3",
+      "type": "ORDERING",
+      "difficulty": 2,
+      "prompt": { "es": "Ordena los hechos tal como pasan en la historia.", "en": "Put the events in the order they happen in the story." },
+      "explanation": {
+        "es": "Primero la bici „ist weg“, luego Frau Krüger señala las „Striche aus Kreide“, por el camino aparecen las migas, en el parque está el „Fahrrad“ y por la tarde Emil enseña a su hermana.",
+        "en": "First the bike „ist weg“, then Frau Krüger points to the „Striche aus Kreide“, the crumbs turn up on the way, the „Fahrrad“ is at the playground, and in the afternoon Emil teaches his sister."
+      },
+      "refs": ["p1s2", "p2s3", "p3s2", "p4s1", "p5s2"],
+      "spec": {
+        "items": [
+          {
+            "id": "c",
+            "text": { "es": "Encuentran unas migas que parecen de pastel de chocolate", "en": "They find some crumbs that look like chocolate cake" }
+          },
+          { "id": "a", "text": { "es": "Emil descubre que su bici azul no está", "en": "Emil discovers that his blue bike is gone" } },
+          { "id": "e", "text": { "es": "Emil le enseña a su hermana a montar en bici", "en": "Emil teaches his sister to ride a bike" } },
+          { "id": "b", "text": { "es": "Frau Krüger señala unas rayas blancas de tiza", "en": "Frau Krüger points to some white chalk lines" } },
+          {
+            "id": "d",
+            "text": { "es": "Encuentran la bici apoyada en un árbol del parque infantil", "en": "They find the bike leaning against a tree at the playground" }
+          }
+        ],
+        "order": ["a", "b", "c", "d", "e"]
+      }
+    },
+    {
+      "id": "q4",
+      "type": "VOCABULARY_IN_CONTEXT",
+      "difficulty": 2,
+      "prompt": {
+        "es": "La hermana está sentada „mit einem schlechten Gewissen“. ¿Qué significa aquí „Gewissen“?",
+        "en": "The sister is sitting there „mit einem schlechten Gewissen“. What does „Gewissen“ mean here?"
+      },
+      "explanation": {
+        "es": "„Ein schlechtes Gewissen haben“ es sentirse culpable: sabe que se llevó la bici sin pedir permiso.",
+        "en": "„Ein schlechtes Gewissen haben“ means to feel guilty: she knows she took the bike without asking."
+      },
+      "refs": ["p4s2"],
+      "spec": {
+        "token": "p4s2t13",
+        "options": [
+          { "id": "a", "text": { "es": "La conciencia (se siente culpable)", "en": "Conscience (she feels guilty)" } },
+          { "id": "b", "text": { "es": "La memoria (no recuerda nada)", "en": "Memory (she remembers nothing)" } },
+          { "id": "c", "text": { "es": "La salud (se encuentra mal)", "en": "Health (she feels ill)" } },
+          { "id": "d", "text": { "es": "El humor (está aburrida)", "en": "Mood (she is bored)" } }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q5",
+      "type": "INFERENCE",
+      "difficulty": 3,
+      "prompt": { "es": "¿Por qué el candado estaba abierto pero sin daños?", "en": "Why was the lock open but undamaged?" },
+      "explanation": {
+        "es": "La hermana „kennt den Code für das Schloss schon lange“, así que pudo abrirlo sin romperlo; Emil no se había olvidado de cerrarlo.",
+        "en": "The sister „kennt den Code für das Schloss schon lange“, so she could open it without breaking it; Emil had not forgotten to lock it."
+      },
+      "refs": ["p1s2", "p4s3"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "Emil se olvidó de cerrarlo el día anterior", "en": "Emil forgot to lock it the day before" } },
+          { "id": "b", "text": { "es": "Su hermana conocía la combinación y lo abrió", "en": "His sister knew the code and opened it" } },
+          { "id": "c", "text": { "es": "Frau Krüger lo abrió para investigar", "en": "Frau Krüger opened it to investigate" } },
+          { "id": "d", "text": { "es": "Un ladrón lo abrió con una herramienta", "en": "A thief opened it with a tool" } }
+        ],
+        "correct": ["b"]
+      }
+    },
+    {
+      "id": "q6",
+      "type": "SHORT_ANSWER",
+      "difficulty": 2,
+      "prompt": {
+        "es": "¿Para qué pintó la hermana de Emil las rayas de tiza?",
+        "en": "Why did Emil's sister draw the chalk lines?"
+      },
+      "explanation": {
+        "es": "Ella lo explica: „die Striche sollten ihr den Weg zurück zeigen“; quería practicar en secreto sin perderse.",
+        "en": "She explains it: „die Striche sollten ihr den Weg zurück zeigen“; she wanted to practise in secret without getting lost."
+      },
+      "refs": ["p4s4"],
+      "spec": {
+        "model": {
+          "es": "Quería practicar en secreto con la bici, y las rayas de tiza le servían para encontrar el camino de vuelta.",
+          "en": "She wanted to practise on the bike in secret, and the chalk lines were meant to show her the way back."
+        },
+        "rubric": {
+          "es": "Una buena respuesta dice que las rayas debían mostrarle el camino de vuelta; puede añadir que quería practicar a escondidas. Se puede responder en español, inglés o alemán.",
+          "en": "A good answer says the lines were meant to show her the way back; it may add that she wanted to practise secretly. It may be answered in English, Spanish or German."
+        }
+      }
+    }
+  ]
+}

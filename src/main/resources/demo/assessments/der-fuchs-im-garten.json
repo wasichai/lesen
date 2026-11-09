@@ -1,0 +1,140 @@
+{
+  "reading": "der-fuchs-im-garten",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "MAIN_IDEA",
+      "difficulty": 2,
+      "prompt": { "es": "¿Cuál es la idea principal de la historia?", "en": "What is the main idea of the story?" },
+      "explanation": {
+        "es": "Una noche Jonas ve un zorro en el jardín, y „von da an“ lo espera cada noche junto a la ventana.",
+        "en": "One night Jonas sees a fox in the garden, and „von da an“ he waits for it at the window every evening."
+      },
+      "refs": ["p2s2", "p5s1", "p5s3"],
+      "spec": {
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "Jonas tiene miedo del zorro y despierta a su madre.",
+              "en": "Jonas is afraid of the fox and wakes up his mother."
+            }
+          },
+          {
+            "id": "b",
+            "text": {
+              "es": "Un zorro roba manzanas del jardín cada noche.",
+              "en": "A fox steals apples from the garden every night."
+            }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "Jonas ve un zorro de noche y desde entonces espera verlo otra vez.",
+              "en": "Jonas sees a fox at night and from then on hopes to see it again."
+            }
+          }
+        ],
+        "correct": ["c"]
+      }
+    },
+    {
+      "id": "q2",
+      "type": "DETAIL",
+      "difficulty": 1,
+      "prompt": { "es": "¿Dónde está sentado el zorro?", "en": "Where is the fox sitting?" },
+      "explanation": {
+        "es": "„Neben dem Apfelbaum sitzt ein Fuchs“: junto al manzano.",
+        "en": "„Neben dem Apfelbaum sitzt ein Fuchs“: next to the apple tree."
+      },
+      "refs": ["p2s2"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "Junto al manzano", "en": "Next to the apple tree" } },
+          { "id": "b", "text": { "es": "Encima de la valla", "en": "On top of the fence" } },
+          { "id": "c", "text": { "es": "Delante de la ventana", "en": "In front of the window" } },
+          { "id": "d", "text": { "es": "Dentro de la casa", "en": "Inside the house" } }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q3",
+      "type": "VOCABULARY_IN_CONTEXT",
+      "difficulty": 2,
+      "prompt": {
+        "es": "La madre dice que los zorros „sind scheu, aber neugierig“. ¿Qué significa „scheu“?",
+        "en": "The mother says foxes „sind scheu, aber neugierig“. What does „scheu“ mean?"
+      },
+      "explanation": {
+        "es": "„scheu“ significa tímido: los zorros se esconden de las personas, aunque son curiosos („neugierig“).",
+        "en": "„scheu“ means shy: foxes keep away from people, even though they are curious („neugierig“)."
+      },
+      "refs": ["p4s3"],
+      "spec": {
+        "token": "p4s3t16",
+        "options": [
+          { "id": "a", "text": { "es": "peligrosos", "en": "dangerous" } },
+          { "id": "b", "text": { "es": "tímidos", "en": "shy" } },
+          { "id": "c", "text": { "es": "hambrientos", "en": "hungry" } },
+          { "id": "d", "text": { "es": "ruidosos", "en": "noisy" } }
+        ],
+        "correct": ["b"]
+      }
+    },
+    {
+      "id": "q4",
+      "type": "INFERENCE",
+      "difficulty": 3,
+      "prompt": {
+        "es": "El zorro mira directamente hacia la casa y Jonas contiene la respiración. ¿Por qué lo hace, probablemente?",
+        "en": "The fox looks straight at the house and Jonas holds his breath. Why does he probably do that?"
+      },
+      "explanation": {
+        "es": "Jonas „hält den Atem an“ justo cuando el zorro mira hacia la casa: no quiere asustarlo, y nadie se mueve durante un minuto.",
+        "en": "Jonas „hält den Atem an“ right when the fox looks at the house: he doesn't want to scare it, and nobody moves for a minute."
+      },
+      "refs": ["p3s2", "p3s3", "p3s4"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "Porque está enfadado con el zorro", "en": "Because he is angry with the fox" } },
+          { "id": "b", "text": { "es": "Porque no quiere asustar al zorro", "en": "Because he doesn't want to scare the fox away" } },
+          { "id": "c", "text": { "es": "Porque tiene mucho frío", "en": "Because he is very cold" } }
+        ],
+        "correct": ["b"]
+      }
+    },
+    {
+      "id": "q5",
+      "type": "TRUE_FALSE",
+      "difficulty": 1,
+      "prompt": { "es": "La madre se ríe cuando Jonas le cuenta lo del zorro.", "en": "The mother laughs when Jonas tells her about the fox." },
+      "explanation": {
+        "es": "Falso: „Sie lacht nicht“; al contrario, le explica que los zorros también viven en la ciudad.",
+        "en": "False: „Sie lacht nicht“; instead she explains that foxes live in the city too."
+      },
+      "refs": ["p4s2"],
+      "spec": { "correct": false }
+    },
+    {
+      "id": "q6",
+      "type": "ORDERING",
+      "difficulty": 2,
+      "prompt": { "es": "Ordena los hechos de la historia.", "en": "Put the events of the story in order." },
+      "explanation": {
+        "es": "Jonas oye un ruido („ein Geräusch“), ve al zorro junto al manzano, el zorro salta la valla y „am nächsten Morgen“ Jonas se lo cuenta a su madre.",
+        "en": "Jonas hears a noise („ein Geräusch“), sees the fox by the apple tree, the fox jumps over the fence and „am nächsten Morgen“ Jonas tells his mother."
+      },
+      "refs": ["p1s3", "p2s2", "p3s5", "p4s1"],
+      "spec": {
+        "items": [
+          { "id": "a", "text": { "es": "El zorro salta por encima de la valla.", "en": "The fox jumps over the fence." } },
+          { "id": "b", "text": { "es": "Jonas se lo cuenta todo a su madre.", "en": "Jonas tells his mother everything." } },
+          { "id": "c", "text": { "es": "Jonas ve un zorro junto al manzano.", "en": "Jonas sees a fox next to the apple tree." } },
+          { "id": "d", "text": { "es": "Jonas oye un ruido en el jardín.", "en": "Jonas hears a noise in the garden." } }
+        ],
+        "order": ["d", "c", "a", "b"]
+      }
+    }
+  ]
+}

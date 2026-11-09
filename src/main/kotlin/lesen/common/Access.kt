@@ -2,6 +2,7 @@ package lesen.common
 
 import org.springframework.stereotype.Component
 import wasichai.core.common.Actions
+import wasichai.core.common.ForbiddenException
 import wasichai.core.identity.AuthenticatedUser
 import wasichai.core.identity.CurrentUser
 import wasichai.core.metadata.MetadataService
@@ -19,6 +20,14 @@ class Access(
 
     // leer lo propio
     suspend fun notebook(): Learner = require(Actions.READ, NOTEBOOK_ANCHOR)
+
+    // lo propio solo si se puede leer: para añadir lo personal a una respuesta de contenido sin exigirlo
+    suspend fun notebookIfAllowed(): Learner? =
+        try {
+            notebook()
+        } catch (_: ForbiddenException) {
+            null
+        }
 
     // escribir lo propio (crear, cambiar o borrar)
     suspend fun writeNotebook(): Learner = require(Actions.UPDATE, NOTEBOOK_ANCHOR)

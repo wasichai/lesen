@@ -1,0 +1,207 @@
+{
+  "reading": "a-morning-in-lisbon",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "DETAIL",
+      "difficulty": 1,
+      "prompt": {
+        "es": "¿Dónde se despierta Sofia?",
+        "en": "Where does Sofia wake up?"
+      },
+      "explanation": {
+        "es": "La primera oración lo dice: «in a small hotel in Lisbon», en un pequeño hotel de Lisboa.",
+        "en": "The first sentence tells us: \"in a small hotel in Lisbon\"."
+      },
+      "refs": ["p1s1"],
+      "spec": {
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "En casa de una amiga",
+              "en": "At a friend's house"
+            }
+          },
+          {
+            "id": "b",
+            "text": {
+              "es": "En un pequeño hotel de Lisboa",
+              "en": "In a small hotel in Lisbon"
+            }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "En un tren hacia Lisboa",
+              "en": "On a train to Lisbon"
+            }
+          }
+        ],
+        "correct": ["b"]
+      }
+    },
+    {
+      "id": "q2",
+      "type": "TRUE_FALSE",
+      "difficulty": 1,
+      "prompt": {
+        "es": "El mapa ayuda a Sofia a encontrar el camino.",
+        "en": "Sofia's map helps her find her way."
+      },
+      "explanation": {
+        "es": "Es falso: después de media hora no sabe dónde está, y el texto dice «Her map is no help at all».",
+        "en": "False: after half an hour she doesn't know where she is, and the text says \"Her map is no help at all\"."
+      },
+      "refs": ["p2s2", "p2s3"],
+      "spec": {
+        "correct": false
+      }
+    },
+    {
+      "id": "q3",
+      "type": "VOCABULARY_IN_CONTEXT",
+      "difficulty": 2,
+      "prompt": {
+        "es": "¿Qué significa «steep» en esta oración sobre las calles?",
+        "en": "What does \"steep\" mean in this sentence about the streets?"
+      },
+      "explanation": {
+        "es": "Las calles suben y bajan mucho: por eso Sofia «walks up and down». «Steep» significa empinada.",
+        "en": "The streets go sharply up and down, which is why Sofia \"walks up and down\". \"Steep\" means rising or falling sharply."
+      },
+      "refs": ["p2s1", "p2s2"],
+      "spec": {
+        "token": "p2s1t6",
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "Muy anchas",
+              "en": "Very wide"
+            }
+          },
+          {
+            "id": "b",
+            "text": {
+              "es": "Que suben o bajan mucho, empinadas",
+              "en": "Rising or falling sharply"
+            }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "Llenas de gente",
+              "en": "Full of people"
+            }
+          },
+          {
+            "id": "d",
+            "text": {
+              "es": "Muy limpias",
+              "en": "Very clean"
+            }
+          }
+        ],
+        "correct": ["b"]
+      }
+    },
+    {
+      "id": "q4",
+      "type": "COMPLETION",
+      "difficulty": 1,
+      "prompt": {
+        "es": "Completa la oración con las palabras del texto.",
+        "en": "Complete the sentence with words from the text."
+      },
+      "explanation": {
+        "es": "En el café, el anciano saca «custard tarts» (pasteles de nata) del «oven» (horno).",
+        "en": "In the café, the old man takes \"custard tarts\" out of the \"oven\"."
+      },
+      "refs": ["p3s2"],
+      "spec": {
+        "sentence": "p3s2",
+        "blanks": ["p3s2t13", "p3s2t17"],
+        "bank": ["tarts", "oven", "map", "tram", "window"]
+      }
+    },
+    {
+      "id": "q5",
+      "type": "ORDERING",
+      "difficulty": 2,
+      "prompt": {
+        "es": "Ordena lo que hace Sofia esa mañana.",
+        "en": "Put what Sofia does that morning in order."
+      },
+      "explanation": {
+        "es": "Sofia sale con su mapa, se pierde, huele algo dulce, recibe un pastel y un café, y al final se sienta junto a la puerta a mirar la ciudad.",
+        "en": "Sofia goes out with her map, gets lost, smells something sweet, gets a tart and a coffee, and finally sits by the door to watch the city."
+      },
+      "refs": ["p1s3", "p2s2", "p3s1", "p3s3", "p4s1"],
+      "spec": {
+        "items": [
+          {
+            "id": "a",
+            "text": {
+              "es": "Huele algo dulce.",
+              "en": "She smells something sweet."
+            }
+          },
+          {
+            "id": "b",
+            "text": {
+              "es": "Se sienta junto a la puerta y mira cómo despierta la ciudad.",
+              "en": "She sits by the door and watches the city wake up."
+            }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "Coge su mapa y sale a la calle.",
+              "en": "She takes her map and goes outside."
+            }
+          },
+          {
+            "id": "d",
+            "text": {
+              "es": "Un anciano le da un pastel y un café.",
+              "en": "An old man gives her a tart and a coffee."
+            }
+          },
+          {
+            "id": "e",
+            "text": {
+              "es": "Se pierde por las calles.",
+              "en": "She gets lost in the streets."
+            }
+          }
+        ],
+        "order": ["c", "e", "a", "d", "b"]
+      }
+    },
+    {
+      "id": "q6",
+      "type": "SHORT_ANSWER",
+      "difficulty": 3,
+      "prompt": {
+        "es": "¿Por qué piensa Sofia que algunas mañanas son mejores sin mapa?",
+        "en": "Why does Sofia think some mornings are better without a map?"
+      },
+      "explanation": {
+        "es": "Al perderse encontró el café, el pastel y el café caliente; sigue perdida, pero «she is not worried anymore».",
+        "en": "By getting lost she found the café, the tart and the coffee; she is still lost, but \"she is not worried anymore\"."
+      },
+      "refs": ["p3s1", "p3s3", "p4s2", "p4s3"],
+      "spec": {
+        "model": {
+          "es": "Porque, al perderse, encontró el pequeño café, el pastel y el café del anciano, y ahora está tranquila aunque sigue perdida.",
+          "en": "Because getting lost led her to the tiny café, the tart and the old man's coffee, and now she feels calm even though she is still lost."
+        },
+        "rubric": {
+          "es": "Una buena respuesta dice que perderse le trajo algo bueno (el café, el pastel, la amabilidad del anciano) y que ya no está preocupada. Se puede responder en español o en inglés.",
+          "en": "A good answer says that getting lost brought her something good (the café, the tart, the old man's kindness) and that she is no longer worried. It may be answered in Spanish or English."
+        }
+      }
+    }
+  ]
+}

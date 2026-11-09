@@ -12,11 +12,27 @@ import java.time.Clock
 @ConfigurationProperties("lesen")
 data class LesenProperties(
     val demo: Demo = Demo(),
+    val ai: Ai = Ai(),
 ) {
     // publica el contenido de src/main/resources/demo al arrancar (docs/content/demo-content.md)
     data class Demo(
         val enabled: Boolean = false,
     )
+
+    // la corrección asistida de respuestas abiertas (ADR-0009). Sin clave no hay asistente: la respuesta queda para
+    // autoevaluar con la respuesta modelo a la vista. La clave nunca va a un archivo: ANTHROPIC_API_KEY
+    data class Ai(
+        val apiKey: String = "",
+        val model: String = "claude-opus-5-5",
+        // solo para pruebas o un proxy; vacío es la API de Anthropic
+        val baseUrl: String = "",
+        // correcciones asistidas por persona y hora; las siguientes quedan para autoevaluar
+        val hourlyLimit: Int = 30,
+        val pollMillis: Long = 2000,
+        val timeoutSeconds: Long = 60,
+    ) {
+        val enabled get() = apiKey.isNotBlank()
+    }
 }
 
 @Configuration

@@ -7,11 +7,14 @@ ktlint = "14.2.0"
 ktlintTool = "1.7.1"
 # OpenAPI de Lesen: la línea 3.x es la de Spring Boot 4
 springdoc = "3.2.0"
+# corrección asistida de respuestas abiertas (ADR-0009)
+anthropic = "3.3.0"
 
 [libraries]
 wasichai-bom = { module = "wasichai:wasichai-bom", version.ref = "wasichai" }
 wasichai-starter = { module = "wasichai:wasichai-spring-boot-starter" }
 wasichai-test = { module = "wasichai:wasichai-test" }
+anthropic-java = { module = "com.anthropic:anthropic-java", version.ref = "anthropic" }
 springdoc-webflux-api = { module = "org.springdoc:springdoc-openapi-starter-webflux-api", version.ref = "springdoc" }
 
 [plugins]

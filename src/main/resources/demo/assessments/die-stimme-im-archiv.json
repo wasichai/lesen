@@ -1,0 +1,205 @@
+{
+  "reading": "die-stimme-im-archiv",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "DETAIL",
+      "difficulty": 1,
+      "prompt": { "es": "¿Qué esperaba encontrar Hanna en el archivo?", "en": "What did Hanna expect to find in the archive?" },
+      "explanation": {
+        "es": "Hanna „rechnete … mit Staub, Stille und allenfalls ein paar Mäusen“: polvo, silencio y, como mucho, algún ratón.",
+        "en": "Hanna „rechnete … mit Staub, Stille und allenfalls ein paar Mäusen“: dust, silence and at most a few mice."
+      },
+      "refs": ["p1s2"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "Polvo, silencio y quizá algunos ratones", "en": "Dust, silence and perhaps a few mice" } },
+          { "id": "b", "text": { "es": "Un robot que seguía trabajando", "en": "A robot that was still working" } },
+          { "id": "c", "text": { "es": "Mucho público visitando los documentos", "en": "Lots of visitors looking at the documents" } },
+          { "id": "d", "text": { "es": "Documentos dañados por una inundación", "en": "Documents damaged by a flood" } }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q2",
+      "type": "TRUE_FALSE",
+      "difficulty": 2,
+      "prompt": {
+        "es": "El robot dejó de trabajar cuando el archivo se quedó sin visitantes.",
+        "en": "The robot stopped working once the archive had no more visitors."
+      },
+      "explanation": {
+        "es": "Falso: nadie lo apagó y „er hatte jahrelang allein weitergearbeitet“, vigilando la temperatura y la humedad.",
+        "en": "False: nobody switched it off and „er hatte jahrelang allein weitergearbeitet“, monitoring temperature and humidity."
+      },
+      "refs": ["p2s2", "p2s3"],
+      "spec": { "correct": false }
+    },
+    {
+      "id": "q3",
+      "type": "VOCABULARY_IN_CONTEXT",
+      "difficulty": 2,
+      "prompt": {
+        "es": "El robot leía „die Briefe und Tagebücher …, die ihm anvertraut waren“. ¿Qué significa aquí „anvertraut“?",
+        "en": "The robot read „die Briefe und Tagebücher …, die ihm anvertraut waren“. What does „anvertraut“ mean here?"
+      },
+      "explanation": {
+        "es": "„Jemandem etwas anvertrauen“ es dejar algo al cuidado de alguien: las cartas estaban a cargo del robot, cuya tarea era „die Pflege der Dokumente“.",
+        "en": "„Jemandem etwas anvertrauen“ means to leave something in someone's care: the letters were in the robot's charge, whose job was „die Pflege der Dokumente“."
+      },
+      "refs": ["p2s3", "p3s1"],
+      "spec": {
+        "token": "p2s3t28",
+        "options": [
+          { "id": "a", "text": { "es": "Confiadas a su cuidado", "en": "Entrusted to its care" } },
+          { "id": "b", "text": { "es": "Escritas por él mismo", "en": "Written by itself" } },
+          { "id": "c", "text": { "es": "Prohibidas para él", "en": "Forbidden to it" } },
+          { "id": "d", "text": { "es": "Enviadas por correo", "en": "Sent by post" } }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q4",
+      "type": "MULTIPLE_CHOICE",
+      "difficulty": 2,
+      "prompt": {
+        "es": "¿Qué historias le cuenta el robot a Hanna? Marca todas las correctas.",
+        "en": "Which stories does the robot tell Hanna? Mark all the correct ones."
+      },
+      "explanation": {
+        "es": "Habla de una „Bäckerin“ que repartía pan „heimlich“ en un invierno duro y de un „Lehrer“ que escribió a su hija cincuenta años „ohne je eine Antwort zu bekommen“.",
+        "en": "It tells of a „Bäckerin“ who „heimlich“ handed out bread in a harsh winter and of a „Lehrer“ who wrote to his daughter for fifty years „ohne je eine Antwort zu bekommen“."
+      },
+      "refs": ["p3s2"],
+      "spec": {
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "La de una panadera que repartió pan a escondidas a sus vecinos",
+              "en": "One about a baker who secretly gave bread to her neighbours"
+            }
+          },
+          {
+            "id": "b",
+            "text": {
+              "es": "La de un maestro que escribió a su hija durante cincuenta años sin recibir respuesta",
+              "en": "One about a teacher who wrote to his daughter for fifty years without getting an answer"
+            }
+          },
+          {
+            "id": "c",
+            "text": { "es": "La de una hija que contestó cada carta de su padre", "en": "One about a daughter who answered each of her father's letters" }
+          },
+          {
+            "id": "d",
+            "text": { "es": "La de cómo se digitalizaron las actas de la ciudad", "en": "One about how the city's records were digitised" }
+          }
+        ],
+        "correct": ["a", "b"]
+      }
+    },
+    {
+      "id": "q5",
+      "type": "INFERENCE",
+      "difficulty": 3,
+      "prompt": {
+        "es": "¿Por qué Hanna no encuentra una respuesta que no suene a excusa?",
+        "en": "Why can't Hanna find an answer that doesn't sound like an excuse?"
+      },
+      "explanation": {
+        "es": "Para la administración „ging nichts verloren“, pero el robot pregunta por „dem, was ich weiß“: lo que ha comprendido no está en los datos guardados.",
+        "en": "For the administration „ging nichts verloren“, but the robot asks about „dem, was ich weiß“: what it has understood is not in the saved data."
+      },
+      "refs": ["p4s3", "p5s1", "p5s2"],
+      "spec": {
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "Porque se da cuenta de que lo que sabe el robot no está guardado en ninguna parte y sí se perdería",
+              "en": "Because she realises that what the robot knows is not saved anywhere and would indeed be lost"
+            }
+          },
+          {
+            "id": "b",
+            "text": { "es": "Porque no entiende la pregunta técnica del robot", "en": "Because she doesn't understand the robot's technical question" }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "Porque está enfadada con el robot por leer cartas privadas",
+              "en": "Because she is angry at the robot for reading private letters"
+            }
+          },
+          {
+            "id": "d",
+            "text": { "es": "Porque sabe que la memoria del robot ya está copiada", "en": "Because she knows the robot's memory has already been copied" }
+          }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q6",
+      "type": "MAIN_IDEA",
+      "difficulty": 3,
+      "prompt": { "es": "¿Qué pregunta de fondo plantea el relato?", "en": "What underlying question does the story raise?" },
+      "explanation": {
+        "es": "El relato contrapone datos „gesichert“ y la comprensión del robot, y termina con Hanna pidiendo „ein Gedächtnis als Kulturgut zu erhalten“.",
+        "en": "The story contrasts data that is „gesichert“ with the robot's understanding, and ends with Hanna asking „ein Gedächtnis als Kulturgut zu erhalten“."
+      },
+      "refs": ["p3s1", "p4s3", "p5s1", "p5s3"],
+      "spec": {
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "Si la memoria y la comprensión que nacen de leer merecen conservarse, además de los datos",
+              "en": "Whether the memory and understanding that come from reading deserve to be preserved, beyond the data"
+            }
+          },
+          {
+            "id": "b",
+            "text": { "es": "Si digitalizar los archivos es más barato que restaurarlos", "en": "Whether digitising archives is cheaper than restoring them" }
+          },
+          {
+            "id": "c",
+            "text": { "es": "Si los robots deberían sustituir a las restauradoras", "en": "Whether robots should replace restorers" }
+          },
+          {
+            "id": "d",
+            "text": { "es": "Si el edificio del archivo debe venderse en primavera", "en": "Whether the archive building should be sold in spring" }
+          }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q7",
+      "type": "SHORT_ANSWER",
+      "difficulty": 2,
+      "prompt": {
+        "es": "¿Qué pide Hanna en su solicitud y qué tiene de especial?",
+        "en": "What does Hanna ask for in her application, and what is unusual about it?"
+      },
+      "explanation": {
+        "es": "Hanna pide „ein Gedächtnis als Kulturgut zu erhalten“, y la solicitud „in keine Kategorie passte“.",
+        "en": "Hanna asks „ein Gedächtnis als Kulturgut zu erhalten“, and the application „in keine Kategorie passte“."
+      },
+      "refs": ["p5s3"],
+      "spec": {
+        "model": {
+          "es": "Pide que se conserve una memoria, la del robot, como patrimonio cultural; es una solicitud que no encaja en ninguna categoría.",
+          "en": "She asks for a memory, the robot's, to be preserved as cultural heritage; it is a request that fits no category."
+        },
+        "rubric": {
+          "es": "Una buena respuesta dice que Hanna pide conservar una memoria (la del robot) como patrimonio cultural y que la solicitud no encaja en ninguna categoría. Se puede responder en español, inglés o alemán.",
+          "en": "A good answer says Hanna asks for a memory (the robot's) to be preserved as cultural heritage and that the request fits no category. It may be answered in English, Spanish or German."
+        }
+      }
+    }
+  ]
+}

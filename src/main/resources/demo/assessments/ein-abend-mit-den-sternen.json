@@ -1,0 +1,126 @@
+{
+  "reading": "ein-abend-mit-den-sternen",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "MULTIPLE_CHOICE",
+      "difficulty": 1,
+      "prompt": { "es": "¿Por qué van Paula y su tío al campo?", "en": "Why do Paula and her uncle drive out to the countryside?" },
+      "explanation": {
+        "es": "Van „weit weg von den Lichtern der Stadt“: lejos de las luces, el cielo se ve mejor.",
+        "en": "They go „weit weg von den Lichtern der Stadt“: away from the lights, the sky is easier to see."
+      },
+      "refs": ["p1s2"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "Para visitar a unos parientes", "en": "To visit some relatives" } },
+          { "id": "b", "text": { "es": "Para alejarse de las luces de la ciudad", "en": "To get away from the city lights" } },
+          { "id": "c", "text": { "es": "Porque allí guardan el telescopio", "en": "Because that is where the telescope is kept" } },
+          { "id": "d", "text": { "es": "Para hacer un pícnic en la hierba", "en": "To have a picnic on the grass" } }
+        ],
+        "correct": ["b"]
+      }
+    },
+    {
+      "id": "q2",
+      "type": "TRUE_FALSE",
+      "difficulty": 1,
+      "prompt": { "es": "El punto brillante sobre los árboles es una estrella.", "en": "The bright dot above the trees is a star." },
+      "explanation": {
+        "es": "Falso: el tío dice „Das ist kein Stern, sondern Jupiter“, el planeta más grande del sistema solar.",
+        "en": "False: the uncle says „Das ist kein Stern, sondern Jupiter“, the largest planet in the solar system."
+      },
+      "refs": ["p2s2", "p2s3"],
+      "spec": { "correct": false }
+    },
+    {
+      "id": "q3",
+      "type": "COMPLETION",
+      "difficulty": 1,
+      "prompt": {
+        "es": "Completa lo que explica el tío sobre la mancha borrosa.",
+        "en": "Complete what the uncle explains about the hazy patch."
+      },
+      "explanation": {
+        "es": "El tío dice: „Das Licht von dort war über zwei Millionen Jahre unterwegs.“ ¡Una cifra enorme!",
+        "en": "The uncle says: „Das Licht von dort war über zwei Millionen Jahre unterwegs.“ A huge number!"
+      },
+      "refs": ["p3s2"],
+      "spec": {
+        "sentence": "p3s2",
+        "blanks": ["p3s2t9", "p3s2t11"]
+      }
+    },
+    {
+      "id": "q4",
+      "type": "MATCHING",
+      "difficulty": 2,
+      "prompt": { "es": "Une cada palabra alemana con su significado en el texto.", "en": "Match each German word with its meaning in the text." },
+      "explanation": {
+        "es": "Paula mira „durch das Okular“, el tío apunta a un „Fleck“, el cielo es una „Zeitmaschine“ y en la „Rückfahrt“ todos callan.",
+        "en": "Paula looks „durch das Okular“, the uncle aims at a „Fleck“, the sky is a „Zeitmaschine“, and on the „Rückfahrt“ everyone is quiet."
+      },
+      "refs": ["p3s1", "p4s1", "p4s2", "p5s1"],
+      "spec": {
+        "left": [
+          { "id": "1", "text": "das Okular" },
+          { "id": "2", "text": "der Fleck" },
+          { "id": "3", "text": "die Zeitmaschine" },
+          { "id": "4", "text": "die Rückfahrt" }
+        ],
+        "right": [
+          { "id": "w", "text": { "es": "la mancha", "en": "the patch" } },
+          { "id": "x", "text": { "es": "el viaje de vuelta", "en": "the drive back" } },
+          { "id": "y", "text": { "es": "el ocular del telescopio", "en": "the eyepiece" } },
+          { "id": "z", "text": { "es": "la máquina del tiempo", "en": "the time machine" } },
+          { "id": "v", "text": { "es": "la manta", "en": "the blanket" } }
+        ],
+        "pairs": { "1": "y", "2": "w", "3": "z", "4": "x" }
+      }
+    },
+    {
+      "id": "q5",
+      "type": "MAIN_IDEA",
+      "difficulty": 2,
+      "prompt": { "es": "¿Qué descubre Paula esa noche? Elige la idea central.", "en": "What does Paula discover that night? Choose the main idea." },
+      "explanation": {
+        "es": "Paula entiende que „der Himmel eine Art Zeitmaschine ist“: vemos las estrellas como eran antes, no como son ahora.",
+        "en": "Paula realises that „der Himmel eine Art Zeitmaschine ist“: we see the stars as they used to be, not as they are now."
+      },
+      "refs": ["p4s2", "p4s3"],
+      "spec": {
+        "options": [
+          { "id": "a", "text": { "es": "Que mirar el cielo es mirar al pasado", "en": "That looking at the sky means looking into the past" } },
+          { "id": "b", "text": { "es": "Que Júpiter es la estrella más grande", "en": "That Jupiter is the biggest star" } },
+          { "id": "c", "text": { "es": "Que el telescopio de su tío ya no funciona", "en": "That her uncle's telescope no longer works" } },
+          { "id": "d", "text": { "es": "Que en el campo hace demasiado frío para ver estrellas", "en": "That it is too cold in the countryside to see stars" } }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q6",
+      "type": "SHORT_ANSWER",
+      "difficulty": 3,
+      "prompt": {
+        "es": "¿Cómo sabemos que a Paula le ha gustado la noche?",
+        "en": "How do we know Paula enjoyed the evening?"
+      },
+      "explanation": {
+        "es": "En el coche busca otra vez el punto brillante y pregunta „Nächsten Freitag wieder?“: quiere repetir.",
+        "en": "In the car she looks for the bright dot again and asks „Nächsten Freitag wieder?“: she wants to do it again."
+      },
+      "refs": ["p5s2", "p5s3", "p5s4"],
+      "spec": {
+        "model": {
+          "es": "De vuelta sigue buscando Júpiter por la ventana y pregunta si pueden volver el próximo viernes.",
+          "en": "On the way back she keeps looking for Jupiter through the window and asks if they can go again next Friday."
+        },
+        "rubric": {
+          "es": "Una buena respuesta menciona que Paula quiere repetir („Nächsten Freitag wieder?“); puede añadir que busca el punto brillante desde el coche. Se puede responder en español, inglés o alemán.",
+          "en": "A good answer mentions that Paula wants to go again („Nächsten Freitag wieder?“); it may add that she looks for the bright dot from the car. It may be answered in English, Spanish or German."
+        }
+      }
+    }
+  ]
+}

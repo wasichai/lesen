@@ -1,0 +1,300 @@
+{
+  "reading": "the-art-of-doing-nothing",
+  "questions": [
+    {
+      "id": "q1",
+      "type": "MAIN_IDEA",
+      "difficulty": 2,
+      "prompt": {
+        "es": "¿Cuál es la idea principal del texto?",
+        "en": "What is the main idea of the text?"
+      },
+      "explanation": {
+        "es": "El texto defiende que el aburrimiento «is not an enemy at all» y que no hacer nada es una habilidad que «improves with practice».",
+        "en": "The text argues that boredom \"is not an enemy at all\" and that doing nothing is a skill that \"improves with practice\"."
+      },
+      "refs": ["p2s2", "p3s3", "p4s3"],
+      "spec": {
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "No hacer nada es bueno para la mente y es una habilidad que vale la pena practicar",
+              "en": "Doing nothing is good for the mind and is a skill worth practising"
+            }
+          },
+          {
+            "id": "b",
+            "text": {
+              "es": "Los móviles son peligrosos y habría que prohibirlos",
+              "en": "Phones are dangerous and should be banned"
+            }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "Las personas productivas son más felices que las que se aburren",
+              "en": "Productive people are happier than people who get bored"
+            }
+          },
+          {
+            "id": "d",
+            "text": {
+              "es": "Los paseos largos son el mejor ejercicio físico",
+              "en": "Long walks are the best physical exercise"
+            }
+          }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q2",
+      "type": "DETAIL",
+      "difficulty": 1,
+      "prompt": {
+        "es": "Según el texto, ¿por qué llenamos cada minuto libre con el móvil?",
+        "en": "According to the text, why do we fill every spare minute with our phones?"
+      },
+      "explanation": {
+        "es": "El texto da dos razones: «partly out of habit» y porque el aburrimiento parece «a problem to be solved».",
+        "en": "The text gives two reasons: \"partly out of habit\" and because boredom feels like \"a problem to be solved\"."
+      },
+      "refs": ["p2s1"],
+      "spec": {
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "Por costumbre y porque el aburrimiento parece un problema que hay que resolver",
+              "en": "Out of habit and because boredom feels like a problem to be solved"
+            }
+          },
+          {
+            "id": "b",
+            "text": {
+              "es": "Porque los psicólogos lo recomiendan",
+              "en": "Because psychologists recommend it"
+            }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "Porque el trabajo nos obliga a estar conectados",
+              "en": "Because our jobs force us to stay connected"
+            }
+          }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q3",
+      "type": "VOCABULARY_IN_CONTEXT",
+      "difficulty": 2,
+      "prompt": {
+        "es": "¿Qué significa «wander» en esta oración?",
+        "en": "What does \"wander\" mean in this sentence?"
+      },
+      "explanation": {
+        "es": "El texto lo opone a «switch off»: la mente no se apaga, sino que va de un lado a otro, uniendo recuerdos y probando ideas.",
+        "en": "The text contrasts it with \"switch off\": the mind does not stop, it moves around, connecting memories and testing ideas."
+      },
+      "refs": ["p2s3"],
+      "spec": {
+        "token": "p2s3t17",
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "Moverse libremente de una idea a otra",
+              "en": "To move freely from one thought to another"
+            }
+          },
+          {
+            "id": "b",
+            "text": {
+              "es": "Apagarse por completo",
+              "en": "To switch off completely"
+            }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "Concentrarse en una sola tarea",
+              "en": "To focus on a single task"
+            }
+          },
+          {
+            "id": "d",
+            "text": {
+              "es": "Quedarse dormido",
+              "en": "To fall asleep"
+            }
+          }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q4",
+      "type": "INFERENCE",
+      "difficulty": 3,
+      "prompt": {
+        "es": "En los estudios, ¿por qué tuvieron ideas más creativas quienes hicieron primero una tarea aburrida?",
+        "en": "In the studies, why did the people who first did a dull task come up with more creative ideas?"
+      },
+      "explanation": {
+        "es": "El texto lo explica justo después: «Idleness, it seems, gives the brain room to play»; la mente aburrida se pone a divagar y a probar ideas.",
+        "en": "The text explains it right afterwards: \"Idleness, it seems, gives the brain room to play\"; a bored mind starts to wander and test ideas."
+      },
+      "refs": ["p2s3", "p3s2", "p3s3"],
+      "spec": {
+        "options": [
+          {
+            "id": "a",
+            "text": {
+              "es": "Porque el aburrimiento dejó a su mente espacio para divagar y jugar con ideas",
+              "en": "Because boredom gave their minds room to wander and play with ideas"
+            }
+          },
+          {
+            "id": "b",
+            "text": {
+              "es": "Porque la tarea aburrida les enseñó las soluciones",
+              "en": "Because the dull task taught them the solutions"
+            }
+          },
+          {
+            "id": "c",
+            "text": {
+              "es": "Porque eran más inteligentes que los demás",
+              "en": "Because they were more intelligent than the others"
+            }
+          },
+          {
+            "id": "d",
+            "text": {
+              "es": "Porque tuvieron más tiempo para terminar",
+              "en": "Because they had more time to finish"
+            }
+          }
+        ],
+        "correct": ["a"]
+      }
+    },
+    {
+      "id": "q5",
+      "type": "COMPLETION",
+      "difficulty": 2,
+      "prompt": {
+        "es": "Completa la oración con las palabras del texto.",
+        "en": "Complete the sentence with words from the text."
+      },
+      "explanation": {
+        "es": "Al principio no hacer nada se siente «restless» (inquieto) e incluso «guilty» (culpable), en una cultura que nos mide por lo «productive» que somos.",
+        "en": "At first doing nothing feels \"restless\" and even \"guilty\", in a culture that measures us by how \"productive\" we are."
+      },
+      "refs": ["p4s2"],
+      "spec": {
+        "sentence": "p4s2",
+        "blanks": ["p4s2t7", "p4s2t11", "p4s2t23"],
+        "bank": ["restless", "guilty", "productive", "creative", "busy", "dull"]
+      }
+    },
+    {
+      "id": "q6",
+      "type": "MATCHING",
+      "difficulty": 2,
+      "prompt": {
+        "es": "Une cada palabra del texto con su significado.",
+        "en": "Match each word from the text with its meaning."
+      },
+      "explanation": {
+        "es": "El contexto ayuda: «scrolling» es lo que hacemos con el móvil, los pensamientos «drift», una tarea «dull» aburre e «idleness» es no hacer nada.",
+        "en": "Context helps: \"scrolling\" is what we do on our phones, thoughts \"drift\", a \"dull\" task is boring and \"idleness\" means doing nothing."
+      },
+      "refs": ["p1s2", "p3s2", "p3s3"],
+      "spec": {
+        "left": [
+          {
+            "id": "1",
+            "text": "scrolling"
+          },
+          {
+            "id": "2",
+            "text": "drift"
+          },
+          {
+            "id": "3",
+            "text": "dull"
+          },
+          {
+            "id": "4",
+            "text": "idleness"
+          }
+        ],
+        "right": [
+          {
+            "id": "v",
+            "text": {
+              "es": "aburrido, sin interés",
+              "en": "boring, uninteresting"
+            }
+          },
+          {
+            "id": "w",
+            "text": {
+              "es": "pasar contenido en una pantalla con el dedo",
+              "en": "moving through content on a screen"
+            }
+          },
+          {
+            "id": "x",
+            "text": {
+              "es": "culpable",
+              "en": "feeling you have done something wrong"
+            }
+          },
+          {
+            "id": "y",
+            "text": {
+              "es": "el estado de no hacer nada",
+              "en": "the state of doing nothing"
+            }
+          },
+          {
+            "id": "z",
+            "text": {
+              "es": "dejarse llevar, moverse sin rumbo",
+              "en": "to move slowly with no direction"
+            }
+          }
+        ],
+        "pairs": {
+          "1": "w",
+          "2": "z",
+          "3": "v",
+          "4": "y"
+        }
+      }
+    },
+    {
+      "id": "q7",
+      "type": "TRUE_FALSE",
+      "difficulty": 2,
+      "prompt": {
+        "es": "Según el texto, no hacer nada resulta fácil desde el primer minuto.",
+        "en": "According to the text, doing nothing feels easy from the very first minute."
+      },
+      "explanation": {
+        "es": "Es falso: «doing nothing is harder than it sounds», y los primeros minutos pueden resultar inquietos, aunque mejora con la práctica.",
+        "en": "False: \"doing nothing is harder than it sounds\", and the first minutes can feel restless, though it improves with practice."
+      },
+      "refs": ["p4s1", "p4s2", "p4s3"],
+      "spec": {
+        "correct": false
+      }
+    }
+  ]
+}

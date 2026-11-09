@@ -21,6 +21,7 @@ dependencies {
     implementation(platform(libs.wasichai.bom))
     implementation(libs.wasichai.starter)
     implementation(libs.springdoc.webflux.api)
+    implementation(libs.anthropic.java)
     testImplementation(libs.wasichai.test)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

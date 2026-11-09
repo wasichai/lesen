@@ -142,6 +142,8 @@ def main() -> int:
                 break
             previous_end = end
 
+    check_assessments(problems)
+
     for c in json.loads((ROOT / "collections.json").read_text()):
         for s in c["readings"]:
             if s not in slugs:
@@ -157,6 +159,109 @@ def main() -> int:
         print(p)
     print(f"{len(slugs)} lecturas, {sum(len(f) for f in lexicon.values())} formas, {len(problems)} problemas")
     return 1 if problems else 0
+
+
+CHOICE = {"MULTIPLE_CHOICE", "MAIN_IDEA", "INFERENCE", "DETAIL", "VOCABULARY_IN_CONTEXT"}
+TYPES = CHOICE | {"TRUE_FALSE", "COMPLETION", "MATCHING", "ORDERING", "SHORT_ANSWER"}
+
+
+def localized(value) -> bool:
+    """Un texto de pregunta: en el idioma de la lectura (cadena) o en cada idioma de interfaz ({es, en})."""
+    if isinstance(value, str):
+        return bool(value.strip())
+    return isinstance(value, dict) and all(isinstance(value.get(lang), str) and value[lang].strip() for lang in UI_LANGUAGES)
+
+
+def items_ok(items, minimum: int) -> bool:
+    ids = [i.get("id") for i in items] if isinstance(items, list) else []
+    return len(ids) >= minimum and len(set(ids)) == len(ids) and all(isinstance(i, str) and i for i in ids) and all(localized(i.get("text")) for i in items)
+
+
+def check_assessments(problems: list[str]) -> None:
+    """Las preguntas de comprensión (docs/content/demo-content.md §Preguntas): forma de cada tipo, referencias a oraciones
+    y palabras que existen en la lectura, de 5 a 7 preguntas con al menos 3 tipos, y los 10 tipos en el conjunto."""
+    seen_types: set[str] = set()
+    for file in sorted((ROOT / "readings").glob("*.json")):
+        r = json.loads(file.read_text())
+        path = ROOT / "assessments" / f"{r['slug']}.json"
+        if not path.exists():
+            problems.append(f"{r['slug']}: sin preguntas")
+            continue
+        a = json.loads(path.read_text())
+        where = f"preguntas {r['slug']}"
+        if a.get("reading") != r["slug"]:
+            problems.append(f"{where}: reading no es {r['slug']}")
+        sentences = {sid: tokens for _, sid, tokens in reading_sentences(r)}
+        words = {t["id"]: sid for sid, tokens in sentences.items() for t in tokens if t["kind"] == "WORD"}
+        questions = a.get("questions") or []
+        if not 5 <= len(questions) <= 7:
+            problems.append(f"{where}: {len(questions)} preguntas (de 5 a 7)")
+        types = {q.get("type") for q in questions}
+        if len(types) < 3:
+            problems.append(f"{where}: solo {len(types)} tipos (al menos 3)")
+        ids = [q.get("id") for q in questions]
+        if len(set(ids)) != len(ids) or not all(isinstance(i, str) and re.fullmatch(r"q\d{1,2}", i) for i in ids):
+            problems.append(f"{where}: ids de pregunta repetidos o inválidos (q1, q2…)")
+        for q in questions:
+            at = f"{where} {q.get('id')}"
+            kind = q.get("type")
+            seen_types.add(kind)
+            spec = q.get("spec") or {}
+            if kind not in TYPES:
+                problems.append(f"{at}: tipo desconocido {kind}")
+                continue
+            if q.get("difficulty") not in (1, 2, 3):
+                problems.append(f"{at}: difficulty de 1 a 3")
+            for field in ("prompt", "explanation"):
+                value = q.get(field)
+                if not (isinstance(value, dict) and localized(value)):
+                    problems.append(f"{at}: {field} necesita es y en")
+            refs = q.get("refs") or []
+            if not refs or any(ref not in sentences for ref in refs):
+                problems.append(f"{at}: refs debe nombrar oraciones de la lectura ({refs})")
+            if kind in CHOICE:
+                options = spec.get("options")
+                correct = spec.get("correct") or []
+                if not items_ok(options, 3) or len(options) > 5:
+                    problems.append(f"{at}: de 3 a 5 opciones con id y texto")
+                elif not correct or not set(correct) <= {o["id"] for o in options}:
+                    problems.append(f"{at}: correct debe nombrar opciones")
+                if kind == "VOCABULARY_IN_CONTEXT" and words.get(spec.get("token")) not in refs:
+                    problems.append(f"{at}: token debe ser una palabra de una oración de refs")
+            elif kind == "TRUE_FALSE":
+                if not isinstance(spec.get("correct"), bool):
+                    problems.append(f"{at}: correct debe ser true o false")
+            elif kind == "COMPLETION":
+                sentence = spec.get("sentence")
+                blanks = spec.get("blanks") or []
+                if sentence not in refs:
+                    problems.append(f"{at}: sentence debe estar en refs")
+                if not 1 <= len(blanks) <= 3 or any(words.get(b) != sentence for b in blanks):
+                    problems.append(f"{at}: de 1 a 3 huecos, palabras de esa oración")
+                for token, variants in (spec.get("accepted") or {}).items():
+                    if token not in blanks or not all(isinstance(v, str) and v.strip() for v in variants):
+                        problems.append(f"{at}: accepted solo para huecos, con cadenas")
+                if "bank" in spec and not all(localized(b) and isinstance(b, str) for b in spec["bank"]):
+                    problems.append(f"{at}: bank es una lista de palabras")
+            elif kind == "MATCHING":
+                left, right, pairs = spec.get("left"), spec.get("right"), spec.get("pairs") or {}
+                if not items_ok(left, 3) or not items_ok(right, 3) or len(right) < len(left):
+                    problems.append(f"{at}: left y right con al menos 3 elementos, right no más corto")
+                elif set(pairs) != {i["id"] for i in left} or not set(pairs.values()) <= {i["id"] for i in right} or len(set(pairs.values())) != len(pairs):
+                    problems.append(f"{at}: pairs une cada elemento de left con uno distinto de right")
+            elif kind == "ORDERING":
+                items, order = spec.get("items"), spec.get("order") or []
+                if not items_ok(items, 3) or len(items) > 6:
+                    problems.append(f"{at}: de 3 a 6 elementos")
+                elif sorted(order) != sorted(i["id"] for i in items) or order == [i["id"] for i in items]:
+                    problems.append(f"{at}: order es una permutación de los elementos, distinta de como se presentan")
+            elif kind == "SHORT_ANSWER":
+                for field in ("model", "rubric"):
+                    value = spec.get(field)
+                    if not (isinstance(value, dict) and localized(value)):
+                        problems.append(f"{at}: {field} necesita es y en")
+    for kind in sorted(TYPES - seen_types):
+        problems.append(f"preguntas: ningún ejemplo de {kind}")
 
 
 if __name__ == "__main__":

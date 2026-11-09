@@ -36,6 +36,10 @@ lesen:
   demo:
     # publica el contenido de src/main/resources/demo al arrancar (docs/content/demo-content.md)
     enabled: ${LESEN_DEMO_ENABLED:false}
+  ai:
+    # sin clave, las respuestas abiertas se autoevalúan (ADR-0009)
+    api-key: ${ANTHROPIC_API_KEY:}
+    model: ${LESEN_AI_MODEL:claude-opus-5-5}
 
 # OpenAPI de lo propio de Lesen, en una ruta pública
 springdoc:
