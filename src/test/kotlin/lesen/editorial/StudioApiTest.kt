@@ -336,6 +336,101 @@ class StudioApiTest : LesenApiTest() {
     }
 
     @Test
+    fun `an editor publishes a picture book with its illustrations, and a learner reads it page by page`() {
+        val editor = editor()
+        val created =
+            send("POST", "/api/lesen/studio/drafts", editor, mapOf("slug" to slug, "language" to "de", "level" to "A1", "title" to "Der Garten"), 201)!!
+        val id = created["id"].asString()
+        // la ilustración de una página: quien solo lee no sube nada; lo que no es imagen, no
+        val picture = png + "illustration".toByteArray()
+        multipart(
+            "/api/lesen/studio/illustrations",
+            tomas(),
+            MultipartBodyBuilder().apply { part("file", picture).filename("bild.png").contentType(MediaType.IMAGE_PNG) },
+            403,
+        )
+        multipart(
+            "/api/lesen/studio/illustrations",
+            editor,
+            MultipartBodyBuilder().apply { part("file", mp3).filename("bild.png").contentType(MediaType.IMAGE_PNG) },
+            400,
+        )
+        val illustration =
+            multipart(
+                "/api/lesen/studio/illustrations",
+                editor,
+                MultipartBodyBuilder().apply { part("file", picture).filename("bild.png").contentType(MediaType.IMAGE_PNG) },
+                201,
+            )!!
+        assertThat(illustration["file"].asString()).matches("illustration-[0-9a-f]{24}\\.png")
+        assertThat(illustration["kind"].asString()).isEqualTo("ILLUSTRATION")
+
+        // un libro: la maqueta del libro, una página con su ilustración pendiente y una sin texto que solo lleva imagen
+        val alt = mapOf("es" to "Mia en el jardín", "en" to "Mia in the garden")
+
+        fun book(file: String?) =
+            document(withAudioWord = false) +
+                mapOf(
+                    "format" to "PICTURE_BOOK",
+                    "layout" to "IMAGE_TOP",
+                    "pages" to
+                        listOf(
+                            mapOf("span" to 1, "paragraphs" to 1, "illustration" to mapOf("file" to file, "alt" to alt, "scene" to "Mia im Garten")),
+                            mapOf("span" to 2, "layout" to "IMAGE_ONLY", "paragraphs" to 0, "illustration" to mapOf("file" to file, "alt" to alt)),
+                        ),
+                )
+        // una maqueta que no cabe en su ancho es un error del documento
+        val wrong = book(null) + ("pages" to listOf(mapOf("span" to 2, "layout" to "VIGNETTE", "paragraphs" to 1)))
+        val invalid = save(editor, created, wrong)!!
+        assertThat(get("/api/lesen/studio/drafts/$id/check", editor)["errors"].values().map { it["ref"]?.asString() }).contains("pages[0].layout")
+        val pending = save(editor, invalid, book(null))!!
+        val check = get("/api/lesen/studio/drafts/$id/check", editor)
+        assertThat(check["ready"].asBoolean()).isFalse()
+        assertThat(check["errors"].values().filter { it["code"].asString() == "ILLUSTRATION_MISSING" }.map { it["ref"].asString() }).containsExactly("g1", "g2")
+        save(editor, pending, book(illustration["file"].asString()))
+        assertThat(get("/api/lesen/studio/drafts/$id/check", editor)["ready"].asBoolean()).isTrue()
+        send("POST", "/api/lesen/studio/drafts/$id/submit", editor, null, 200)
+        send("POST", "/api/lesen/studio/drafts/$id/publish", editor, null, 200)
+
+        // quien lee ve un libro: páginas con su maqueta resuelta, los ids de sus párrafos y la dirección de la ilustración
+        val learner = lena()
+        ensureProfile(learner)
+        assertThat(get("/api/lesen/readings/$slug", learner)["reading"]["format"].asString()).isEqualTo("PICTURE_BOOK")
+        val content = get("/api/lesen/readings/$slug/versions/1/content", learner)
+        assertThat(content["format"].asString()).isEqualTo("PICTURE_BOOK")
+        assertThat(content["layout"].asString()).isEqualTo("IMAGE_TOP")
+        val pages = content["pages"].values().toList()
+        assertThat(pages.map { it["id"].asString() to it["layout"].asString() }).containsExactly("g1" to "IMAGE_TOP", "g2" to "IMAGE_ONLY")
+        assertThat(pages[0]["paragraphs"].values().map { it.asString() }).containsExactly("p1")
+        assertThat(pages[1]["span"].asInt()).isEqualTo(2)
+        assertThat(pages[0]["illustration"]["alt"]["en"].asString()).isEqualTo("Mia in the garden")
+        val src = pages[0]["illustration"]["src"].asString()
+        assertThat(src).isEqualTo("/api/lesen/public/illustrations/${illustration["file"].asString()}")
+        client
+            .get()
+            .uri(src)
+            .exchange()
+            .expectStatus()
+            .isOk
+            .expectHeader()
+            .contentType("image/png")
+        client
+            .get()
+            .uri("/api/lesen/public/illustrations/nada.png")
+            .exchange()
+            .expectStatus()
+            .isNotFound
+        // el catálogo filtra por formato; el libro de la demostración también es uno
+        val books = get("/api/lesen/readings?format=PICTURE_BOOK&size=50", learner)["content"].values().map { it["slug"].asString() }
+        assertThat(books).contains(slug, "ein-sonntag-bei-oma").doesNotContain("der-alte-leuchtturm")
+        // volver a editarlo empieza por las mismas páginas
+        val again = send("POST", "/api/lesen/studio/drafts", editor, mapOf("from" to slug), 201)!!
+        assertThat(again["document"]["format"].asString()).isEqualTo("PICTURE_BOOK")
+        assertThat(again["document"]["pages"].values().map { it["layout"]?.takeUnless { n -> n.isNull }?.asString() }).containsExactly(null, "IMAGE_ONLY")
+        send("DELETE", "/api/lesen/studio/drafts/${again["id"].asString()}", editor, null, 204)
+    }
+
+    @Test
     fun `a draft can be discarded and the studio is only for the editorial roles`() {
         val created =
             send(

@@ -27,6 +27,7 @@ class ReadingPublisher(
     private val db: DatabaseClient,
     private val tx: TransactionalOperator,
     private val resolvers: FormResolvers,
+    private val illustrations: IllustrationFiles,
 ) {
     private val tokenizers = Tokenizers()
     private val log = LoggerFactory.getLogger(ReadingPublisher::class.java)
@@ -76,8 +77,11 @@ class ReadingPublisher(
         return result
     }
 
+    // un libro se publica con todas sus ilustraciones: una pendiente no se inventa ni se deja en blanco
     private suspend fun requireReferences(draft: ReadingDraft) {
-        val problems = referenceProblems(draft)
+        val problems =
+            referenceProblems(draft) +
+                PageRules.missingIllustrations(draft).map { FieldViolation("pages[$it].illustration", "the illustration is still missing") }
         if (problems.isNotEmpty()) throw ValidationException("Invalid reading", problems)
     }
 
@@ -112,6 +116,21 @@ class ReadingPublisher(
                 .toSet()
         val missing = draft.topics.filter { it !in known }
         if (missing.isNotEmpty()) problems += FieldViolation("topics", "unknown topics: $missing")
+        problems += illustrationProblems(draft)
+        return problems
+    }
+
+    // cada ilustración de un libro es un archivo que existe: de la demostración o subido como ilustración (ADR-0014). Las
+    // pendientes las dice PageRules.missingIllustrations
+    private suspend fun illustrationProblems(draft: ReadingDraft): List<FieldViolation> {
+        if (draft.format != ReadingFormat.PICTURE_BOOK) return emptyList()
+        val problems = mutableListOf<FieldViolation>()
+        draft.pages.forEachIndexed { i, page ->
+            val file = page.illustration?.file ?: return@forEachIndexed
+            if (PageRules.effective(draft, page)?.illustrated == true && !illustrations.exists(file)) {
+                problems += FieldViolation("pages[$i].illustration", "unknown illustration file: $file")
+            }
+        }
         return problems
     }
 
@@ -184,8 +203,8 @@ class ReadingPublisher(
                 .sql(
                     """
                     INSERT INTO lesen.reading_version
-                      (reading_id, number, status, title, subtitle, summary, cover, accent, word_count, minutes, content, content_hash)
-                    VALUES (:r, :n, 'PUBLISHED', :title, :subtitle, :summary, :cover, :accent, :words, :minutes, CAST(:content AS jsonb), :hash)
+                      (reading_id, number, status, title, subtitle, summary, cover, accent, word_count, minutes, content, content_hash, format)
+                    VALUES (:r, :n, 'PUBLISHED', :title, :subtitle, :summary, :cover, :accent, :words, :minutes, CAST(:content AS jsonb), :hash, :format)
                     RETURNING id
                     """.trimIndent(),
                 ).bind("r", readingId)
@@ -196,6 +215,7 @@ class ReadingPublisher(
                 .bind("minutes", minutes)
                 .bind("content", Jsonb.of(assembled.content))
                 .bind("hash", assembled.hash)
+                .bind("format", draft.format.name)
         spec = draft.subtitle?.let { spec.bind("subtitle", it.trim()) } ?: spec.bindNull("subtitle", String::class.java)
         spec = draft.cover?.let { spec.bind("cover", it) } ?: spec.bindNull("cover", String::class.java)
         spec = draft.accent?.let { spec.bind("accent", it) } ?: spec.bindNull("accent", String::class.java)

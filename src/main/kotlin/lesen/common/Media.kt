@@ -11,7 +11,15 @@ import wasichai.files.FileStore
 import java.security.MessageDigest
 import java.util.UUID
 
-enum class MediaKind { AUDIO, COVER }
+// ILLUSTRATION: la ilustración de una página de un libro (ADR-0014); por sus bytes es una imagen, como una portada
+enum class MediaKind {
+    AUDIO,
+    COVER,
+    ILLUSTRATION,
+    ;
+
+    val image: Boolean get() = this != AUDIO
+}
 
 data class MediaFile(
     val file: String,
@@ -36,17 +44,29 @@ class Media(
         bytes: ByteArray,
         actor: String,
     ): MediaFile {
-        val limit = if (kind == MediaKind.AUDIO) MAX_AUDIO else MAX_COVER
+        val limit =
+            when (kind) {
+                MediaKind.AUDIO -> MAX_AUDIO
+                MediaKind.COVER -> MAX_COVER
+                MediaKind.ILLUSTRATION -> MAX_ILLUSTRATION
+            }
         if (bytes.isEmpty() || bytes.size > limit) throw ValidationException("Invalid file", "file", "must be between 1 byte and ${limit / 1_048_576} MB")
         val type = sniff(bytes) ?: throw ValidationException("Invalid file", "file", "unsupported file type")
-        if (type.kind != kind) throw ValidationException("Invalid file", "file", "expected ${kind.name.lowercase()}, got ${type.contentType}")
+        if (type.kind.image != kind.image) throw ValidationException("Invalid file", "file", "expected ${kind.name.lowercase()}, got ${type.contentType}")
         val sha = MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
-        val prefix = if (kind == MediaKind.AUDIO) "audio" else "cover"
+        val prefix =
+            when (kind) {
+                MediaKind.AUDIO -> "audio"
+                MediaKind.COVER -> "cover"
+                MediaKind.ILLUSTRATION -> "illustration"
+            }
         val file = "$prefix-${sha.take(24)}.${type.extension}"
         find(file)?.let { return it }
         // las claves del almacén son <uuid>/<uuid>: un espacio propio de Lesen (el contenido es de toda la instalación) y
         // un id que sale de la huella
-        val key = FileStore.keyOf(NAMESPACE, UUID.nameUUIDFromBytes(sha.toByteArray()))
+        // una ilustración puede tener los mismos bytes que una portada: su clave lleva su tipo (las de audio y portada, las de siempre)
+        val seed = if (kind == MediaKind.ILLUSTRATION) "illustration:$sha" else sha
+        val key = FileStore.keyOf(NAMESPACE, UUID.nameUUIDFromBytes(seed.toByteArray()))
         store.put(key, bytes, type.contentType)
         db
             .sql(
@@ -104,6 +124,7 @@ class Media(
         val NAMESPACE: UUID = UUID.nameUUIDFromBytes("lesen:media".toByteArray())
         const val MAX_AUDIO = 30 * 1_048_576
         const val MAX_COVER = 3 * 1_048_576
+        const val MAX_ILLUSTRATION = 5 * 1_048_576
 
         // los formatos que entiende cualquier navegador, por su firma
         fun sniff(bytes: ByteArray): Sniffed? {

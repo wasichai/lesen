@@ -41,6 +41,10 @@ data class CheckInput(
     // las preguntas de la versión vigente y si ya las respondió alguien (entonces no cambian sin texto nuevo)
     val currentQuestions: List<Question>?,
     val currentAnswered: Boolean,
+    // las páginas de un libro cuya ilustración falta todavía (ids g1, g2…)
+    val missingIllustrations: List<String> = emptyList(),
+    // los idiomas de interfaz: el texto alternativo de una ilustración va en todos (quien lee no lo lee en el de estudio)
+    val interfaceLanguages: List<String> = translateInto,
 )
 
 // la comprobación antes de publicar (ADR-0012): lo que impide publicar (errores) y lo que conviene mirar (avisos). Pura
@@ -73,6 +77,14 @@ object DraftCheck {
                         warnings += Issue("TRANSLATION_MISSING", sentence.id, language)
                     }
                 }
+            }
+        }
+        // un libro ilustrado (ADR-0014): cada ilustración con su archivo y con su texto alternativo en cada idioma de interfaz
+        input.missingIllustrations.forEach { errors += Issue("ILLUSTRATION_MISSING", it) }
+        for (page in content.pages.orEmpty()) {
+            val illustration = page.illustration ?: continue
+            for (language in input.interfaceLanguages) {
+                if (illustration.alt[language].isNullOrBlank()) errors += Issue("ALT_MISSING", page.id, language)
             }
         }
         // las preguntas: lo que citan existe en este texto, y sus textos en cada idioma de interfaz

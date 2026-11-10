@@ -19,6 +19,10 @@ data class ReadingDraft(
     val subtitle: String? = null,
     val summary: String,
     val paragraphs: List<DraftParagraph>,
+    // un libro ilustrado (ADR-0014): su maqueta por defecto y sus páginas, que reparten los párrafos
+    val format: ReadingFormat = ReadingFormat.TEXT,
+    val layout: PageLayout? = null,
+    val pages: List<DraftPage> = emptyList(),
 )
 
 data class DraftParagraph(
@@ -76,6 +80,7 @@ object ReadingAssembler {
                 if (sentence.text.isBlank()) problems += FieldViolation("paragraphs[$p].sentences[$s]", "must not be blank")
             }
         }
+        problems += PageRules.problems(draft)
         if (problems.isNotEmpty()) throw ValidationException("Invalid reading", problems)
         requireLength(draft.title, "title", 200)
         requireLength(draft.subtitle, "subtitle", 300)
@@ -113,15 +118,33 @@ object ReadingAssembler {
                     }
                 Paragraph(paragraphId, sentences)
             }
-        val content = ReadingContent(paragraphs)
+        val content =
+            ReadingContent(
+                paragraphs,
+                format = draft.format,
+                layout = draft.layout.takeIf { draft.format == ReadingFormat.PICTURE_BOOK },
+                pages = PageRules.resolve(draft, paragraphs),
+            )
         return AssembledVersion(content, translations, content.words.size, occurrences, unresolved, hash(draft))
     }
 
-    // la huella de lo que la persona lee: publicar dos veces lo mismo no crea otra versión
+    // la huella de lo que la persona lee: publicar dos veces lo mismo no crea otra versión. Un texto se resume como antes
+    // de que existieran los libros (sin formato ni páginas), para que su huella no cambie; la escena de una página es
+    // una nota para quien ilustra y no cuenta
     fun hash(draft: ReadingDraft): String {
+        val tree =
+            lesen.common.Jsonb.MAPPER
+                .valueToTree<tools.jackson.databind.node.ObjectNode>(
+                    draft.copy(
+                        featured = false,
+                        topics = draft.topics.sorted(),
+                        pages = draft.pages.map { page -> page.copy(illustration = page.illustration?.copy(scene = null)) },
+                    ),
+                )
+        if (draft.format == ReadingFormat.TEXT) tree.remove(listOf("format", "layout", "pages"))
         val canonical =
             lesen.common.Jsonb.MAPPER
-                .writeValueAsString(draft.copy(featured = false, topics = draft.topics.sorted()))
+                .writeValueAsString(tree)
         return MessageDigest.getInstance("SHA-256").digest(canonical.toByteArray()).joinToString("") { "%02x".format(it) }
     }
 }

@@ -2,6 +2,19 @@
 
 Lo entregado, lo más nuevo arriba.
 
+## 2026-11-10 — Fase 7, etapa 1 (backend): libros ilustrados
+
+- ADR-0014: formato `PICTURE_BOOK` además del texto, páginas y dobles páginas que reparten los párrafos sin cambiar sus
+  ids, una maqueta por defecto y otra por página del catálogo cerrado `PageLayout` (`PageRules`).
+- Esquema V8: `reading_version.format` (también inmutable) y `media.kind = ILLUSTRATION`. La huella de un texto no
+  cambia; la escena de una página no cuenta.
+- Contenido de una versión con `format`, `layout` y `pages` (ilustración con `src` y `alt`); ilustraciones públicas en
+  `public/illustrations/{archivo}`; tarjeta con `format` y filtro `format` en el catálogo.
+- Estudio: subida de ilustraciones (`studio/illustrations`), borradores de libros desde la versión vigente y
+  comprobación con `ILLUSTRATION_MISSING` y `ALT_MISSING`; un libro no se publica con una ilustración pendiente.
+- Demostración: «Ein Sonntag bei Oma» es un libro ilustrado de cinco páginas con ilustraciones SVG coherentes;
+  `tools/check_demo.py` valida páginas, maquetas, ilustraciones y textos alternativos.
+
 ## 2026-11-10 — Lecturas a medida, fase 1 (backend): prototipo y evaluación
 
 - ADR-0013 y capacidad `generation`: perfil de escritura (`GenerationContext`) sin datos que identifiquen a la persona,
