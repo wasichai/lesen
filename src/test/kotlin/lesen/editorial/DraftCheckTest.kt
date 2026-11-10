@@ -154,4 +154,35 @@ class DraftCheckTest {
         val free = DraftCheck.report(input(questions = listOf(tf(id = "q9")), unchanged = true, currentQuestions = listOf(tf()), answered = false))
         assertThat(free.ready).isTrue()
     }
+
+    @Test
+    fun `a picture book needs every illustration and its alt text in each interface language`() {
+        val book =
+            document.copy(
+                format = lesen.reading.ReadingFormat.PICTURE_BOOK,
+                layout = lesen.reading.PageLayout.IMAGE_TOP,
+                pages =
+                    listOf(
+                        lesen.reading.DraftPage(paragraphs = 1, illustration = lesen.reading.DraftIllustration("bild.png", mapOf("es" to "Una imagen"))),
+                    ),
+            )
+        val assembledBook = ReadingAssembler.assemble(book, UnicodeTokenizer(), FormResolver { if (it in known) "de:$it" else null })
+        val report =
+            DraftCheck.report(
+                CheckInput(
+                    "de",
+                    listOf("es", "en"),
+                    emptyList(),
+                    assembledBook,
+                    listOf(tf()),
+                    null,
+                    false,
+                    null,
+                    false,
+                    missingIllustrations = listOf("g2"),
+                ),
+            )
+        assertThat(report.ready).isFalse()
+        assertThat(report.errors).containsExactly(Issue("ILLUSTRATION_MISSING", "g2"), Issue("ALT_MISSING", "g1", "en"))
+    }
 }

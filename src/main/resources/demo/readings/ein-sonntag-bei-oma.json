@@ -143,5 +143,68 @@
         }
       ]
     }
+  ],
+  "format": "PICTURE_BOOK",
+  "layout": "IMAGE_TOP",
+  "pages": [
+    {
+      "span": 1,
+      "paragraphs": 1,
+      "illustration": {
+        "file": "ein-sonntag-bei-oma-1.svg",
+        "alt": {
+          "es": "Lena baja de un autobús amarillo delante de la casa pequeña de su abuela, que tiene el tejado rojo y un jardín verde.",
+          "en": "Lena gets off a yellow bus in front of her grandmother's small house, with a red roof and a green garden."
+        }
+      }
+    },
+    {
+      "span": 2,
+      "layout": "SPREAD_IMAGE_LEFT",
+      "paragraphs": 1,
+      "illustration": {
+        "file": "ein-sonntag-bei-oma-2.svg",
+        "alt": {
+          "es": "En la cocina, la abuela y Lena están a la mesa; en el centro hay un pastel rosa que todavía humea.",
+          "en": "In the kitchen, Grandma and Lena sit at the table; in the middle there is a pink cake, still steaming."
+        }
+      }
+    },
+    {
+      "span": 1,
+      "layout": "TEXT_OVER_IMAGE",
+      "paragraphs": 1,
+      "illustration": {
+        "file": "ein-sonntag-bei-oma-3.svg",
+        "alt": {
+          "es": "Una caja de madera vieja abierta; dentro asoma una foto. Lena y la abuela la miran.",
+          "en": "An old wooden box stands open with a photo peeking out. Lena and Grandma look at it."
+        }
+      }
+    },
+    {
+      "span": 1,
+      "layout": "IMAGE_ONLY",
+      "paragraphs": 0,
+      "illustration": {
+        "file": "ein-sonntag-bei-oma-4.svg",
+        "alt": {
+          "es": "La foto antigua: una chica joven se ríe montada en una bicicleta.",
+          "en": "The old photo: a young girl laughs as she rides a bicycle."
+        }
+      }
+    },
+    {
+      "span": 2,
+      "layout": "PANORAMA",
+      "paragraphs": 1,
+      "illustration": {
+        "file": "ein-sonntag-bei-oma-5.svg",
+        "alt": {
+          "es": "Al atardecer, la abuela se despide delante de su casa mientras Lena vuelve en el autobús amarillo.",
+          "en": "At sunset, Grandma waves goodbye in front of her house while Lena rides home on the yellow bus."
+        }
+      }
+    }
   ]
 }

@@ -1,4 +1,4 @@
-# ADR-0015 — Exportar lecturas: ePub del servidor y PDF desde el navegador
+# ADR-0017 — Exportar lecturas: ePub del servidor y PDF desde el navegador
 
 Estado: aceptada (2026-11-10)
 
@@ -27,6 +27,15 @@ se exporta cualquier lectura publicada; basta el permiso de leer.
   tiene traducción» (ADR-0005). `glossary` lista las entradas del diccionario curado que la publicación resolvió para
   las palabras del texto (lema, clase y hasta tres traducciones); si no hay ninguna, lo dice. `notes` añade las notas
   de quien llama, filtradas por su organización y su usuario.
+- **Libros ilustrados (ADR-0014)**:
+  - **Orden y contenido**: cada página es una sección en el orden de `pages`, con su ilustración (`<figure>` con
+    `<img>`) y sus párrafos debajo. `IMAGE_ONLY` lleva la imagen sola.
+  - **Maqueta**: no se reproduce la exacta, que los lectores de ePub no respetan. Una doble página (`span` 2) lleva
+    la imagen a todo el ancho y empieza página al imprimir.
+  - **Texto alternativo**: va en la lengua de la interfaz, con respaldo en inglés, y lleva su `lang`.
+  - **Bytes**: salen de `IllustrationFiles.read`, los SVG de la demostración y las imágenes subidas. Cada archivo
+    viaja una sola vez en el ePub (`OEBPS/illustrations/`) y va incrustado en la página para imprimir.
+  - **Ilustración que no se puede leer**: el documento lo dice en esa página, sin rellenarla con nada.
 - **Idiomas marcados**: el texto lleva el `lang` del idioma de estudio y las traducciones, rótulos y glosario el de la
   interfaz (es o en, ADR-0007), para que los lectores de pantalla y la separación silábica acierten.
 - **Permisos**: `access.reader()` para exportar; con `notes` además `access.notebook()` (403 si no se puede leer lo
@@ -40,6 +49,9 @@ se exporta cualquier lectura publicada; basta el permiso de leer.
 ## Consecuencias
 
 - Un endpoint nuevo, `GET readings/{slug}/versions/{n}/export?format=epub|html`, sin tablas ni migraciones.
+- **SVG en Kindle**: las ilustraciones y portadas de la demostración son SVG, que Apple Books muestra bien. Kindle
+  las muestra de forma irregular al convertir el ePub. Las imágenes subidas o generadas son PNG, JPEG o WebP, sin ese
+  problema. Si hiciera falta convertir los SVG a mapa de bits, se haría al publicar, no al exportar.
 - La hoja de estilos del documento vive en `XhtmlWriter.CSS`: sin fuentes incrustadas, cada aplicación usa las suyas.
 - Si un día hace falta un PDF del servidor (envíos por correo, impresión sin navegador), se añade otro escritor sobre el
   mismo `ExportDocument` con una ADR nueva.

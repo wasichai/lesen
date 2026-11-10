@@ -23,17 +23,28 @@ dl.glossary dd { margin: 0 0 0 1.2em; }
 .pos { font-weight: normal; font-style: italic; color: #4a4744; }
 blockquote { margin: 1em 0 0.3em; padding-left: 0.8em; border-left: 3px solid #b7b2ab; font-style: italic; }
 p.note { margin: 0 0 1em 1em; }
+figure.illustration { margin: 1.2em 0 0.8em; text-align: center; }
+figure.illustration img { max-width: 100%; max-height: 70vh; }
+section.page.wide figure.illustration img { width: 100%; max-height: none; }
+p.missing-illustration { font-family: system-ui, sans-serif; font-size: 0.85em; color: #4a4744; font-style: italic; }
 footer { margin: 2.5em 0 1em; font-family: system-ui, sans-serif; font-size: 0.8em; color: #4a4744; }
 @media print {
   body { margin: 0; font-size: 11pt; }
   h2 { break-before: page; }
   h2.first { break-before: auto; }
+  section.page { break-inside: avoid; }
+  section.page.wide { break-before: page; }
   p.text, p.translation, dl.glossary dt, dl.glossary dd, blockquote, p.note { break-inside: avoid; }
 }
 """
 
     // el texto de la lectura, con la traducción bajo cada párrafo si se pidió
-    fun text(doc: ExportDocument): String = page(doc, doc.title, doc.language, readingBody(doc, coverSrc = null) + footer(doc))
+    fun text(doc: ExportDocument): String = page(doc, doc.title, doc.language, readingBody(doc, coverSrc = null) { illustrationPath(it) } + footer(doc))
+
+    // dónde va cada ilustración dentro del ePub
+    fun illustrationPath(image: ExportImage) = "illustrations/${image.file}"
+
+    private fun dataUri(image: ExportImage) = "data:${image.contentType};base64,${Base64.getEncoder().encodeToString(image.bytes)}"
 
     fun glossary(doc: ExportDocument): String = page(doc, doc.labels.glossary, doc.labels.language, glossaryBody(doc, first = true))
 
@@ -46,10 +57,9 @@ footer { margin: 2.5em 0 1em; font-family: system-ui, sans-serif; font-size: 0.8
 
     // una sola página con todo, para imprimir o guardar como PDF: la portada va incrustada para no pedir nada más
     fun printable(doc: ExportDocument): String {
-        val src = doc.cover?.let { "data:${it.contentType};base64,${Base64.getEncoder().encodeToString(it.bytes)}" }
         val body =
             buildString {
-                append(readingBody(doc, src))
+                append(readingBody(doc, doc.cover?.let(::dataUri), ::dataUri))
                 if (doc.options.glossary) append(glossaryBody(doc, first = false))
                 if (doc.options.notes) append(notesBody(doc, first = false))
                 append(footer(doc))
@@ -100,6 +110,7 @@ $body
     private fun readingBody(
         doc: ExportDocument,
         coverSrc: String?,
+        imageSrc: (ExportImage) -> String,
     ): String =
         buildString {
             val study = esc(doc.language)
@@ -109,17 +120,43 @@ $body
             append("<h1>${esc(doc.title)}</h1>\n")
             doc.subtitle?.takeIf { it.isNotBlank() }?.let { append("<p class=\"subtitle\">${esc(it)}</p>\n") }
             append("<p class=\"meta\" lang=\"$ui\" xml:lang=\"$ui\">${esc(doc.labels.level)} ${esc(doc.level)}</p>\n")
-            doc.paragraphs.forEach { p ->
-                append("<p class=\"text\" id=\"${esc(p.id)}\">${esc(p.text)}</p>\n")
-                if (doc.options.translations) {
-                    if (p.translation != null) {
-                        append("<p class=\"translation\" lang=\"$ui\" xml:lang=\"$ui\">${esc(p.translation)}</p>\n")
-                    } else {
-                        append("<p class=\"translation missing\" lang=\"$ui\" xml:lang=\"$ui\">${esc(doc.labels.noTranslation)}</p>\n")
+            val pages = doc.pages
+            if (pages == null) {
+                doc.paragraphs.forEach { append(paragraph(doc, it)) }
+            } else {
+                // un libro ilustrado (ADR-0014): cada página con su ilustración y sus párrafos, en el orden de lectura.
+                // La maqueta exacta no se reproduce; una doble página lleva la imagen a todo el ancho
+                pages.forEach { page ->
+                    append("<section class=\"page${if (page.wide) " wide" else ""}\" id=\"${esc(page.id)}\">\n")
+                    page.illustration?.let {
+                        append(
+                            "<figure class=\"illustration\"><img src=\"${esc(
+                                imageSrc(it),
+                            )}\" alt=\"${esc(page.alt)}\" lang=\"$ui\" xml:lang=\"$ui\"/></figure>\n",
+                        )
                     }
+                    if (page.missing) append("<p class=\"missing-illustration\" lang=\"$ui\" xml:lang=\"$ui\">${esc(doc.labels.illustrationMissing)}</p>\n")
+                    page.paragraphs.forEach { append(paragraph(doc, it)) }
+                    append("</section>\n")
                 }
             }
             append("</section>\n")
+        }
+
+    private fun paragraph(
+        doc: ExportDocument,
+        p: ExportParagraph,
+    ): String =
+        buildString {
+            val ui = esc(doc.labels.language)
+            append("<p class=\"text\" id=\"${esc(p.id)}\">${esc(p.text)}</p>\n")
+            if (doc.options.translations) {
+                if (p.translation != null) {
+                    append("<p class=\"translation\" lang=\"$ui\" xml:lang=\"$ui\">${esc(p.translation)}</p>\n")
+                } else {
+                    append("<p class=\"translation missing\" lang=\"$ui\" xml:lang=\"$ui\">${esc(doc.labels.noTranslation)}</p>\n")
+                }
+            }
         }
 
     private fun glossaryBody(

@@ -8,7 +8,7 @@ import java.util.zip.CRC32
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
-// empaqueta una lectura como ePub 3 (ADR-0014) con java.util.zip del JDK: lo abren Apple Books, Kindle (Send to Kindle
+// empaqueta una lectura como ePub 3 (ADR-0017) con java.util.zip del JDK: lo abren Apple Books, Kindle (Send to Kindle
 // acepta ePub) y cualquier lector. El contenedor exige que "mimetype" sea la primera entrada y vaya sin comprimir
 object EpubWriter {
     const val MEDIA_TYPE = "application/epub+zip"
@@ -25,6 +25,7 @@ object EpubWriter {
                 deflated(zip, "OEBPS/images/cover.${cover.extension}", cover.bytes)
                 deflated(zip, "OEBPS/cover.xhtml", XhtmlWriter.cover(doc, "images/cover.${cover.extension}"))
             }
+            doc.illustrations.forEach { deflated(zip, "OEBPS/${XhtmlWriter.illustrationPath(it)}", it.bytes) }
             deflated(zip, "OEBPS/text.xhtml", XhtmlWriter.text(doc))
             if (doc.options.glossary) deflated(zip, "OEBPS/glossary.xhtml", XhtmlWriter.glossary(doc))
             if (doc.options.notes) deflated(zip, "OEBPS/notes.xhtml", XhtmlWriter.notes(doc))
@@ -42,6 +43,14 @@ object EpubWriter {
                     append("""    <item id="cover-image" href="images/cover.${it.extension}" media-type="${esc(it.contentType)}" properties="cover-image"/>""")
                     append('\n')
                     append("""    <item id="cover" href="cover.xhtml" media-type="application/xhtml+xml"/>""").append('\n')
+                }
+                doc.illustrations.forEachIndexed { i, image ->
+                    append(
+                        "    <item id=\"illustration-${i + 1}\" href=\"${esc(
+                            XhtmlWriter.illustrationPath(image),
+                        )}\" media-type=\"${esc(image.contentType)}\"/>",
+                    )
+                    append('\n')
                 }
                 XhtmlWriter.sections(doc).forEach { (file, _, _) ->
                     append("""    <item id="${file.substringBefore('.')}" href="$file" media-type="application/xhtml+xml"/>""").append('\n')

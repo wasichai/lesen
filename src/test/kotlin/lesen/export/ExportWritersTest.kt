@@ -1,5 +1,8 @@
 package lesen.export
 
+import lesen.reading.Illustration
+import lesen.reading.Page
+import lesen.reading.PageLayout
 import lesen.reading.Paragraph
 import lesen.reading.ReadingContent
 import lesen.reading.Sentence
@@ -30,7 +33,8 @@ class ExportWritersTest {
 
     private fun doc(
         options: ExportOptions = ExportOptions(translations = true, glossary = true, notes = true),
-        cover: ExportCover? = ExportCover("x.svg", "image/svg+xml", "<svg xmlns=\"http://www.w3.org/2000/svg\"/>".toByteArray()),
+        cover: ExportImage? = ExportImage("x.svg", "image/svg+xml", "<svg xmlns=\"http://www.w3.org/2000/svg\"/>".toByteArray()),
+        pages: List<Page>? = null,
     ) = ExportDocument(
         slug = "x",
         version = 2,
@@ -41,6 +45,13 @@ class ExportWritersTest {
         summary = "Kurz.",
         cover = cover,
         paragraphs = ExportParagraphs.of(content, emptyMap(), mapOf("p1s1" to "Mia lee.", "p1s2" to "Ríe."), options.translations),
+        pages =
+            ExportParagraphs.pages(
+                pages,
+                ExportParagraphs.of(content, emptyMap(), emptyMap(), false),
+                mapOf("bild-1.png" to ExportImage("bild-1.png", "image/png", byteArrayOf(1, 2, 3))),
+                "es",
+            ),
         options = options,
         glossary = listOf(GlossaryItem("lachen", "VERB", listOf("reír"))),
         notes = listOf(ExportNote("Sie lacht.", "¡Bonito!")),
@@ -115,6 +126,42 @@ class ExportWritersTest {
         assertThat(opf).contains("<meta property=\"dcterms:modified\">2026-11-10T10:15:30Z</meta>")
         assertThat(opf).contains("properties=\"cover-image\"")
         assertThat(opf).contains("<itemref idref=\"text\"/>").contains("<itemref idref=\"glossary\"/>").contains("<itemref idref=\"notes\"/>")
+    }
+
+    private val book =
+        listOf(
+            Page("g1", 1, PageLayout.IMAGE_TOP, listOf("p1"), Illustration("bild-1.png", mapOf("es" to "Mia lee", "en" to "Mia reads"))),
+            Page("g2", 2, PageLayout.IMAGE_ONLY, emptyList(), Illustration("bild-2.png", mapOf("en" to "A garden"))),
+            Page("g3", 1, PageLayout.TEXT_ONLY, listOf("p2"), null),
+        )
+
+    @Test
+    fun `a picture book keeps the reading order, its alt text and says when an illustration is missing`() {
+        val pages = doc(pages = book).pages!!
+        assertThat(pages.map { it.id }).containsExactly("g1", "g2", "g3")
+        assertThat(pages.map { it.paragraphs.map { p -> p.id } }).containsExactly(listOf("p1"), emptyList(), listOf("p2"))
+        assertThat(pages.map { it.alt }).containsExactly("Mia lee", "A garden", "")
+        assertThat(pages.map { it.missing }).containsExactly(false, true, false)
+        assertThat(pages[1].wide).isTrue
+        assertThat(ExportParagraphs.pages(null, emptyList(), emptyMap(), "es")).isNull()
+
+        val html = XhtmlWriter.printable(doc(pages = book))
+        assertThat(html).contains("<section class=\"page\" id=\"g1\">").contains("<section class=\"page wide\" id=\"g2\">")
+        assertThat(html).contains("src=\"data:image/png;base64,AQID\" alt=\"Mia lee\" lang=\"es\"")
+        assertThat(html).contains("No pudimos incluir la ilustración de esta página.")
+        assertThat(html.indexOf("id=\"g1\"")).isLessThan(html.indexOf("id=\"p1\"")).isLessThan(html.indexOf("id=\"g3\""))
+    }
+
+    @Test
+    fun `the epub carries each illustration once and lists it in the package`() {
+        val entries = mutableListOf<String>()
+        ZipInputStream(ByteArrayInputStream(EpubWriter.write(doc(pages = book)))).use { zip ->
+            generateSequence { zip.nextEntry }.forEach { entries += it.name }
+        }
+        assertThat(entries).containsOnlyOnce("OEBPS/illustrations/bild-1.png").doesNotContain("OEBPS/illustrations/bild-2.png")
+        val opf = EpubWriter.opf(doc(pages = book))
+        assertThat(opf).contains("href=\"illustrations/bild-1.png\" media-type=\"image/png\"")
+        assertThat(XhtmlWriter.text(doc(pages = book))).contains("<img src=\"illustrations/bild-1.png\" alt=\"Mia lee\"")
     }
 
     @Test

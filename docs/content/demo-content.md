@@ -9,16 +9,17 @@ léxico de su idioma (la misma regla de palabra que `lesen.reading.Tokenizer`). 
 
 ## Archivos
 
-| Archivo                     | Contenido                                                                          |
-| --------------------------- | ---------------------------------------------------------------------------------- |
-| `topics.json`               | Árbol de temas: `[{slug, labels: {es, en}, children: [{slug, labels}]}]`           |
-| `collections.json`          | `[{slug, labels: {es, en}, descriptions: {es, en}, readings: [slug…]}]`            |
-| `readings/<slug>.json`      | Una lectura (forma abajo)                                                          |
-| `lexicon/<idioma>.jsonl`    | Diccionario curado del idioma de estudio, una entrada JSON por línea (forma abajo) |
-| `covers/<archivo>.svg`      | Portada original, 600×800, sin texto incrustado                                    |
-| `audio/<slug>.mp3`          | Narración generada con eSpeak NG (`tools/generate_audio.py`, ADR-0008)             |
-| `audio/<slug>.timings.json` | Voz, duración y `timings`: id de token → `[inicio, fin]` en milisegundos           |
-| `assessments/<slug>.json`   | Preguntas de comprensión de la lectura (forma abajo)                               |
+| Archivo                       | Contenido                                                                                  |
+| ----------------------------- | ------------------------------------------------------------------------------------------ |
+| `topics.json`                 | Árbol de temas: `[{slug, labels: {es, en}, children: [{slug, labels}]}]`                   |
+| `collections.json`            | `[{slug, labels: {es, en}, descriptions: {es, en}, readings: [slug…]}]`                    |
+| `readings/<slug>.json`        | Una lectura (forma abajo)                                                                  |
+| `lexicon/<idioma>.jsonl`      | Diccionario curado del idioma de estudio, una entrada JSON por línea (forma abajo)         |
+| `covers/<archivo>.svg`        | Portada original, 600×800, sin texto incrustado                                            |
+| `illustrations/<archivo>.svg` | Ilustración de una página de un libro (ADR-0014), sin texto; mismas reglas que una portada |
+| `audio/<slug>.mp3`            | Narración generada con eSpeak NG (`tools/generate_audio.py`, ADR-0008)                     |
+| `audio/<slug>.timings.json`   | Voz, duración y `timings`: id de token → `[inicio, fin]` en milisegundos                   |
+| `assessments/<slug>.json`     | Preguntas de comprensión de la lectura (forma abajo)                                       |
 
 ## Lectura
 
@@ -137,3 +138,11 @@ los imprime).
 | `MATCHING`                                            | `left` y `right` (`{id, text}`, al menos 3) y `pairs` (id de `left` → id de `right`)                                                                                                   | `{"pairs": {"1": "x"}}`       |
 | `ORDERING`                                            | `items` (3–6, presentados en un orden que no es el correcto) y `order` (ids en el orden correcto)                                                                                      | `{"order": ["c", "a", "b"]}`  |
 | `SHORT_ANSWER`                                        | `model` (respuesta modelo) y `rubric` (qué debe contener), los dos en cada idioma de interfaz                                                                                          | `{"text": "…"}`               |
+
+## Libros ilustrados
+
+Una lectura puede ser un libro ilustrado (ADR-0014): `"format": "PICTURE_BOOK"`, la maqueta del libro en `layout` y sus
+páginas en `pages`, cada una con `span` (1 o 2), su `layout` si no es la del libro, cuántos `paragraphs` consecutivos
+lleva y su `illustration` (`file` en `illustrations/` y `alt` en es y en). El texto, sus traducciones, el audio y las
+preguntas son los de siempre. «Ein Sonntag bei Oma» es el ejemplo: los mismos personajes (Lena con abrigo verde
+azulado, la abuela con chaqueta terracota y gafas) y la paleta de su portada en las cinco ilustraciones.

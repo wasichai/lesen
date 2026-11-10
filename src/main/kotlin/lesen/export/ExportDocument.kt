@@ -1,5 +1,6 @@
 package lesen.export
 
+import lesen.reading.Page
 import lesen.reading.Paragraph
 import lesen.reading.ReadingContent
 import java.time.Instant
@@ -11,14 +12,15 @@ data class ExportOptions(
     val notes: Boolean,
 )
 
-data class ExportCover(
+// una imagen que viaja dentro del documento: la portada o la ilustración de una página
+data class ExportImage(
     val file: String,
     val contentType: String,
     val bytes: ByteArray,
 ) {
     val extension get() = file.substringAfterLast('.')
 
-    override fun equals(other: Any?) = other is ExportCover && other.file == file && other.contentType == contentType && other.bytes.contentEquals(bytes)
+    override fun equals(other: Any?) = other is ExportImage && other.file == file && other.contentType == contentType && other.bytes.contentEquals(bytes)
 
     override fun hashCode() = 31 * file.hashCode() + bytes.contentHashCode()
 }
@@ -28,6 +30,17 @@ data class ExportParagraph(
     val id: String,
     val text: String,
     val translation: String?,
+)
+
+// una página de un libro ilustrado (ADR-0014), en el orden de lectura. wide: una doble página, con la imagen a todo el
+// ancho. illustration: null si la maqueta no lleva; missing: la lleva pero su archivo no se pudo leer, y se dice
+data class ExportPage(
+    val id: String,
+    val wide: Boolean,
+    val paragraphs: List<ExportParagraph>,
+    val illustration: ExportImage?,
+    val alt: String,
+    val missing: Boolean,
 )
 
 data class GlossaryItem(
@@ -51,8 +64,10 @@ data class ExportDocument(
     val title: String,
     val subtitle: String?,
     val summary: String,
-    val cover: ExportCover?,
+    val cover: ExportImage?,
     val paragraphs: List<ExportParagraph>,
+    // las páginas de un libro ilustrado; null en un texto
+    val pages: List<ExportPage>?,
     val options: ExportOptions,
     val glossary: List<GlossaryItem>,
     val notes: List<ExportNote>,
@@ -62,6 +77,9 @@ data class ExportDocument(
     val identifier get() = "urn:lesen:$slug:v$version"
 
     val fileName get() = "$slug-v$version"
+
+    // las ilustraciones que viajan en el documento, una vez cada una
+    val illustrations get() = pages.orEmpty().mapNotNull { it.illustration }.distinctBy { it.file }
 }
 
 // los rótulos del documento en las dos lenguas de la interfaz (ADR-0007)
@@ -77,6 +95,7 @@ data class ExportLabels(
     val cover: String,
     val level: String,
     val source: String,
+    val illustrationMissing: String,
 ) {
     companion object {
         fun of(language: String): ExportLabels =
@@ -93,6 +112,7 @@ data class ExportLabels(
                     "Portada",
                     "Nivel",
                     "Exportado de Lesen",
+                    "No pudimos incluir la ilustración de esta página.",
                 )
             } else {
                 ExportLabels(
@@ -107,6 +127,7 @@ data class ExportLabels(
                     "Cover",
                     "Level",
                     "Exported from Lesen",
+                    "We could not include the illustration of this page.",
                 )
             }
     }
@@ -135,6 +156,34 @@ object ExportParagraphs {
         paragraphs[paragraph.id]?.let { return it }
         val parts = paragraph.sentences.map { sentences[it.id] ?: return null }
         return parts.joinToString(" ").takeIf { it.isNotBlank() }
+    }
+
+    // las páginas de un libro en el orden de lectura, con sus párrafos y su ilustración. images: los bytes leídos por
+    // nombre de archivo (falta uno: la página lo dice). alt: el de la lengua de la interfaz o, si falta, el inglés
+    fun pages(
+        pages: List<Page>?,
+        paragraphs: List<ExportParagraph>,
+        images: Map<String, ExportImage>,
+        language: String,
+    ): List<ExportPage>? {
+        if (pages == null) return null
+        val byId = paragraphs.associateBy { it.id }
+        return pages.map { page ->
+            val file = page.illustration?.file
+            val alt =
+                page.illustration
+                    ?.alt
+                    ?.let { it[language] ?: it["en"] ?: it.values.firstOrNull() }
+                    .orEmpty()
+            ExportPage(
+                id = page.id,
+                wide = page.span == 2,
+                paragraphs = page.paragraphs.mapNotNull { byId[it] },
+                illustration = file?.let { images[it] },
+                alt = alt,
+                missing = file != null && images[file] == null,
+            )
+        }
     }
 
     // las entradas del diccionario que la publicación resolvió para las palabras del texto, sin repetir

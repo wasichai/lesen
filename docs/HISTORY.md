@@ -4,10 +4,25 @@ Lo entregado, lo más nuevo arriba.
 
 ## 2026-11-10 — Exportar lecturas (backend)
 
-- ADR-0015 y capacidad `export`: `GET readings/{slug}/versions/{n}/export` devuelve la lectura como ePub 3 (armado con
+- ADR-0017 y capacidad `export`: `GET readings/{slug}/versions/{n}/export` devuelve la lectura como ePub 3 (armado con
   `java.util.zip`, para Apple Books y Kindle por «Send to Kindle») o como página HTML para imprimir o guardar como PDF.
 - Opciones: traducción bajo cada párrafo (o se dice que falta), glosario con las entradas del diccionario curado y notas
   propias (exigen el cuaderno). Idiomas marcados con `lang`, `no-store`, CSP sin scripts.
+- Libros ilustrados: una sección por página en el orden de lectura, con su ilustración y su texto alternativo en la
+  lengua de la interfaz; una doble página con la imagen a todo el ancho; si falta una ilustración, el documento lo dice.
+
+## 2026-11-10 — Fase 7, etapa 1 (backend): libros ilustrados
+
+- ADR-0014: formato `PICTURE_BOOK` además del texto, páginas y dobles páginas que reparten los párrafos sin cambiar sus
+  ids, una maqueta por defecto y otra por página del catálogo cerrado `PageLayout` (`PageRules`).
+- Esquema V8: `reading_version.format` (también inmutable) y `media.kind = ILLUSTRATION`. La huella de un texto no
+  cambia; la escena de una página no cuenta.
+- Contenido de una versión con `format`, `layout` y `pages` (ilustración con `src` y `alt`); ilustraciones públicas en
+  `public/illustrations/{archivo}`; tarjeta con `format` y filtro `format` en el catálogo.
+- Estudio: subida de ilustraciones (`studio/illustrations`), borradores de libros desde la versión vigente y
+  comprobación con `ILLUSTRATION_MISSING` y `ALT_MISSING`; un libro no se publica con una ilustración pendiente.
+- Demostración: «Ein Sonntag bei Oma» es un libro ilustrado de cinco páginas con ilustraciones SVG coherentes;
+  `tools/check_demo.py` valida páginas, maquetas, ilustraciones y textos alternativos.
 
 ## 2026-11-10 — Lecturas a medida, fase 1 (backend): prototipo y evaluación
 

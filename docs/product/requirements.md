@@ -56,7 +56,8 @@ La columna «Entrega» dice en qué fase se construye. Lo de la primera entrega 
 | RF-LEC-08 | Resaltar palabras desconocidas y aprendidas                                                                           | 4       |
 | RF-LEC-09 | Avance, tiempo restante, posición guardada y restaurada al volver                                                     | 1       |
 | RF-LEC-10 | Marcar para después, guardar una oración con nota, terminar la lectura                                                | 1       |
-| RF-LEC-11 | Exportar a ePub (Kindle, Apple Books) o imprimir y guardar como PDF, eligiendo incluir traducciones, glosario y notas | 7       |
+| RF-LEC-11 | Libro ilustrado: página a página (doble página en escritorio), maqueta por página, ilustración con texto alternativo  | 7       |
+| RF-LEC-12 | Exportar a ePub (Kindle, Apple Books) o imprimir y guardar como PDF, eligiendo incluir traducciones, glosario y notas | 7       |
 
 ### Audio sincronizado (fase 3)
 
@@ -93,7 +94,8 @@ versión leída.
 
 RF-PRO (fase 5): panel de lectura, vocabulario y comprensión que distingue lo medido de lo estimado; metas diarias,
 rachas amables que no castigan, logros. RF-EDI (fase 6): estudio editorial con borrador, revisión, publicación
-versionada, traducciones, audio y alineación, preguntas y validación antes de publicar.
+versionada, traducciones, audio y alineación, preguntas y validación antes de publicar. RF-EDI (fase 7): libros
+ilustrados con páginas, maquetas e ilustraciones (ADR-0014), y su generación desde el estudio.
 
 ## Requisitos no funcionales
 

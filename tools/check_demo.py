@@ -102,6 +102,7 @@ def main() -> int:
         for field in ("title", "summary"):
             if not r.get(field):
                 problems.append(f"{name}: falta {field}")
+        check_pages(name, r, problems)
         targets = [l for l in UI_LANGUAGES if l != lang]
         for pi, p in enumerate(r.get("paragraphs", []), 1):
             for l in targets:
@@ -159,6 +160,58 @@ def main() -> int:
         print(p)
     print(f"{len(slugs)} lecturas, {sum(len(f) for f in lexicon.values())} formas, {len(problems)} problemas")
     return 1 if problems else 0
+
+
+# el catálogo de maquetas de lesen.reading.PageLayout: los anchos que admite, si lleva ilustración y si va sin texto
+LAYOUTS = {
+    "IMAGE_TOP": ({1}, True, False),
+    "IMAGE_BOTTOM": ({1}, True, False),
+    "TEXT_OVER_IMAGE": ({1, 2}, True, False),
+    "VIGNETTE": ({1}, True, False),
+    "TEXT_ONLY": ({1}, False, False),
+    "IMAGE_ONLY": ({1, 2}, True, True),
+    "SPREAD_IMAGE_LEFT": ({2}, True, False),
+    "SPREAD_IMAGE_RIGHT": ({2}, True, False),
+    "PANORAMA": ({2}, True, False),
+}
+
+
+def check_pages(name: str, r: dict, problems: list[str]) -> None:
+    """Un libro ilustrado (ADR-0014): sus páginas reparten todos los párrafos, cada maqueta cabe en su ancho y cada
+    ilustración es un SVG de demo/illustrations con su texto alternativo en cada idioma de interfaz."""
+    fmt = r.get("format", "TEXT")
+    if fmt == "TEXT":
+        if r.get("pages") or r.get("layout"):
+            problems.append(f"{name}: un texto no lleva páginas ni maqueta")
+        return
+    if fmt != "PICTURE_BOOK":
+        problems.append(f"{name}: formato desconocido {fmt}")
+        return
+    default = r.get("layout")
+    if default not in LAYOUTS:
+        problems.append(f"{name}: maqueta del libro desconocida {default}")
+        return
+    pages = r.get("pages") or []
+    if sum(p.get("paragraphs", 0) for p in pages) != len(r.get("paragraphs", [])):
+        problems.append(f"{name}: las páginas no reparten todos los párrafos")
+    illustrations = {p.name for p in (ROOT / "illustrations").glob("*.svg")}
+    for gi, page in enumerate(pages, 1):
+        layout = page.get("layout") or default
+        if layout not in LAYOUTS:
+            problems.append(f"{name}: página {gi} con maqueta desconocida {layout}")
+            continue
+        spans, illustrated, textless = LAYOUTS[layout]
+        if page.get("span", 1) not in spans:
+            problems.append(f"{name}: página {gi}: {layout} no cabe en {page.get('span', 1)} página(s)")
+        if textless != (page.get("paragraphs", 0) == 0):
+            problems.append(f"{name}: página {gi}: {layout} {'va sin' if textless else 'necesita'} texto")
+        if illustrated:
+            ill = page.get("illustration") or {}
+            if ill.get("file") not in illustrations:
+                problems.append(f"{name}: página {gi} sin ilustración en demo/illustrations ({ill.get('file')})")
+            for lang in UI_LANGUAGES:
+                if not (ill.get("alt") or {}).get(lang, "").strip():
+                    problems.append(f"{name}: página {gi} sin texto alternativo {lang}")
 
 
 CHOICE = {"MULTIPLE_CHOICE", "MAIN_IDEA", "INFERENCE", "DETAIL", "VOCABULARY_IN_CONTEXT"}

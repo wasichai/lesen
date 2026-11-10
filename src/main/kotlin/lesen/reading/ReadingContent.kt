@@ -3,8 +3,12 @@ package lesen.reading
 // el contenido congelado de una versión publicada (ADR-0004). Los ids son estables dentro de la versión: p3 (párrafo),
 // p3s2 (oración), p3s2t5 (token). Lo que guarda la persona (posición, notas, vocabulario) apunta a ellos junto con el
 // número de versión, y la sincronización de audio (fase 3) les asignará tiempos sin tocar el texto
+// format, layout y pages: los de un libro ilustrado (ADR-0014); un texto no los lleva
 data class ReadingContent(
     val paragraphs: List<Paragraph>,
+    val format: ReadingFormat = ReadingFormat.TEXT,
+    val layout: PageLayout? = null,
+    val pages: List<Page>? = null,
 ) {
     val sentences: List<Sentence> get() = paragraphs.flatMap { it.sentences }
     val words: List<Token> get() = sentences.flatMap { s -> s.tokens.filter { it.kind == TokenKind.WORD } }

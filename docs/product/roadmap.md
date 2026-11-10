@@ -12,6 +12,7 @@ por terminada porque una pantalla exista.
 | 4    | Comprensión (diez tipos de pregunta, evaluación determinista y asistida), repaso espaciado FSRS, encuentros | Una lectura con preguntas evaluadas y explicadas; un repaso que cambia la próxima fecha de cada palabra    | Hecha    |
 | 5    | Panel de progreso, metas, rachas amables, logros, recomendación con historial, colecciones propias          | El panel separa lo medido de lo estimado y ninguna métrica castiga un día sin leer                         | Hecha    |
 | 6    | Estudio editorial, gestión de traducciones y audio, validación, publicación, operación                      | Una editora publica una lectura nueva con audio y preguntas sin tocar JSON; versiones e historial          | En curso |
+| 7    | Libros ilustrados: páginas con maqueta, ilustraciones coherentes generadas, lecturas a medida con cuota     | Una editora genera y publica un libro ilustrado; una persona pide el suyo y lo lee página a página         | En curso |
 
 ## Próximos pasos concretos
 

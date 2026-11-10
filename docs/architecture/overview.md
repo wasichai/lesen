@@ -76,7 +76,7 @@ flowchart BT
 | `editorial`  | Estudio: borradores, comprobación, revisión, publicación con audio y preguntas, historial, diccionario   |
 | `demo`       | Carga del contenido de demostración a través de la publicación real                                      |
 | `generation` | Lecturas a medida: perfil de escritura, escritura con Claude, comprobación y correcciones (ADR-0013)     |
-| `export`     | Exportar una lectura como ePub o como página para imprimir o guardar como PDF (ADR-0015)                 |
+| `export`     | Exportar una lectura como ePub o como página para imprimir o guardar como PDF (ADR-0017)                 |
 
 `vocabulary` también lleva el repaso FSRS y los encuentros: `library` le avisa al terminar una lectura por
 `ReadingCompletionListener`, una interfaz de `reading`, sin depender de ella. Del mismo modo, `library`, `vocabulary` y

@@ -225,6 +225,10 @@ class CatalogStore(
             clauses += "r.slug = ANY(:slugs)"
             binds["slugs"] = it.toTypedArray()
         }
+        query.format?.let {
+            clauses += "v.format = :format"
+            binds["format"] = it.name
+        }
         query.featured?.let {
             clauses += "r.featured = :featured"
             binds["featured"] = it
@@ -276,6 +280,7 @@ class CatalogStore(
                     )
                 },
             readers = row.get("readers", Number::class.java)!!.toLong(),
+            format = row.get("format", String::class.java)!!,
         )
     }
 
@@ -285,7 +290,7 @@ class CatalogStore(
         private val CARD_SELECT =
             """
             SELECT r.slug, r.language, r.level, r.featured, v.number, v.title, v.subtitle, v.summary, v.cover, v.accent,
-                   v.word_count, v.minutes, v.published_at,
+                   v.word_count, v.minutes, v.published_at, v.format,
                    (SELECT array_agg(t.topic_slug ORDER BY t.position) FROM lesen.reading_topic t WHERE t.reading_id = r.id) AS topics,
                    p.percent, p.version_number AS progress_version, p.completed_at, p.updated_at AS progress_at,
                    (b.reading_id IS NOT NULL) AS bookmarked,

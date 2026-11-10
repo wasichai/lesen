@@ -6,6 +6,7 @@ import lesen.common.Media
 import lesen.common.MediaKind
 import lesen.dictionary.DictionaryService
 import lesen.library.LibraryService
+import lesen.reading.IllustrationFiles
 import lesen.reading.ReadingVersions
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.CacheControl
@@ -33,6 +34,7 @@ class ExportService(
     private val dictionary: DictionaryService,
     private val library: LibraryService,
     private val media: Media,
+    private val illustrations: IllustrationFiles,
     private val clock: Clock,
 ) {
     suspend fun document(
@@ -80,6 +82,7 @@ class ExportService(
             summary = meta.summary,
             cover = meta.cover?.let { cover(it) },
             paragraphs = paragraphs,
+            pages = ExportParagraphs.pages(content.pages, paragraphs, images(content), into),
             options = options,
             glossary = glossary,
             notes = notes,
@@ -88,15 +91,24 @@ class ExportService(
         )
     }
 
+    // los bytes de cada ilustración del libro (ADR-0014); la que no se puede leer queda fuera y el documento lo dice
+    private suspend fun images(content: lesen.reading.ReadingContent): Map<String, ExportImage> =
+        content.pages
+            .orEmpty()
+            .mapNotNull { it.illustration?.file }
+            .distinct()
+            .mapNotNull { file -> illustrations.read(file)?.let { file to ExportImage(file, it.contentType, it.bytes) } }
+            .toMap()
+
     // la portada de la demostración (SVG sin texto, del classpath) o la subida desde el estudio; si no está, sin portada
-    private suspend fun cover(file: String): ExportCover? {
+    private suspend fun cover(file: String): ExportImage? {
         if (!COVER.matches(file)) return null
         if (file.endsWith(".svg")) {
             val resource = ClassPathResource("demo/covers/$file").takeIf { it.exists() } ?: return null
-            return ExportCover(file, "image/svg+xml", resource.inputStream.use { it.readAllBytes() })
+            return ExportImage(file, "image/svg+xml", resource.inputStream.use { it.readAllBytes() })
         }
         val stored = media.find(file)?.takeIf { it.kind == MediaKind.COVER } ?: return null
-        return media.bytes(stored)?.let { ExportCover(file, stored.contentType, it) }
+        return media.bytes(stored)?.let { ExportImage(file, stored.contentType, it) }
     }
 
     companion object {
@@ -104,7 +116,7 @@ class ExportService(
     }
 }
 
-// exportar una lectura para abrirla en otras aplicaciones (ADR-0014): ePub para Apple Books, Kindle y demás, o una página
+// exportar una lectura para abrirla en otras aplicaciones (ADR-0017): ePub para Apple Books, Kindle y demás, o una página
 // para imprimir o guardar como PDF. Basta poder leer; las notas exigen además poder leer lo propio
 @RestController
 @RequestMapping("/api/lesen")

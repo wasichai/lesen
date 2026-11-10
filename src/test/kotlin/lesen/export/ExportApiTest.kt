@@ -13,11 +13,12 @@ class ExportApiTest : LesenApiTest() {
     private fun download(
         query: String,
         token: String,
+        slug: String = "der-alte-leuchtturm",
     ): Pair<HttpHeaders, ByteArray> {
         val result =
             client
                 .get()
-                .uri("$base?$query")
+                .uri("/api/lesen/readings/$slug/versions/1/export?$query")
                 .header("Authorization", token)
                 .exchange()
                 .expectStatus()
@@ -69,6 +70,24 @@ class ExportApiTest : LesenApiTest() {
             .doesNotContain("Nota para exportar")
             .doesNotContain("Glossary")
         assertThat(html).doesNotContain("class=\"translation")
+    }
+
+    @Test
+    fun `a picture book exports its pages with their illustrations and alt text in order`() {
+        val token = lena()
+        ensureProfile(token)
+        val (_, bytes) = download("format=epub&language=en", token, "ein-sonntag-bei-oma")
+        val entries = linkedMapOf<String, String>()
+        ZipInputStream(ByteArrayInputStream(bytes)).use { zip ->
+            generateSequence { zip.nextEntry }.forEach { entries[it.name] = String(zip.readAllBytes()) }
+        }
+        val illustrations = entries.keys.filter { it.startsWith("OEBPS/illustrations/") }
+        assertThat(illustrations).isNotEmpty.allMatch { it.endsWith(".svg") }
+        val text = entries.getValue("OEBPS/text.xhtml")
+        assertThat(text).contains("<section class=\"page\" id=\"g1\">").contains("<section class=\"page wide\" id=\"g2\">")
+        assertThat(text).contains("alt=\"Lena gets off a yellow bus").doesNotContain("We could not include")
+        assertThat(text.indexOf("id=\"g1\"")).isLessThan(text.indexOf("id=\"g2\""))
+        illustrations.forEach { assertThat(entries.getValue("OEBPS/content.opf")).contains("href=\"${it.removePrefix("OEBPS/")}\"") }
     }
 
     @Test

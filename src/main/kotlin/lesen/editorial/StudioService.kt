@@ -197,6 +197,9 @@ class StudioService(
                 title = meta.title,
                 subtitle = meta.subtitle,
                 summary = meta.summary,
+                format = content.format,
+                layout = content.layout,
+                pages = content.pages?.let { lesen.reading.PageRules.draftPages(content.layout, it) }.orEmpty(),
                 paragraphs =
                     content.paragraphs.map { paragraph ->
                         DraftParagraph(
@@ -318,6 +321,12 @@ class StudioService(
         me: Learner,
         file: ByteArray,
     ): MediaFile = media.save(MediaKind.COVER, file, me.user.email)
+
+    // la ilustración de una página (ADR-0014): devuelve el archivo que el borrador pone en esa página
+    suspend fun illustration(
+        me: Learner,
+        file: ByteArray,
+    ): MediaFile = media.save(MediaKind.ILLUSTRATION, file, me.user.email)
 
     suspend fun check(id: UUID): CheckReport = check(find(id))
 
@@ -470,6 +479,11 @@ class StudioService(
                 questions = draft.questions,
                 audio = draft.audio,
                 unchanged = unchanged,
+                missingIllustrations =
+                    lesen.reading.PageRules
+                        .missingIllustrations(draft.document)
+                        .map { "g${it + 1}" },
+                interfaceLanguages = languages.all().filter { it.interfaceLanguage }.map { it.code },
                 currentQuestions = current?.let { assessments.questionsOf(it.versionId) },
                 currentAnswered = current?.let { assessments.answered(it.versionId) } ?: false,
             ),
@@ -488,6 +502,7 @@ class StudioService(
         if (meta.level != document.level || meta.topics != document.topics || meta.featured != document.featured) return false
         if (meta.title != document.title.trim() || meta.subtitle != document.subtitle?.trim() || meta.summary != document.summary.trim()) return false
         if (meta.cover != document.cover || meta.accent != document.accent) return false
+        // el formato, la maqueta y las páginas van en el contenido: ya se compararon
 
         fun key(unit: lesen.reading.TranslationUnit) = listOf(unit.unit, unit.ref, unit.language, unit.text.trim())
         val wanted =
