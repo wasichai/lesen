@@ -12,6 +12,12 @@ import wasichai.core.common.FieldViolation
 import wasichai.core.common.ValidationException
 import java.util.UUID
 
+// la dueña de una lectura a medida (ADR-0016); sin ella, la lectura es del catálogo
+data class ReadingOwner(
+    val organizationId: UUID,
+    val userId: UUID,
+)
+
 data class PublishResult(
     val readingId: UUID,
     val version: Int,
@@ -32,7 +38,13 @@ class ReadingPublisher(
     private val tokenizers = Tokenizers()
     private val log = LoggerFactory.getLogger(ReadingPublisher::class.java)
 
-    suspend fun publish(draft: ReadingDraft): PublishResult {
+    // owner: la de una lectura a medida. source: AUTHORED (escrita o revisada por una persona) o PROVIDER (escrita por la
+    // generación y sin revisión, ADR-0005, ADR-0016)
+    suspend fun publish(
+        draft: ReadingDraft,
+        owner: ReadingOwner? = null,
+        source: String = "AUTHORED",
+    ): PublishResult {
         ReadingAssembler.validate(draft)
         requireReferences(draft)
         val assembled = ReadingAssembler.assemble(draft, tokenizers.forLanguage(draft.language), resolvers.load(draft.language))
@@ -45,7 +57,7 @@ class ReadingPublisher(
                 .awaitSingle()
         val result =
             tx.executeAndAwait {
-                val readingId = upsertReading(draft)
+                val readingId = upsertReading(draft, owner)
                 val current = currentVersion(readingId)
                 if (current != null && current.second == assembled.hash) {
                     PublishResult(readingId, current.first, false, assembled.unresolved)
@@ -66,7 +78,7 @@ class ReadingPublisher(
                         .fetch()
                         .rowsUpdated()
                         .awaitSingle()
-                    insertTranslations(versionId, assembled.translations)
+                    insertTranslations(versionId, assembled.translations, source)
                     insertOccurrences(versionId, assembled.entryOccurrences)
                     PublishResult(readingId, number, true, assembled.unresolved)
                 }
@@ -141,24 +153,40 @@ class ReadingPublisher(
     // la forma → la entrada que la publicación elegiría por defecto, para reconstruir las elecciones de una autora
     suspend fun resolver(language: String): FormResolver = resolvers.load(language)
 
-    private suspend fun upsertReading(draft: ReadingDraft): UUID {
+    // una lectura no cambia de idioma ni de dueña: el slug de una lectura de otra persona (o del catálogo, para una a
+    // medida) no se puede tomar
+    private suspend fun upsertReading(
+        draft: ReadingDraft,
+        owner: ReadingOwner?,
+    ): UUID {
         val id =
             db
                 .sql(
                     """
-                    INSERT INTO lesen.reading (slug, language, level, featured) VALUES (:slug, :language, :level, :featured)
+                    INSERT INTO lesen.reading (slug, language, level, featured, owner_organization, owner_user)
+                    VALUES (:slug, :language, :level, :featured, :oo, :ou)
                     ON CONFLICT (slug) DO UPDATE SET level = EXCLUDED.level, featured = EXCLUDED.featured
                     WHERE lesen.reading.language = EXCLUDED.language
+                      AND lesen.reading.owner_user IS NOT DISTINCT FROM EXCLUDED.owner_user
+                      AND lesen.reading.owner_organization IS NOT DISTINCT FROM EXCLUDED.owner_organization
                     RETURNING id
                     """.trimIndent(),
                 ).bind("slug", draft.slug)
-                .bind("language", draft.language)
+                .let {
+                    if (owner ==
+                        null
+                    ) {
+                        it.bindNull("oo", UUID::class.java).bindNull("ou", UUID::class.java)
+                    } else {
+                        it.bind("oo", owner.organizationId).bind("ou", owner.userId)
+                    }
+                }.bind("language", draft.language)
                 .bind("level", draft.level)
                 .bind("featured", draft.featured)
                 .map { row, _ -> row.get(0, UUID::class.java)!! }
                 .one()
                 .awaitSingleOrNull()
-                ?: throw ValidationException("Invalid reading", "language", "a reading keeps the language it was first published in")
+                ?: throw ValidationException("Invalid reading", "slug", "a reading keeps its language and its owner: this slug is taken")
         db
             .sql("DELETE FROM lesen.reading_topic WHERE reading_id = :r")
             .bind("r", id)
@@ -225,19 +253,21 @@ class ReadingPublisher(
     private suspend fun insertTranslations(
         versionId: UUID,
         units: List<TranslationUnit>,
+        source: String,
     ) {
         for (unit in units) {
             db
                 .sql(
                     """
                     INSERT INTO lesen.reading_translation (version_id, unit, ref, language, text, source)
-                    SELECT :v, :unit, :ref, :language, :text, 'AUTHORED' WHERE EXISTS (SELECT 1 FROM lesen.language WHERE code = :language)
+                    SELECT :v, :unit, :ref, :language, :text, :source WHERE EXISTS (SELECT 1 FROM lesen.language WHERE code = :language)
                     """.trimIndent(),
                 ).bind("v", versionId)
                 .bind("unit", unit.unit)
                 .bind("ref", unit.ref)
                 .bind("language", unit.language)
                 .bind("text", unit.text.trim())
+                .bind("source", source)
                 .fetch()
                 .rowsUpdated()
                 .awaitSingle()

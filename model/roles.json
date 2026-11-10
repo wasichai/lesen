@@ -1,5 +1,5 @@
 {
-  "_comentario": "Roles de Lesen. ADMIN es de Wasichai y tiene todo. LECTOR lee el catálogo y escribe solo lo suyo: cada consulta de lo personal filtra por su organización y su usuario (los dos del token). REDACTOR escribe borradores en el estudio y los envía a revisión; EDITOR además los devuelve y los publica (PUBLICAR).",
+  "_comentario": "Roles de Lesen. ADMIN es de Wasichai y tiene todo. LECTOR lee el catálogo y escribe solo lo suyo: cada consulta de lo personal filtra por su organización y su usuario (los dos del token). REDACTOR escribe borradores en el estudio y los envía a revisión; EDITOR además los devuelve y los publica (PUBLICAR). LECTOR también pide lecturas a medida (lectura_a_medida, CREATE): cada organización puede quitárselo.",
   "roles": [
     {
       "name": "LECTOR",
@@ -12,6 +12,10 @@
         {
           "object": "cuaderno",
           "actions": ["READ", "UPDATE"]
+        },
+        {
+          "object": "lectura_a_medida",
+          "actions": ["CREATE"]
         }
       ]
     },

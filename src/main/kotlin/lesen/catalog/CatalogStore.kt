@@ -74,7 +74,7 @@ class CatalogStore(
         slug: String,
     ): ReadingCard? =
         db
-            .sql("$CARD_SELECT WHERE r.slug = :slug")
+            .sql("$CARD_SELECT WHERE r.slug = :slug AND $VISIBLE")
             .bind("o", organization)
             .bind("u", user)
             .bind("slug", slug)
@@ -129,7 +129,7 @@ class CatalogStore(
             .sql(
                 """
                 SELECT split_part(t.topic_slug, '/', 1) AS root, count(DISTINCT r.id) FROM lesen.reading_topic t
-                JOIN lesen.reading r ON r.id = t.reading_id AND r.current_version IS NOT NULL
+                JOIN lesen.reading r ON r.id = t.reading_id AND r.current_version IS NOT NULL AND r.owner_user IS NULL
                 WHERE CAST(:language AS text) IS NULL OR r.language = :language
                 GROUP BY root ORDER BY count(DISTINCT r.id) DESC, root
                 """.trimIndent(),
@@ -198,7 +198,10 @@ class CatalogStore(
     }
 
     private fun filters(query: CatalogQuery): Pair<String, Map<String, Any>> {
-        val clauses = mutableListOf("r.current_version IS NOT NULL")
+        // el catálogo es lo público; lo propio de una persona (sus listas, lo que lleva leído, lo pedido) incluye además sus
+        // lecturas a medida (ADR-0016)
+        val mine = query.slugs != null || query.status != null
+        val clauses = mutableListOf("r.current_version IS NOT NULL", if (mine) VISIBLE else "r.owner_user IS NULL")
         val binds = mutableMapOf<String, Any>()
         query.language?.let {
             clauses += "r.language = :language"
@@ -281,16 +284,20 @@ class CatalogStore(
                 },
             readers = row.get("readers", Number::class.java)!!.toLong(),
             format = row.get("format", String::class.java)!!,
+            custom = row.get("custom", java.lang.Boolean::class.java)!!.booleanValue(),
         )
     }
 
     companion object {
         const val COVERS = "/api/lesen/public/covers"
 
+        // lo público y lo de quien pregunta (:o, :u)
+        private const val VISIBLE = "(r.owner_user IS NULL OR (r.owner_organization = :o AND r.owner_user = :u))"
+
         private val CARD_SELECT =
             """
             SELECT r.slug, r.language, r.level, r.featured, v.number, v.title, v.subtitle, v.summary, v.cover, v.accent,
-                   v.word_count, v.minutes, v.published_at, v.format,
+                   v.word_count, v.minutes, v.published_at, v.format, (r.owner_user IS NOT NULL) AS custom,
                    (SELECT array_agg(t.topic_slug ORDER BY t.position) FROM lesen.reading_topic t WHERE t.reading_id = r.id) AS topics,
                    p.percent, p.version_number AS progress_version, p.completed_at, p.updated_at AS progress_at,
                    (b.reading_id IS NOT NULL) AS bookmarked,

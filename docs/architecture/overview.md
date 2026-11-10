@@ -57,26 +57,30 @@ flowchart BT
   editorial --> language & reading & audio & assessment & dictionary
   demo --> assessment & audio & catalog & dictionary & reading
   generation --> reading & assessment
+  illustration --> reading
+  commission --> language & reading & assessment & generation & illustration & editorial
   export --> reading & dictionary & library
 ```
 
-| Capacidad    | Responsabilidad                                                                                          |
-| ------------ | -------------------------------------------------------------------------------------------------------- |
-| `common`     | Configuración, `Access` (permisos), cadena de seguridad de lo público, paginación, jsonb                 |
-| `language`   | Idiomas de interfaz y de estudio, niveles del MCER                                                       |
-| `learner`    | Perfil de aprendizaje (onboarding)                                                                       |
-| `reading`    | Contenido: borrador, tokenizador, ensamblado, publicación de versiones inmutables, lectura de versiones  |
-| `catalog`    | Temas, colecciones, tarjetas filtradas, ficha, descubrir, recomendación                                  |
-| `library`    | Progreso de cada lectura, terminar, marcadores, notas, biblioteca personal y listas propias              |
-| `dictionary` | Diccionario curado, consulta en contexto, búsqueda en dos sentidos, historial, favoritas                 |
-| `vocabulary` | Cuaderno de vocabulario                                                                                  |
-| `audio`      | Narración: activos, voces, tiempos por palabra validados contra el texto, archivos con rangos            |
-| `assessment` | Preguntas de comprensión, corrección por reglas, cola de corrección asistida, autoevaluación             |
-| `progress`   | Actividad, proyección diaria, panel, resumen semanal, metas, racha semanal, logros, señales de historial |
-| `editorial`  | Estudio: borradores, comprobación, revisión, publicación con audio y preguntas, historial, diccionario   |
-| `demo`       | Carga del contenido de demostración a través de la publicación real                                      |
-| `generation` | Lecturas a medida: perfil de escritura, escritura con Claude, comprobación y correcciones (ADR-0013)     |
-| `export`     | Exportar una lectura como ePub o como página para imprimir o guardar como PDF (ADR-0017)                 |
+| Capacidad      | Responsabilidad                                                                                          |
+| -------------- | -------------------------------------------------------------------------------------------------------- |
+| `common`       | Configuración, `Access` (permisos), cadena de seguridad de lo público, paginación, jsonb                 |
+| `language`     | Idiomas de interfaz y de estudio, niveles del MCER                                                       |
+| `learner`      | Perfil de aprendizaje (onboarding)                                                                       |
+| `reading`      | Contenido: borrador, tokenizador, ensamblado, publicación de versiones inmutables, lectura de versiones  |
+| `catalog`      | Temas, colecciones, tarjetas filtradas, ficha, descubrir, recomendación                                  |
+| `library`      | Progreso de cada lectura, terminar, marcadores, notas, biblioteca personal y listas propias              |
+| `dictionary`   | Diccionario curado, consulta en contexto, búsqueda en dos sentidos, historial, favoritas                 |
+| `vocabulary`   | Cuaderno de vocabulario                                                                                  |
+| `audio`        | Narración: activos, voces, tiempos por palabra validados contra el texto, archivos con rangos            |
+| `assessment`   | Preguntas de comprensión, corrección por reglas, cola de corrección asistida, autoevaluación             |
+| `progress`     | Actividad, proyección diaria, panel, resumen semanal, metas, racha semanal, logros, señales de historial |
+| `editorial`    | Estudio: borradores, comprobación, revisión, publicación con audio y preguntas, historial, diccionario   |
+| `demo`         | Carga del contenido de demostración a través de la publicación real                                      |
+| `generation`   | Lecturas a medida: perfil de escritura, escritura con Claude, comprobación y correcciones (ADR-0013)     |
+| `illustration` | Libros ilustrados: proveedores de imagen, pasos de la dirección de arte y agente de Embabel (ADR-0015)   |
+| `commission`   | Encargos: cola de generación, trabajador, entrega al estudio o a quien la pidió (ADR-0015, ADR-0016)     |
+| `export`       | Exportar una lectura como ePub o como página para imprimir o guardar como PDF (ADR-0017)                 |
 
 `vocabulary` también lleva el repaso FSRS y los encuentros: `library` le avisa al terminar una lectura por
 `ReadingCompletionListener`, una interfaz de `reading`, sin depender de ella. Del mismo modo, `library`, `vocabulary` y
@@ -84,7 +88,8 @@ flowchart BT
 por `LearnerSignalsSource`; `progress` implementa las dos (ADR-0011) y nadie depende de él. `editorial` (ADR-0012)
 escribe solo a través de `reading` (`ReadingPublisher`), `audio`, `assessment` y `dictionary`, y lee las versiones
 publicadas para el historial; tampoco depende nadie de él. Los archivos subidos usan `FileStore` de `wasichai-files`
-(`common.Media`).
+(`common.Media`). `commission` (ADR-0015) escribe con `generation`, ilustra con `illustration` y entrega a través de
+`editorial` (un borrador) o de `reading` (una lectura a medida); nadie depende de él.
 
 **Modelo de lectura cruzado.** La tarjeta del catálogo une en SQL la versión vigente con el progreso y el marcador de
 quien pregunta (tablas de `library`) para no hacer una consulta por tarjeta. Es una lectura consciente del límite;

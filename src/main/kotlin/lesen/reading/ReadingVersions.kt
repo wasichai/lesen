@@ -4,6 +4,8 @@ import kotlinx.coroutines.reactor.awaitSingleOrNull
 import lesen.common.Jsonb
 import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.stereotype.Repository
+import wasichai.core.common.UnauthorizedException
+import wasichai.core.identity.CurrentUser
 import java.util.UUID
 
 data class VersionRef(
@@ -32,22 +34,39 @@ data class VersionMeta(
 @Repository
 class ReadingVersions(
     private val db: DatabaseClient,
+    private val currentUser: CurrentUser,
 ) {
-    // la versión pedida, o la vigente si number es null
+    // la versión pedida, o la vigente si number es null. Una lectura a medida (ADR-0016) solo la encuentra quien la pidió:
+    // para cualquier otra persona, y sin nadie que llame, no existe (404)
     suspend fun find(
         slug: String,
         number: Int? = null,
-    ): VersionRef? =
-        db
+    ): VersionRef? {
+        val viewer =
+            try {
+                currentUser.require()
+            } catch (_: UnauthorizedException) {
+                null
+            }
+        return db
             .sql(
                 """
                 SELECT r.id AS reading_id, v.id AS version_id, r.slug, r.language, v.number, v.number = r.current_version AS current
                 FROM lesen.reading r JOIN lesen.reading_version v ON v.reading_id = r.id
                 WHERE r.slug = :slug AND v.number = COALESCE(:n, r.current_version)
+                  AND (r.owner_user IS NULL OR (r.owner_organization = :o AND r.owner_user = :u))
                 """.trimIndent(),
             ).bind("slug", slug)
             .let { if (number == null) it.bindNull("n", Integer::class.java) else it.bind("n", number) }
-            .map { row, _ ->
+            .let {
+                if (viewer ==
+                    null
+                ) {
+                    it.bindNull("o", UUID::class.java).bindNull("u", UUID::class.java)
+                } else {
+                    it.bind("o", viewer.organizationId).bind("u", viewer.userId)
+                }
+            }.map { row, _ ->
                 VersionRef(
                     row.get("reading_id", UUID::class.java)!!,
                     row.get("version_id", UUID::class.java)!!,
@@ -57,6 +76,20 @@ class ReadingVersions(
                     row.get("current", java.lang.Boolean::class.java)!!.booleanValue(),
                 )
             }.one()
+            .awaitSingleOrNull()
+    }
+
+    // el id de una versión por su lectura, sin mirar quién llama: para quien publica en segundo plano (una lectura a medida)
+    suspend fun versionId(
+        readingId: UUID,
+        number: Int,
+    ): UUID? =
+        db
+            .sql("SELECT id FROM lesen.reading_version WHERE reading_id = :r AND number = :n")
+            .bind("r", readingId)
+            .bind("n", number)
+            .map { row, _ -> row.get(0, UUID::class.java)!! }
+            .one()
             .awaitSingleOrNull()
 
     suspend fun content(versionId: UUID): ReadingContent =

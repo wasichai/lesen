@@ -57,7 +57,8 @@ La columna «Entrega» dice en qué fase se construye. Lo de la primera entrega 
 | RF-LEC-09 | Avance, tiempo restante, posición guardada y restaurada al volver                                                     | 1       |
 | RF-LEC-10 | Marcar para después, guardar una oración con nota, terminar la lectura                                                | 1       |
 | RF-LEC-11 | Libro ilustrado: página a página (doble página en escritorio), maqueta por página, ilustración con texto alternativo  | 7       |
-| RF-LEC-12 | Exportar a ePub (Kindle, Apple Books) o imprimir y guardar como PDF, eligiendo incluir traducciones, glosario y notas | 7       |
+| RF-LEC-12 | Lecturas a medida: pedir una lectura o un libro ilustrado escrito para mí, privado, con cuota                         | 7       |
+| RF-LEC-13 | Exportar a ePub (Kindle, Apple Books) o imprimir y guardar como PDF, eligiendo incluir traducciones, glosario y notas | 7       |
 
 ### Audio sincronizado (fase 3)
 

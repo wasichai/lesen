@@ -2,10 +2,14 @@ package lesen.generation
 
 import lesen.assessment.Question
 import lesen.assessment.QuestionType
+import lesen.reading.DraftIllustration
+import lesen.reading.DraftPage
 import lesen.reading.DraftParagraph
 import lesen.reading.DraftSentence
+import lesen.reading.PageLayout
 import lesen.reading.ReadingContent
 import lesen.reading.ReadingDraft
+import lesen.reading.ReadingFormat
 import lesen.reading.TokenKind
 import lesen.reading.Tokenizer
 
@@ -20,6 +24,41 @@ data class GeneratedReading(
     val names: List<String>,
     val paragraphs: List<GeneratedParagraph>,
     val questions: List<GeneratedQuestion>,
+    // solo en un libro ilustrado
+    val book: GeneratedBook? = null,
+)
+
+// un libro ilustrado (ADR-0014): la maqueta del libro, la biblia visual y las páginas, cada una con su escena. La escena y
+// la biblia son lo que la dirección de arte necesita para que las ilustraciones sean coherentes de página en página
+data class GeneratedBook(
+    val layout: PageLayout,
+    val art: GeneratedArt,
+    val pages: List<GeneratedPage>,
+)
+
+data class GeneratedArt(
+    // técnica y tono (acuarela suave, línea clara…), paleta y el lugar donde transcurre
+    val style: String,
+    val palette: String,
+    val setting: String,
+    val characters: List<GeneratedCharacter>,
+)
+
+// un personaje con su aspecto fijo en todo el libro: rasgos, ropa y proporciones
+data class GeneratedCharacter(
+    val name: String,
+    val look: String,
+)
+
+// paragraphs: cuántos párrafos consecutivos lleva. characters: quiénes aparecen. alt: el texto alternativo de su
+// ilustración en cada idioma de interfaz
+data class GeneratedPage(
+    val span: Int,
+    val layout: PageLayout?,
+    val paragraphs: Int,
+    val scene: String,
+    val characters: List<String>,
+    val alt: Map<String, String>,
 )
 
 data class GeneratedParagraph(
@@ -91,6 +130,22 @@ object GeneratedDrafts {
                             .associateWith { language -> sentences.mapNotNull { it.translations[language] }.joinToString(" ") }
                             .filterValues { it.isNotBlank() }
                     DraftParagraph(sentences, translations)
+                },
+            format = if (generated.book != null) ReadingFormat.PICTURE_BOOK else ReadingFormat.TEXT,
+            layout = generated.book?.layout,
+            pages =
+                generated.book?.pages.orEmpty().map { page ->
+                    DraftPage(
+                        span = page.span,
+                        layout = page.layout?.takeIf { it != generated.book?.layout },
+                        paragraphs = page.paragraphs,
+                        illustration =
+                            DraftIllustration(
+                                file = null,
+                                alt = page.alt.filterKeys { it in context.questionLanguages }.mapValues { it.value.trim() },
+                                scene = page.scene.trim(),
+                            ),
+                    )
                 },
         )
 

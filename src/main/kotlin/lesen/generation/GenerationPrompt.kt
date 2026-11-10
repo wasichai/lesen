@@ -51,6 +51,23 @@ object GenerationPrompt {
         - COMPLETION: "blanks" are one to three words of the first cited sentence, exactly as written there.
         - Leave the fields a type does not use empty: no options, empty "correct" and "blanks", "answer" and "word" null.
 
+        Picture books (only when the profile asks for one, and then "book" is filled):
+        - Write it like a good children's picture book: few words per page, a clear visual moment on every page, a story
+          that can be told by the pictures too. Keep each page within the words per page you are given.
+        - "book.pages" split the paragraphs into pages, in reading order: each page takes "paragraphs" consecutive
+          paragraphs (0 only for a page without text) and together they take every paragraph exactly once.
+        - Choose one layout for the whole book in "book.layout" and give a page its own "layout" only when the moment
+          asks for it; otherwise null. A key moment fits a spread ("span" 2) with PANORAMA or SPREAD_IMAGE_LEFT/RIGHT; a
+          quiet pause fits IMAGE_ONLY with no text; a page carried by its words fits TEXT_ONLY or VIGNETTE.
+          Layouts for one page: IMAGE_TOP, IMAGE_BOTTOM, TEXT_OVER_IMAGE, VIGNETTE, TEXT_ONLY, IMAGE_ONLY.
+          Layouts for a spread: TEXT_OVER_IMAGE, IMAGE_ONLY, SPREAD_IMAGE_LEFT, SPREAD_IMAGE_RIGHT, PANORAMA.
+        - "book.art" is the visual bible every illustration follows: one style and palette, the setting, and each
+          character with a fixed look (face, hair, clothes, colours, proportions) that never changes between pages.
+        - Every page has a "scene": what the illustration shows at that moment, continuing from the page before (same
+          clothes, same place unless the story moves, the time of day as it passes). Never ask for written words in the
+          picture. "characters" names who appears; "alt" describes the picture for someone who cannot see it, in every
+          question language, in one or two sentences.
+
         Content:
         - Suitable for learners of any age: no sexual content, graphic violence, hate or self-harm.
         - Fiction about invented people. Never write about real private persons, and never present personal details from
@@ -69,6 +86,13 @@ object GenerationPrompt {
             appendLine("Language of the reading: ${r.language}. Level: ${r.level}.")
             appendLine("Length: about ${context.targetWordCount} words (${r.minutes} minutes at ${context.wordsPerMinute} words per minute).")
             appendLine("Kind of text: ${r.kind.name.lowercase()}.")
+            if (context.book) {
+                appendLine(
+                    "Format: picture book, up to ${PictureBooks.wordsPerPage(
+                        r.level,
+                    )} words per page and ${PictureBooks.PAGES.first}–${PictureBooks.PAGES.last} pages.",
+                )
+            }
             if (r.topics.isNotEmpty()) appendLine("Topics the learner chose: ${r.topics.joinToString(", ")}.")
             appendLine("Translation languages: ${context.translateInto.joinToString(", ")}.")
             appendLine("Question languages: ${context.questionLanguages.joinToString(", ")}.")
@@ -133,6 +157,37 @@ object GenerationPrompt {
                     "blanks" to array(text()),
                 ),
             )
+        val layouts =
+            lesen.reading.PageLayout.entries
+                .map { it.name }
+        val page =
+            closed(
+                mapOf(
+                    "span" to mapOf("type" to "integer", "enum" to listOf(1, 2)),
+                    "layout" to mapOf("anyOf" to listOf(mapOf("type" to "string", "enum" to layouts), mapOf("type" to "null"))),
+                    "paragraphs" to mapOf("type" to "integer"),
+                    "scene" to text(),
+                    "characters" to array(text()),
+                    "alt" to questionTexts,
+                ),
+            )
+        val book =
+            closed(
+                mapOf(
+                    "layout" to mapOf("type" to "string", "enum" to layouts),
+                    "art" to
+                        closed(
+                            mapOf(
+                                "style" to text(),
+                                "palette" to text(),
+                                "setting" to text(),
+                                "characters" to array(closed(mapOf("name" to text(), "look" to text()))),
+                            ),
+                        ),
+                    "pages" to array(page),
+                ),
+            )
+        val bookField = if (context.book) mapOf("book" to book) else emptyMap()
         return closed(
             mapOf(
                 "title" to text(),
@@ -142,7 +197,7 @@ object GenerationPrompt {
                 "names" to array(text()),
                 "paragraphs" to array(paragraph),
                 "questions" to array(question),
-            ),
+            ) + bookField,
         )
     }
 

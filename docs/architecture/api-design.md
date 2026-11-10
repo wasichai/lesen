@@ -128,29 +128,48 @@ dominadas, nivel). La racha (`{current, best, weeksMet, target, activeThisWeek, 
 que se perdió nada. La actividad la registran los endpoints de siempre (progreso, terminar, guardar, repasar, enviar un
 intento); no hay un endpoint para inventarla (ADR-0011).
 
+## Lecturas a medida
+
+Permiso **lectura a medida** = CREATE sobre `lectura_a_medida` (ADR-0016). Lo de otra persona es 404.
+
+| Método | Ruta                | Permiso          | Notas                                                                                                          |
+| ------ | ------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------- |
+| POST   | `generations`       | lectura a medida | `{language, level, minutes, kind, format, topics[≤3], prompt?}` → 202; cuota agotada, 429; sin generación, 503 |
+| GET    | `generations`       | lectura a medida | Mis encargos (`readingSlug` cuando está lista), lo más nuevo primero                                           |
+| GET    | `generations/{id}`  | lectura a medida | Uno de mis encargos                                                                                            |
+| GET    | `generations/quota` | lectura a medida | `{dailyLimit, dailyUsed, monthlyBooksLimit, monthlyBooksUsed, resetsAt}`                                       |
+
+Una lectura a medida se lee con las rutas de siempre (`readings/{slug}/…`), solo para quien la pidió; su tarjeta lleva
+`custom: true` y no aparece en el catálogo.
+
 ## Estudio editorial
 
 Permisos (`Access`): **estudio** = READ sobre `estudio`; **escribir estudio** = UPDATE; **publicar** = la acción propia
 `PUBLICAR` sobre `estudio` (ADR-0012).
 
-| Método | Ruta                             | Permiso          | Notas                                                                                                                                                                           |
-| ------ | -------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| GET    | `studio/drafts`                  | estudio          | `?status=`; resúmenes, lo más reciente primero                                                                                                                                  |
-| POST   | `studio/drafts`                  | escribir estudio | `{slug, language, level, title}` (nueva) o `{from: slug}` (desde la versión vigente, con traducciones, preguntas y audio). 201; ya existe la lectura o su borrador abierto: 409 |
-| GET    | `studio/drafts/{id}`             | estudio          | Documento, preguntas, audio, los ids de oraciones y palabras que tendrá la versión (`sentences`), revisión e historial (`events`)                                               |
-| PUT    | `studio/drafts/{id}`             | escribir estudio | `{revision, document, questions}`; revisión vieja o borrador fuera de `DRAFT`: 409                                                                                              |
-| DELETE | `studio/drafts/{id}`             | escribir estudio | Descarta un borrador abierto; 204                                                                                                                                               |
-| GET    | `studio/drafts/{id}/check`       | estudio          | `{ready, errors[{code, ref, detail}], warnings[…], words, sentences, unresolved, missingTranslations, questions, alignedWords}`                                                 |
-| POST   | `studio/drafts/{id}/audio`       | escribir estudio | Multipart: `audio` (mp3, ogg, m4a), `timings` (WebVTT, SRT o JSON de `generate_audio.py`), `durationMs`, `voice`, `license`                                                     |
-| DELETE | `studio/drafts/{id}/audio`       | escribir estudio | Quita el audio del borrador                                                                                                                                                     |
-| POST   | `studio/drafts/{id}/submit`      | escribir estudio | `{note?}`: `DRAFT` → `IN_REVIEW`; con errores, 409                                                                                                                              |
-| POST   | `studio/drafts/{id}/return`      | publicar         | `{note}` obligatoria: `IN_REVIEW` → `DRAFT`                                                                                                                                     |
-| POST   | `studio/drafts/{id}/publish`     | publicar         | `{note?}`: versión, preguntas y audio; `IN_REVIEW` → `PUBLISHED`. Cada paso es idempotente                                                                                      |
-| POST   | `studio/illustrations`           | escribir estudio | Multipart `file` (PNG, JPEG, WebP, ≤ 5 MB) → `{file, kind: ILLUSTRATION, …}`; el `file` va en `document.pages[n].illustration.file` (ADR-0014)                                  |
-| POST   | `studio/covers`                  | escribir estudio | Multipart `file` (PNG, JPEG, WebP, ≤ 3 MB) → `{file, kind, contentType, sizeBytes, sha256}`; el `file` va en `document.cover`                                                   |
-| GET    | `studio/readings`                | estudio          | Lecturas publicadas con su versión vigente, cuántas versiones y su borrador abierto                                                                                             |
-| GET    | `studio/readings/{slug}/history` | estudio          | `{versions[{number, status, title, wordCount, publishedAt, audio, questions}], events[…]}`                                                                                      |
-| POST   | `studio/dictionary/entries`      | escribir estudio | `{language, entry: {key, lemma, pos, forms, senses}}`; 201; ya existe: 409                                                                                                      |
+| Método | Ruta                                        | Permiso          | Notas                                                                                                                                                                           |
+| ------ | ------------------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GET    | `studio/drafts`                             | estudio          | `?status=`; resúmenes, lo más reciente primero                                                                                                                                  |
+| POST   | `studio/drafts`                             | escribir estudio | `{slug, language, level, title}` (nueva) o `{from: slug}` (desde la versión vigente, con traducciones, preguntas y audio). 201; ya existe la lectura o su borrador abierto: 409 |
+| GET    | `studio/drafts/{id}`                        | estudio          | Documento, preguntas, audio, los ids de oraciones y palabras que tendrá la versión (`sentences`), revisión e historial (`events`)                                               |
+| PUT    | `studio/drafts/{id}`                        | escribir estudio | `{revision, document, questions}`; revisión vieja o borrador fuera de `DRAFT`: 409                                                                                              |
+| DELETE | `studio/drafts/{id}`                        | escribir estudio | Descarta un borrador abierto; 204                                                                                                                                               |
+| GET    | `studio/drafts/{id}/check`                  | estudio          | `{ready, errors[{code, ref, detail}], warnings[…], words, sentences, unresolved, missingTranslations, questions, alignedWords}`                                                 |
+| POST   | `studio/drafts/{id}/audio`                  | escribir estudio | Multipart: `audio` (mp3, ogg, m4a), `timings` (WebVTT, SRT o JSON de `generate_audio.py`), `durationMs`, `voice`, `license`                                                     |
+| DELETE | `studio/drafts/{id}/audio`                  | escribir estudio | Quita el audio del borrador                                                                                                                                                     |
+| POST   | `studio/drafts/{id}/submit`                 | escribir estudio | `{note?}`: `DRAFT` → `IN_REVIEW`; con errores, 409                                                                                                                              |
+| POST   | `studio/drafts/{id}/return`                 | publicar         | `{note}` obligatoria: `IN_REVIEW` → `DRAFT`                                                                                                                                     |
+| POST   | `studio/drafts/{id}/publish`                | publicar         | `{note?}`: versión, preguntas y audio; `IN_REVIEW` → `PUBLISHED`. Cada paso es idempotente                                                                                      |
+| POST   | `studio/illustrations`                      | escribir estudio | Multipart `file` (PNG, JPEG, WebP, ≤ 5 MB) → `{file, kind: ILLUSTRATION, …}`; el `file` va en `document.pages[n].illustration.file` (ADR-0014)                                  |
+| POST   | `studio/covers`                             | escribir estudio | Multipart `file` (PNG, JPEG, WebP, ≤ 3 MB) → `{file, kind, contentType, sizeBytes, sha256}`; el `file` va en `document.cover`                                                   |
+| POST   | `studio/generations`                        | escribir estudio | `{language, level, minutes (2, 5, 8), kind, format (TEXT, PICTURE_BOOK), topics[≤3], prompt?}` → 202 con el encargo; sin quien escriba, 503 (ADR-0015)                          |
+| GET    | `studio/generations`                        | estudio          | Mis encargos, lo más nuevo primero                                                                                                                                              |
+| GET    | `studio/generations/{id}`                   | estudio          | `{id, status (QUEUED, WRITING, ILLUSTRATING, READY, FAILED), request, draftId, reason, findings, directedBy, illustrations}`                                                    |
+| GET    | `studio/generations/status`                 | estudio          | `{available, illustrations}`: si hay quien escriba y quien dibuje                                                                                                               |
+| POST   | `studio/drafts/{id}/pages/{n}/illustration` | escribir estudio | Vuelve a dibujar la ilustración de la página n con la biblia del libro; conserva el texto alternativo                                                                           |
+| GET    | `studio/readings`                           | estudio          | Lecturas publicadas con su versión vigente, cuántas versiones y su borrador abierto                                                                                             |
+| GET    | `studio/readings/{slug}/history`            | estudio          | `{versions[{number, status, title, wordCount, publishedAt, audio, questions}], events[…]}`                                                                                      |
+| POST   | `studio/dictionary/entries`                 | escribir estudio | `{language, entry: {key, lemma, pos, forms, senses}}`; 201; ya existe: 409                                                                                                      |
 
 Los archivos subidos se sirven públicos como los de la demostración: `public/audio/{archivo}` (con rangos) y
 `public/covers/{archivo}` (PNG, JPEG o WebP, con `nosniff`). Las ilustraciones, en `public/illustrations/{archivo}`, con caché

@@ -173,6 +173,36 @@ class StudioService(
         return view(created)
     }
 
+    // un borrador que escribió la generación (ADR-0013, ADR-0015): entra en DRAFT con su texto, sus traducciones, sus
+    // preguntas y, en un libro, sus páginas e ilustraciones, y sigue la revisión de siempre. Si el slug ya es de una lectura
+    // o de un borrador abierto, se le añade un número
+    suspend fun createGenerated(
+        actor: String,
+        document: ReadingDraft,
+        questions: List<Question>,
+        note: String?,
+    ): UUID {
+        var slug = document.slug
+        var n = 2
+        while (true) {
+            if (versions.find(slug) == null) {
+                val candidate = document.copy(slug = slug)
+                val id =
+                    try {
+                        store.insert(slug, candidate.language, null, null, candidate, questions, null, actor)
+                    } catch (_: DataIntegrityViolationException) {
+                        null
+                    }
+                if (id != null) {
+                    store.event(id, slug, StudioAction.GENERATED, actor, note?.take(2000))
+                    return id
+                }
+            }
+            slug = "${document.slug.take(110)}-${n++}"
+            if (n > 50) throw ConflictException("No free slug for this reading")
+        }
+    }
+
     // el borrador de una lectura publicada: su versión vigente con sus traducciones, sus preguntas y su audio
     private suspend fun fromReading(
         slug: String,
@@ -250,6 +280,29 @@ class StudioService(
         val document = request.document.copy(slug = draft.slug, language = draft.language)
         limits(document, request.questions)
         if (!store.save(id, request.revision, document, request.questions, me.user.email)) {
+            throw ConflictException("Someone saved this draft in the meantime: reload it before saving")
+        }
+        store.event(id, draft.slug, StudioAction.SAVED, me.user.email)
+        return view(find(id))
+    }
+
+    // un borrador editable, para quien lo cambia desde fuera del editor (redibujar una ilustración): su documento y su revisión
+    suspend fun editable(id: UUID): Pair<ReadingDraft, Int> {
+        val draft = find(id)
+        requireStatus(draft, DraftStatus.DRAFT)
+        return draft.document to draft.revision
+    }
+
+    // guardar un documento cambiado fuera del editor, con la misma revisión optimista (409 si alguien guardó antes)
+    suspend fun replaceDocument(
+        me: Learner,
+        id: UUID,
+        revision: Int,
+        document: ReadingDraft,
+    ): DraftView {
+        val draft = find(id)
+        requireStatus(draft, DraftStatus.DRAFT)
+        if (!store.save(id, revision, document.copy(slug = draft.slug, language = draft.language), draft.questions, me.user.email)) {
             throw ConflictException("Someone saved this draft in the meantime: reload it before saving")
         }
         store.event(id, draft.slug, StudioAction.SAVED, me.user.email)

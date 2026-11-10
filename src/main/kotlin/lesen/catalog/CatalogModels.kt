@@ -45,6 +45,8 @@ data class ReadingCard(
     val readers: Long,
     // TEXT o PICTURE_BOOK (ADR-0014)
     val format: String = "TEXT",
+    // una lectura a medida de quien pregunta (ADR-0016)
+    val custom: Boolean = false,
 )
 
 data class CollectionView(

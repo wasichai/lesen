@@ -166,6 +166,8 @@ object GenerationCheck {
             }
         }
 
+        findings += bookFindings(context, generated, content)
+
         val measures =
             Measures(
                 words = words.size,
@@ -181,5 +183,52 @@ object GenerationCheck {
                 questionTypes = types.size,
             )
         return CheckResult(findings.distinct(), measures)
+    }
+
+    // un libro ilustrado (ADR-0014, ADR-0015): sus páginas, las palabras de cada una y lo que la dirección de arte necesita.
+    // Que las páginas cuadren con los párrafos y que cada maqueta quepa en su ancho ya lo dice el ensamblado (FIELD)
+    private fun bookFindings(
+        context: GenerationContext,
+        generated: GeneratedReading,
+        content: lesen.reading.ReadingContent,
+    ): List<Finding> {
+        val book = generated.book
+        if (!context.book) return if (book != null) listOf(Finding("BOOK", null, "this reading is not a picture book: leave book out")) else emptyList()
+        if (book == null) return listOf(Finding("BOOK", null, "a picture book needs its book: layout, art and pages"))
+        val findings = mutableListOf<Finding>()
+        if (book.pages.size !in PictureBooks.PAGES) {
+            findings += Finding("PAGES", null, "${book.pages.size} pages; write ${PictureBooks.PAGES.first}–${PictureBooks.PAGES.last}")
+        }
+        if (book.art.style.isBlank() || book.art.palette.isBlank()) findings += Finding("ART", null, "describe the style and the palette")
+        val cast =
+            book.art.characters
+                .map { it.name.trim().lowercase() }
+                .toSet()
+        book.art.characters
+            .filter { it.look.isBlank() }
+            .forEach { findings += Finding("ART", it.name, "describe how this character looks") }
+        val limit = PictureBooks.wordsPerPage(context.request.level)
+        val pages = content.pages.orEmpty()
+        book.pages.forEachIndexed { i, page ->
+            val ref = "g${i + 1}"
+            val words =
+                pages
+                    .getOrNull(i)
+                    ?.paragraphs
+                    ?.sumOf { id ->
+                        content.paragraphs
+                            .first { it.id == id }
+                            .sentences
+                            .sumOf { s -> s.tokens.count { it.kind == TokenKind.WORD } }
+                    }
+                    ?: 0
+            if (words > limit) findings += Finding("PAGE_TOO_LONG", ref, "$words words; at most $limit per page")
+            if (page.scene.isBlank()) findings += Finding("SCENE", ref, "describe what the illustration shows")
+            page.characters.filter { it.trim().lowercase() !in cast }.forEach { findings += Finding("CHARACTER", ref, "$it is not in book.art.characters") }
+            for (language in context.questionLanguages) {
+                if (page.alt[language].isNullOrBlank()) findings += Finding("ALT", ref, "alt text missing in $language")
+            }
+        }
+        return findings
     }
 }
