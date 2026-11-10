@@ -43,6 +43,9 @@ data class CheckInput(
     val currentAnswered: Boolean,
     // las páginas de un libro cuya ilustración falta todavía (ids g1, g2…)
     val missingIllustrations: List<String> = emptyList(),
+    // las imágenes entre párrafos sin archivo y sin texto alternativo (ADR-0018), por su campo (images[0])
+    val missingImages: List<String> = emptyList(),
+    val imagesWithoutAlt: List<String> = emptyList(),
     // los idiomas de interfaz: el texto alternativo de una ilustración va en todos (quien lee no lo lee en el de estudio)
     val interfaceLanguages: List<String> = translateInto,
 )
@@ -81,6 +84,8 @@ object DraftCheck {
         }
         // un libro ilustrado (ADR-0014): cada ilustración con su archivo y con su texto alternativo en cada idioma de interfaz
         input.missingIllustrations.forEach { errors += Issue("ILLUSTRATION_MISSING", it) }
+        input.missingImages.forEach { errors += Issue("IMAGE_MISSING", it) }
+        input.imagesWithoutAlt.forEach { errors += Issue("IMAGE_ALT_MISSING", it) }
         for (page in content.pages.orEmpty()) {
             val illustration = page.illustration ?: continue
             for (language in input.interfaceLanguages) {

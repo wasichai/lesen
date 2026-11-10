@@ -9,6 +9,8 @@ data class ReadingContent(
     val format: ReadingFormat = ReadingFormat.TEXT,
     val layout: PageLayout? = null,
     val pages: List<Page>? = null,
+    // imágenes entre párrafos de un texto (ADR-0018); null si no tiene
+    val images: List<InlineImage>? = null,
 ) {
     val sentences: List<Sentence> get() = paragraphs.flatMap { it.sentences }
     val words: List<Token> get() = sentences.flatMap { s -> s.tokens.filter { it.kind == TokenKind.WORD } }

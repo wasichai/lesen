@@ -93,7 +93,9 @@ class ReadingPublisher(
     private suspend fun requireReferences(draft: ReadingDraft) {
         val problems =
             referenceProblems(draft) +
-                PageRules.missingIllustrations(draft).map { FieldViolation("pages[$it].illustration", "the illustration is still missing") }
+                PageRules.missingIllustrations(draft).map { FieldViolation("pages[$it].illustration", "the illustration is still missing") } +
+                InlineImages.missingFiles(draft).map { FieldViolation("images[$it].file", "the image is still missing") } +
+                InlineImages.missingAlt(draft).map { FieldViolation("images[$it].alt", "an image needs its alt text") }
         if (problems.isNotEmpty()) throw ValidationException("Invalid reading", problems)
     }
 
@@ -135,8 +137,12 @@ class ReadingPublisher(
     // cada ilustración de un libro es un archivo que existe: de la demostración o subido como ilustración (ADR-0014). Las
     // pendientes las dice PageRules.missingIllustrations
     private suspend fun illustrationProblems(draft: ReadingDraft): List<FieldViolation> {
-        if (draft.format != ReadingFormat.PICTURE_BOOK) return emptyList()
         val problems = mutableListOf<FieldViolation>()
+        draft.images.forEachIndexed { i, image ->
+            val file = image.file ?: return@forEachIndexed
+            if (!illustrations.exists(file)) problems += FieldViolation("images[$i].file", "unknown illustration file: $file")
+        }
+        if (draft.format != ReadingFormat.PICTURE_BOOK) return problems
         draft.pages.forEachIndexed { i, page ->
             val file = page.illustration?.file ?: return@forEachIndexed
             if (PageRules.effective(draft, page)?.illustrated == true && !illustrations.exists(file)) {

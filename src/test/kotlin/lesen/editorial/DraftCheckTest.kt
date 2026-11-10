@@ -185,4 +185,11 @@ class DraftCheckTest {
         assertThat(report.ready).isFalse()
         assertThat(report.errors).containsExactly(Issue("ILLUSTRATION_MISSING", "g2"), Issue("ALT_MISSING", "g1", "en"))
     }
+
+    @Test
+    fun `an image between paragraphs needs its file and its alt text before publishing`() {
+        val report = DraftCheck.report(input().copy(missingImages = listOf("images[0]"), imagesWithoutAlt = listOf("images[1]")))
+        assertThat(report.ready).isFalse()
+        assertThat(report.errors).contains(Issue("IMAGE_MISSING", "images[0]"), Issue("IMAGE_ALT_MISSING", "images[1]"))
+    }
 }

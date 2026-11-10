@@ -35,6 +35,7 @@ class ExportWritersTest {
         options: ExportOptions = ExportOptions(translations = true, glossary = true, notes = true),
         cover: ExportImage? = ExportImage("x.svg", "image/svg+xml", "<svg xmlns=\"http://www.w3.org/2000/svg\"/>".toByteArray()),
         pages: List<Page>? = null,
+        inline: List<ExportInline> = emptyList(),
     ) = ExportDocument(
         slug = "x",
         version = 2,
@@ -52,6 +53,7 @@ class ExportWritersTest {
                 mapOf("bild-1.png" to ExportImage("bild-1.png", "image/png", byteArrayOf(1, 2, 3))),
                 "es",
             ),
+        inlineImages = inline,
         options = options,
         glossary = listOf(GlossaryItem("lachen", "VERB", listOf("reír"))),
         notes = listOf(ExportNote("Sie lacht.", "¡Bonito!")),
@@ -167,5 +169,29 @@ class ExportWritersTest {
     @Test
     fun `control characters never reach the xml`() {
         assertThat(XhtmlWriter.esc("a\u0001b\tc\n")).isEqualTo("ab\tc\n")
+    }
+
+    @Test
+    fun `an image between paragraphs is written after its paragraph, with its alt, size and caption, and packed in the epub`() {
+        val image = ExportImage("sturm.png", "image/png", byteArrayOf(9, 9))
+        val d =
+            doc(
+                inline =
+                    listOf(
+                        ExportInline("img-1", "p1", image, 1200, 800, "Ein Turm im Sturm", "Das Licht geht aus."),
+                        ExportInline("img-2", null, null, 10, 10, "Fehlt", null),
+                    ),
+            )
+        val text = XhtmlWriter.text(d)
+        assertThat(text.indexOf("id=\"img-2\"")).isLessThan(text.indexOf("id=\"p1\""))
+        assertThat(text.indexOf("id=\"p1\"")).isLessThan(text.indexOf("id=\"img-1\""))
+        assertThat(text.indexOf("id=\"img-1\"")).isLessThan(text.indexOf("id=\"p2\""))
+        assertThat(text).contains("<img src=\"illustrations/sturm.png\" alt=\"Ein Turm im Sturm\" width=\"1200\" height=\"800\"/>")
+        assertThat(text).contains("<figcaption>Das Licht geht aus.</figcaption>").contains("No pudimos incluir esta imagen.")
+        DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(ByteArrayInputStream(text.toByteArray()))
+        assertThat(EpubWriter.opf(d)).contains("href=\"illustrations/sturm.png\"")
+        val names = mutableListOf<String>()
+        ZipInputStream(ByteArrayInputStream(EpubWriter.write(d))).use { zip -> generateSequence { zip.nextEntry }.forEach { names += it.name } }
+        assertThat(names).contains("OEBPS/illustrations/sturm.png")
     }
 }

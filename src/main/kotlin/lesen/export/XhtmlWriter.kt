@@ -26,6 +26,9 @@ p.note { margin: 0 0 1em 1em; }
 figure.illustration { margin: 1.2em 0 0.8em; text-align: center; }
 figure.illustration img { max-width: 100%; max-height: 70vh; }
 section.page.wide figure.illustration img { width: 100%; max-height: none; }
+figure.inline { margin: 1.2em 0; text-align: center; }
+figure.inline img { max-width: 100%; height: auto; }
+figure.inline figcaption { font-size: 0.9em; font-style: italic; margin-top: 0.4em; }
 p.missing-illustration { font-family: system-ui, sans-serif; font-size: 0.85em; color: #4a4744; font-style: italic; }
 footer { margin: 2.5em 0 1em; font-family: system-ui, sans-serif; font-size: 0.8em; color: #4a4744; }
 @media print {
@@ -122,7 +125,13 @@ $body
             append("<p class=\"meta\" lang=\"$ui\" xml:lang=\"$ui\">${esc(doc.labels.level)} ${esc(doc.level)}</p>\n")
             val pages = doc.pages
             if (pages == null) {
-                doc.paragraphs.forEach { append(paragraph(doc, it)) }
+                // un texto, con sus imágenes entre párrafos en su sitio (ADR-0018): alt y pie en el idioma de la lectura
+                val inline = doc.inlineImages.groupBy { it.after }
+                inline[null].orEmpty().forEach { append(figure(doc, it, imageSrc)) }
+                doc.paragraphs.forEach { p ->
+                    append(paragraph(doc, p))
+                    inline[p.id].orEmpty().forEach { append(figure(doc, it, imageSrc)) }
+                }
             } else {
                 // un libro ilustrado (ADR-0014): cada página con su ilustración y sus párrafos, en el orden de lectura.
                 // La maqueta exacta no se reproduce; una doble página lleva la imagen a todo el ancho
@@ -141,6 +150,23 @@ $body
                 }
             }
             append("</section>\n")
+        }
+
+    private fun figure(
+        doc: ExportDocument,
+        image: ExportInline,
+        imageSrc: (ExportImage) -> String,
+    ): String =
+        buildString {
+            val ui = esc(doc.labels.language)
+            append("<figure class=\"inline\" id=\"${esc(image.id)}\">")
+            if (image.image != null) {
+                append("<img src=\"${esc(imageSrc(image.image))}\" alt=\"${esc(image.alt)}\" width=\"${image.width}\" height=\"${image.height}\"/>")
+            } else {
+                append("<p class=\"missing-illustration\" lang=\"$ui\" xml:lang=\"$ui\">${esc(doc.labels.imageMissing)}</p>")
+            }
+            image.caption?.let { append("<figcaption>${esc(it)}</figcaption>") }
+            append("</figure>\n")
         }
 
     private fun paragraph(

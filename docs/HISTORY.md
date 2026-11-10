@@ -2,6 +2,16 @@
 
 Lo entregado, lo más nuevo arriba.
 
+## 2026-11-10 — Imágenes entre párrafos (backend, #7)
+
+- ADR-0018: un texto lleva `images` ancladas a un párrafo, sin cambiar los ids de los párrafos ni la huella de un texto
+  sin imágenes; `alt` y `caption` en el idioma de la lectura (`InlineImages`).
+- Contenido de una versión con `blocks` en el orden de lectura (`{type: paragraph, id}` y `{type: image, id, url, width,
+height, alt, caption}`); null sin imágenes.
+- Estudio: la subida de ilustraciones devuelve ancho y alto (cabecera de PNG, JPEG o WebP) y la comprobación da
+  `IMAGE_MISSING` e `IMAGE_ALT_MISSING`; exportación con `<figure>` y `<figcaption>` tras su párrafo, también en el ePub.
+- Demostración: «Der alte Leuchtturm» lleva una imagen tras su tercer párrafo; `tools/check_demo.py` la valida.
+
 ## 2026-11-10 — Exportar lecturas (backend)
 
 - ADR-0017 y capacidad `export`: `GET readings/{slug}/versions/{n}/export` devuelve la lectura como ePub 3 (armado con

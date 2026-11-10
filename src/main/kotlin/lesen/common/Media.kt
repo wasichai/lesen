@@ -29,6 +29,9 @@ data class MediaFile(
     val sha256: String,
     @get:com.fasterxml.jackson.annotation.JsonIgnore
     val storeKey: String,
+    // las de una imagen, leídas de su cabecera al subirla (ADR-0018); no se guardan
+    val width: Int? = null,
+    val height: Int? = null,
 )
 
 // los archivos subidos desde el estudio (ADR-0012): los bytes en el almacén de Wasichai (FileStore: disco o S3), lo que
@@ -61,7 +64,8 @@ class Media(
                 MediaKind.ILLUSTRATION -> "illustration"
             }
         val file = "$prefix-${sha.take(24)}.${type.extension}"
-        find(file)?.let { return it }
+        val size = if (kind.image) dimensions(bytes) else null
+        find(file)?.let { return it.copy(width = size?.first, height = size?.second) }
         // las claves del almacén son <uuid>/<uuid>: un espacio propio de Lesen (el contenido es de toda la instalación) y
         // un id que sale de la huella
         // una ilustración puede tener los mismos bytes que una portada: su clave lleva su tipo (las de audio y portada, las de siempre)
@@ -84,7 +88,7 @@ class Media(
             .fetch()
             .rowsUpdated()
             .awaitSingle()
-        return MediaFile(file, kind, type.contentType, bytes.size.toLong(), sha, key)
+        return MediaFile(file, kind, type.contentType, bytes.size.toLong(), sha, key, size?.first, size?.second)
     }
 
     suspend fun find(file: String): MediaFile? =
@@ -125,6 +129,56 @@ class Media(
         const val MAX_AUDIO = 30 * 1_048_576
         const val MAX_COVER = 3 * 1_048_576
         const val MAX_ILLUSTRATION = 5 * 1_048_576
+
+        // ancho y alto de una imagen por su cabecera (PNG, JPEG, WebP), sin decodificarla. null si no se entiende
+        fun dimensions(b: ByteArray): Pair<Int, Int>? {
+            fun u8(i: Int) = b[i].toInt() and 0xFF
+
+            fun be16(i: Int) = (u8(i) shl 8) or u8(i + 1)
+
+            fun be32(i: Int) = (be16(i) shl 16) or be16(i + 2)
+
+            fun le16(i: Int) = u8(i) or (u8(i + 1) shl 8)
+
+            fun le24(i: Int) = le16(i) or (u8(i + 2) shl 16)
+            val sniffed = sniff(b) ?: return null
+            return try {
+                when (sniffed.contentType) {
+                    "image/png" -> if (b.size >= 24) be32(16) to be32(20) else null
+                    "image/jpeg" -> {
+                        var i = 2
+                        var found: Pair<Int, Int>? = null
+                        while (found == null && i + 9 < b.size) {
+                            if (u8(i) != 0xFF) {
+                                i++
+                                continue
+                            }
+                            val marker = u8(i + 1)
+                            val length = be16(i + 2)
+                            if (marker in 0xC0..0xCF && marker != 0xC4 && marker != 0xC8 && marker != 0xCC) {
+                                found = be16(i + 7) to be16(i + 5)
+                            } else {
+                                i += 2 + length
+                            }
+                        }
+                        found
+                    }
+                    "image/webp" ->
+                        when (String(b, 12, 4, Charsets.US_ASCII)) {
+                            "VP8 " -> (le16(26) and 0x3FFF) to (le16(28) and 0x3FFF)
+                            "VP8L" -> {
+                                val bits = u8(21) or (u8(22) shl 8) or (u8(23) shl 16) or (u8(24) shl 24)
+                                ((bits and 0x3FFF) + 1) to (((bits shr 14) and 0x3FFF) + 1)
+                            }
+                            "VP8X" -> (le24(24) + 1) to (le24(27) + 1)
+                            else -> null
+                        }
+                    else -> null
+                }?.takeIf { (w, h) -> w > 0 && h > 0 }
+            } catch (_: IndexOutOfBoundsException) {
+                null
+            }
+        }
 
         // los formatos que entiende cualquier navegador, por su firma
         fun sniff(bytes: ByteArray): Sniffed? {

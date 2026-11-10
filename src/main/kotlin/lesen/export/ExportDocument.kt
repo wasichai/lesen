@@ -43,6 +43,18 @@ data class ExportPage(
     val missing: Boolean,
 )
 
+// una imagen entre párrafos de un texto (ADR-0018): tras el párrafo after (null: antes del primero). alt y caption en el
+// idioma de la lectura. image: null si su archivo no se pudo leer, y entonces se dice
+data class ExportInline(
+    val id: String,
+    val after: String?,
+    val image: ExportImage?,
+    val width: Int,
+    val height: Int,
+    val alt: String,
+    val caption: String?,
+)
+
 data class GlossaryItem(
     val lemma: String,
     val pos: String,
@@ -68,6 +80,8 @@ data class ExportDocument(
     val paragraphs: List<ExportParagraph>,
     // las páginas de un libro ilustrado; null en un texto
     val pages: List<ExportPage>?,
+    // las imágenes entre párrafos de un texto (ADR-0018)
+    val inlineImages: List<ExportInline> = emptyList(),
     val options: ExportOptions,
     val glossary: List<GlossaryItem>,
     val notes: List<ExportNote>,
@@ -79,7 +93,7 @@ data class ExportDocument(
     val fileName get() = "$slug-v$version"
 
     // las ilustraciones que viajan en el documento, una vez cada una
-    val illustrations get() = pages.orEmpty().mapNotNull { it.illustration }.distinctBy { it.file }
+    val illustrations get() = (pages.orEmpty().mapNotNull { it.illustration } + inlineImages.mapNotNull { it.image }).distinctBy { it.file }
 }
 
 // los rótulos del documento en las dos lenguas de la interfaz (ADR-0007)
@@ -96,6 +110,7 @@ data class ExportLabels(
     val level: String,
     val source: String,
     val illustrationMissing: String,
+    val imageMissing: String,
 ) {
     companion object {
         fun of(language: String): ExportLabels =
@@ -113,6 +128,7 @@ data class ExportLabels(
                     "Nivel",
                     "Exportado de Lesen",
                     "No pudimos incluir la ilustración de esta página.",
+                    "No pudimos incluir esta imagen.",
                 )
             } else {
                 ExportLabels(
@@ -128,6 +144,7 @@ data class ExportLabels(
                     "Level",
                     "Exported from Lesen",
                     "We could not include the illustration of this page.",
+                    "We could not include this image.",
                 )
             }
     }

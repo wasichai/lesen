@@ -183,5 +183,15 @@
         }
       ]
     }
+  ],
+  "images": [
+    {
+      "after": 3,
+      "file": "der-alte-leuchtturm-sturm.svg",
+      "width": 1200,
+      "height": 800,
+      "alt": "Ein weißer Leuchtturm mit roten Streifen steht im Sturm. Seine Lampe ist dunkel, das Meer ist grau und wild.",
+      "caption": "Plötzlich geht das Licht aus."
+    }
   ]
 }

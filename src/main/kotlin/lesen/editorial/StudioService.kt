@@ -230,6 +230,7 @@ class StudioService(
                 format = content.format,
                 layout = content.layout,
                 pages = content.pages?.let { lesen.reading.PageRules.draftPages(content.layout, it) }.orEmpty(),
+                images = content.images?.let { lesen.reading.InlineImages.draftImages(it, content.paragraphs) }.orEmpty(),
                 paragraphs =
                     content.paragraphs.map { paragraph ->
                         DraftParagraph(
@@ -532,6 +533,14 @@ class StudioService(
                 questions = draft.questions,
                 audio = draft.audio,
                 unchanged = unchanged,
+                missingImages =
+                    lesen.reading.InlineImages
+                        .missingFiles(draft.document)
+                        .map { "images[$it]" },
+                imagesWithoutAlt =
+                    lesen.reading.InlineImages
+                        .missingAlt(draft.document)
+                        .map { "images[$it]" },
                 missingIllustrations =
                     lesen.reading.PageRules
                         .missingIllustrations(draft.document)
