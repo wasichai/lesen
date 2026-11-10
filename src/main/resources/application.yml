@@ -46,6 +46,10 @@ lesen:
     # sin clave, las respuestas abiertas se autoevalúan (ADR-0009)
     api-key: ${ANTHROPIC_API_KEY:}
     model: ${LESEN_AI_MODEL:claude-opus-5-5}
+  generation:
+    # lecturas a medida (ADR-0013): el esfuerzo del modelo y las correcciones antes de darla por fallida
+    effort: ${LESEN_GENERATION_EFFORT:medium}
+    max-corrections: ${LESEN_GENERATION_MAX_CORRECTIONS:2}
 
 # OpenAPI de lo propio de Lesen, en una ruta pública
 springdoc:

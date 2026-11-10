@@ -13,6 +13,7 @@ import java.time.Clock
 data class LesenProperties(
     val demo: Demo = Demo(),
     val ai: Ai = Ai(),
+    val generation: Generation = Generation(),
 ) {
     // publica el contenido de src/main/resources/demo al arrancar (docs/content/demo-content.md)
     data class Demo(
@@ -33,6 +34,17 @@ data class LesenProperties(
     ) {
         val enabled get() = apiKey.isNotBlank()
     }
+
+    // las lecturas a medida (ADR-0013), con la misma clave y el mismo modelo que la corrección asistida
+    data class Generation(
+        // low, medium, high, xhigh o max; se ajusta con el juego de evaluación
+        val effort: String = "medium",
+        // el razonamiento y la salida: una lectura de 8 minutos con sus traducciones y preguntas cabe con holgura
+        val maxTokens: Long = 32000,
+        // las veces que la lectura vuelve al modelo con sus fallos antes de darla por fallida
+        val maxCorrections: Int = 2,
+        val timeoutSeconds: Long = 300,
+    )
 }
 
 @Configuration
