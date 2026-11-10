@@ -91,6 +91,22 @@ class ExportApiTest : LesenApiTest() {
     }
 
     @Test
+    fun `the image between paragraphs of the demo travels in the epub after its paragraph`() {
+        val token = lena()
+        ensureProfile(token)
+        val (_, bytes) = download("format=epub&language=es", token, "der-alte-leuchtturm")
+        val entries = linkedMapOf<String, String>()
+        ZipInputStream(ByteArrayInputStream(bytes)).use { zip ->
+            generateSequence { zip.nextEntry }.forEach { entries[it.name] = String(zip.readAllBytes()) }
+        }
+        assertThat(entries.keys).contains("OEBPS/illustrations/der-alte-leuchtturm-sturm.svg")
+        val text = entries.getValue("OEBPS/text.xhtml")
+        assertThat(text).contains("alt=\"Ein weißer Leuchtturm").contains("<figcaption>Plötzlich geht das Licht aus.</figcaption>")
+        assertThat(text.indexOf("id=\"p3\"")).isLessThan(text.indexOf("id=\"img-1\""))
+        assertThat(text.indexOf("id=\"img-1\"")).isLessThan(text.indexOf("id=\"p4\""))
+    }
+
+    @Test
     fun `export needs a token, a known format and an existing version, and notes need the notebook`() {
         client
             .get()

@@ -431,6 +431,74 @@ class StudioApiTest : LesenApiTest() {
     }
 
     @Test
+    fun `an editor publishes a text with an image between paragraphs, and a learner gets it in reading order`() {
+        val editor = editor()
+        val created =
+            send(
+                "POST",
+                "/api/lesen/studio/drafts",
+                editor,
+                mapOf("slug" to slug, "language" to "de", "level" to "A1", "title" to "Der Garten"),
+                201,
+            )!!
+        val id = created["id"].asString()
+        // un PNG de 640×480: el estudio recibe sus dimensiones al subirlo
+        val picture =
+            png.copyOf(8) + byteArrayOf(0, 0, 0, 13) + "IHDR".toByteArray() + byteArrayOf(0, 0, 2, 0x80.toByte(), 0, 0, 1, 0xE0.toByte()) + ByteArray(32)
+        val uploaded =
+            multipart(
+                "/api/lesen/studio/illustrations",
+                editor,
+                MultipartBodyBuilder().apply { part("file", picture).filename("bild.png").contentType(MediaType.IMAGE_PNG) },
+                201,
+            )!!
+        assertThat(uploaded["width"].asInt() to uploaded["height"].asInt()).isEqualTo(640 to 480)
+        val file = uploaded["file"].asString()
+        val second =
+            mapOf(
+                "translations" to mapOf("es" to "Fin.", "en" to "The end."),
+                "sentences" to listOf(mapOf("text" to "Mia ist im Garten.", "translations" to mapOf("es" to "Fin.", "en" to "The end."))),
+            )
+
+        fun doc(alt: String) =
+            document(withAudioWord = false).let { d ->
+                d +
+                    mapOf(
+                        "paragraphs" to (d["paragraphs"] as List<*>) + second,
+                        "images" to
+                            listOf(mapOf("after" to 1, "file" to file, "width" to 640, "height" to 480, "alt" to alt, "caption" to "Der Garten im Sommer")),
+                    )
+            }
+        // sin texto alternativo, no se publica
+        val saved = save(editor, created, doc(""))!!
+        assertThat(get("/api/lesen/studio/drafts/$id/check", editor)["errors"].values().map { it["code"].asString() }).contains("IMAGE_ALT_MISSING")
+        save(editor, saved, doc("Ein grüner Garten mit Blumen"))
+        assertThat(get("/api/lesen/studio/drafts/$id/check", editor)["ready"].asBoolean()).isTrue()
+        send("POST", "/api/lesen/studio/drafts/$id/submit", editor, null, 200)
+        send("POST", "/api/lesen/studio/drafts/$id/publish", editor, null, 200)
+
+        // quien lee recibe los párrafos de siempre y, además, el orden de lectura con la imagen tras p1
+        val learner = lena()
+        ensureProfile(learner)
+        val content = get("/api/lesen/readings/$slug/versions/1/content", learner)
+        assertThat(content["paragraphs"].values().map { it["id"].asString() }).containsExactly("p1", "p2")
+        val blocks = content["blocks"].values().toList()
+        assertThat(blocks.map { it["type"].asString() + ":" + it["id"].asString() }).containsExactly("paragraph:p1", "image:img-1", "paragraph:p2")
+        val image = blocks[1]
+        assertThat(image["url"].asString()).isEqualTo("/api/lesen/public/illustrations/$file")
+        assertThat(image["width"].asInt() to image["height"].asInt()).isEqualTo(640 to 480)
+        assertThat(image["alt"].asString()).isEqualTo("Ein grüner Garten mit Blumen")
+        assertThat(image["caption"].asString()).isEqualTo("Der Garten im Sommer")
+        assertThat(blocks[0].has("url")).isFalse()
+        // un texto sin imágenes trae blocks null
+        assertThat(get("/api/lesen/readings/der-fuchs-im-garten/versions/1/content", learner)["blocks"].isNull).isTrue()
+        // volver a editarla empieza con la imagen en su sitio
+        val again = send("POST", "/api/lesen/studio/drafts", editor, mapOf("from" to slug), 201)!!
+        assertThat(again["document"]["images"][0]["after"].asInt()).isEqualTo(1)
+        send("DELETE", "/api/lesen/studio/drafts/${again["id"].asString()}", editor, null, 204)
+    }
+
+    @Test
     fun `a draft can be discarded and the studio is only for the editorial roles`() {
         val created =
             send(

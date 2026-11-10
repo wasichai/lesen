@@ -46,6 +46,10 @@ pages[]  id: g2, span (1 | 2), layout (ya resuelta), paragraphs [p3, p4], illust
 un texto. Cada página o doble página tiene una maqueta del catálogo cerrado `PageLayout` (la del libro o la suya). Una
 página con maqueta ilustrada lleva su ilustración y su texto alternativo en cada idioma de interfaz.
 
+**Imágenes entre párrafos (ADR-0018).** Un texto puede llevar `images[{id: img-1, after: p2 | null, file, width,
+height, alt, caption}]`: cada una tras su párrafo (null, antes del primero), con su texto alternativo y su pie en el
+idioma de la lectura. Los párrafos y sus ids no cambian.
+
 Los ids son estables dentro de la versión y todo lo que guarda una persona apunta a (versión, id). `entry` es la
 entrada del diccionario que la publicación resolvió para esa forma (o la elegida por la autora para un homógrafo), o
 null si no hay. `start` y `end` son posiciones en el texto de la oración: el alineador de audio las usará para casar lo

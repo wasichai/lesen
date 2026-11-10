@@ -103,6 +103,7 @@ def main() -> int:
             if not r.get(field):
                 problems.append(f"{name}: falta {field}")
         check_pages(name, r, problems)
+        check_images(name, r, problems)
         targets = [l for l in UI_LANGUAGES if l != lang]
         for pi, p in enumerate(r.get("paragraphs", []), 1):
             for l in targets:
@@ -212,6 +213,28 @@ def check_pages(name: str, r: dict, problems: list[str]) -> None:
             for lang in UI_LANGUAGES:
                 if not (ill.get("alt") or {}).get(lang, "").strip():
                     problems.append(f"{name}: página {gi} sin texto alternativo {lang}")
+
+
+def check_images(name: str, r: dict, problems: list[str]) -> None:
+    """Las imágenes entre párrafos de un texto (ADR-0018): su sitio dentro del texto, un SVG de demo/illustrations cuyo
+    viewBox casa con width y height, y su texto alternativo (y pie, si lo hay) en el idioma de la lectura."""
+    images = r.get("images") or []
+    if images and r.get("format", "TEXT") != "TEXT":
+        problems.append(f"{name}: un libro ilustrado no lleva imágenes entre párrafos")
+        return
+    for i, image in enumerate(images, 1):
+        where = f"{name}: imagen {i}"
+        if not 0 <= image.get("after", -1) <= len(r.get("paragraphs", [])):
+            problems.append(f"{where}: after fuera del texto")
+        path = ROOT / "illustrations" / str(image.get("file"))
+        if not path.exists():
+            problems.append(f"{where}: falta {image.get('file')} en demo/illustrations")
+        else:
+            box = re.search(r'viewBox="0 0 (\d+) (\d+)"', path.read_text())
+            if not box or (int(box[1]), int(box[2])) != (image.get("width"), image.get("height")):
+                problems.append(f"{where}: width y height no casan con el viewBox")
+        if not (image.get("alt") or "").strip():
+            problems.append(f"{where}: sin texto alternativo")
 
 
 CHOICE = {"MULTIPLE_CHOICE", "MAIN_IDEA", "INFERENCE", "DETAIL", "VOCABULARY_IN_CONTEXT"}

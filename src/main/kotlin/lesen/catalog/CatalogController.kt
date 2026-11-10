@@ -69,7 +69,33 @@ data class ReadingContentView(
     val format: String = "TEXT",
     val layout: String? = null,
     val pages: List<ContentPage>? = null,
+    // el orden de lectura cuando hay imágenes entre párrafos (ADR-0018): {type: paragraph, id} remite al párrafo de
+    // paragraphs; {type: image, …} es la imagen. null si el texto no tiene imágenes
+    val blocks: List<ContentBlock>? = null,
 )
+
+// un bloque del orden de lectura: un párrafo (por su id) o una imagen con todo lo que hace falta para pintarla
+@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+data class ContentBlock(
+    val type: String,
+    val id: String,
+    val url: String? = null,
+    val width: Int? = null,
+    val height: Int? = null,
+    val alt: String? = null,
+    val caption: String? = null,
+) {
+    companion object {
+        fun of(content: lesen.reading.ReadingContent): List<ContentBlock>? {
+            val images = content.images?.takeIf { it.isNotEmpty() } ?: return null
+
+            fun image(i: lesen.reading.InlineImage) = ContentBlock("image", i.id, IllustrationFiles.url(i.file), i.width, i.height, i.alt, i.caption)
+            val byParagraph = images.groupBy { it.after }
+            return byParagraph[null].orEmpty().map(::image) +
+                content.paragraphs.flatMap { p -> listOf(ContentBlock("paragraph", p.id)) + byParagraph[p.id].orEmpty().map(::image) }
+        }
+    }
+}
 
 data class TranslationView(
     val unit: String,
@@ -149,6 +175,7 @@ class CatalogController(
                         page.illustration?.let { ContentIllustration(IllustrationFiles.url(it.file), it.alt) },
                     )
                 },
+                ContentBlock.of(content),
             )
         return ResponseEntity
             .ok()

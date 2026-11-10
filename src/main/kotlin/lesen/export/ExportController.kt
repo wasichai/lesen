@@ -83,6 +83,7 @@ class ExportService(
             cover = meta.cover?.let { cover(it) },
             paragraphs = paragraphs,
             pages = ExportParagraphs.pages(content.pages, paragraphs, images(content), into),
+            inlineImages = inline(content),
             options = options,
             glossary = glossary,
             notes = notes,
@@ -99,6 +100,13 @@ class ExportService(
             .distinct()
             .mapNotNull { file -> illustrations.read(file)?.let { file to ExportImage(file, it.contentType, it.bytes) } }
             .toMap()
+
+    // las imágenes entre párrafos (ADR-0018), con sus bytes; la que no se puede leer va sin imagen y el documento lo dice
+    private suspend fun inline(content: lesen.reading.ReadingContent): List<ExportInline> =
+        content.images.orEmpty().map { i ->
+            val bytes = illustrations.read(i.file)?.let { ExportImage(i.file, it.contentType, it.bytes) }
+            ExportInline(i.id, i.after, bytes, i.width, i.height, i.alt, i.caption)
+        }
 
     // la portada de la demostración (SVG sin texto, del classpath) o la subida desde el estudio; si no está, sin portada
     private suspend fun cover(file: String): ExportImage? {

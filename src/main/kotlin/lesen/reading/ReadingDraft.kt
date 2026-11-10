@@ -23,6 +23,8 @@ data class ReadingDraft(
     val format: ReadingFormat = ReadingFormat.TEXT,
     val layout: PageLayout? = null,
     val pages: List<DraftPage> = emptyList(),
+    // imágenes entre párrafos de un texto (ADR-0018)
+    val images: List<DraftImage> = emptyList(),
 )
 
 data class DraftParagraph(
@@ -81,6 +83,7 @@ object ReadingAssembler {
             }
         }
         problems += PageRules.problems(draft)
+        problems += InlineImages.problems(draft)
         if (problems.isNotEmpty()) throw ValidationException("Invalid reading", problems)
         requireLength(draft.title, "title", 200)
         requireLength(draft.subtitle, "subtitle", 300)
@@ -124,6 +127,7 @@ object ReadingAssembler {
                 format = draft.format,
                 layout = draft.layout.takeIf { draft.format == ReadingFormat.PICTURE_BOOK },
                 pages = PageRules.resolve(draft, paragraphs),
+                images = InlineImages.resolve(draft, paragraphs),
             )
         return AssembledVersion(content, translations, content.words.size, occurrences, unresolved, hash(draft))
     }
@@ -142,6 +146,8 @@ object ReadingAssembler {
                     ),
                 )
         if (draft.format == ReadingFormat.TEXT) tree.remove(listOf("format", "layout", "pages"))
+        // un texto sin imágenes se resume como antes de que existieran (ADR-0018)
+        if (draft.images.isEmpty()) tree.remove("images")
         val canonical =
             lesen.common.Jsonb.MAPPER
                 .writeValueAsString(tree)

@@ -146,3 +146,9 @@ páginas en `pages`, cada una con `span` (1 o 2), su `layout` si no es la del li
 lleva y su `illustration` (`file` en `illustrations/` y `alt` en es y en). El texto, sus traducciones, el audio y las
 preguntas son los de siempre. «Ein Sonntag bei Oma» es el ejemplo: los mismos personajes (Lena con abrigo verde
 azulado, la abuela con chaqueta terracota y gafas) y la paleta de su portada en las cinco ilustraciones.
+
+## Imágenes entre párrafos
+
+Un texto puede llevar `images` (ADR-0018): cada una con `after` (cuántos párrafos la preceden), `file` en
+`illustrations/`, `width` y `height` iguales a su `viewBox`, `alt` y, si se quiere, `caption`, los dos en el idioma de la
+lectura. «Der alte Leuchtturm» lleva el faro en la tormenta tras su tercer párrafo.

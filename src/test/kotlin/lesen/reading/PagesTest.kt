@@ -74,7 +74,7 @@ class PagesTest {
         val legacy =
             lesen.common.Jsonb.MAPPER
                 .valueToTree<tools.jackson.databind.node.ObjectNode>(text.copy(featured = false))
-                .also { it.remove(listOf("format", "layout", "pages")) }
+                .also { it.remove(listOf("format", "layout", "pages", "images")) }
         val expected =
             java.security.MessageDigest
                 .getInstance("SHA-256")
