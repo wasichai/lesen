@@ -87,6 +87,7 @@ class ArchitectureTest {
                 "generation" to setOf("common", "reading", "assessment"),
                 "illustration" to setOf("common", "reading"),
                 "commission" to setOf("common", "language", "reading", "assessment", "generation", "illustration", "editorial"),
+                "export" to setOf("common", "reading", "dictionary", "library"),
             )
     }
 }

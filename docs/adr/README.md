@@ -20,3 +20,4 @@ Una ADR aceptada no se edita: si cambia la decisión, se escribe otra que la ree
 | [0014](0014-libros-ilustrados.md)                    | Libros ilustrados: páginas y maquetas de un catálogo cerrado                |
 | [0015](0015-ilustraciones-coherentes-con-embabel.md) | Ilustraciones coherentes con Embabel y proveedores de imagen                |
 | [0016](0016-lecturas-a-medida-privadas.md)           | Lecturas a medida privadas, con cuota, para quien aprende                   |
+| [0017](0017-exportar-lecturas.md)                    | Exportar lecturas: ePub del servidor y PDF desde el navegador               |

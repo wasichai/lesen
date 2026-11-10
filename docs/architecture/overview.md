@@ -59,6 +59,7 @@ flowchart BT
   generation --> reading & assessment
   illustration --> reading
   commission --> language & reading & assessment & generation & illustration & editorial
+  export --> reading & dictionary & library
 ```
 
 | Capacidad      | Responsabilidad                                                                                          |
@@ -79,6 +80,7 @@ flowchart BT
 | `generation`   | Lecturas a medida: perfil de escritura, escritura con Claude, comprobación y correcciones (ADR-0013)     |
 | `illustration` | Libros ilustrados: proveedores de imagen, pasos de la dirección de arte y agente de Embabel (ADR-0015)   |
 | `commission`   | Encargos: cola de generación, trabajador, entrega al estudio o a quien la pidió (ADR-0015, ADR-0016)     |
+| `export`       | Exportar una lectura como ePub o como página para imprimir o guardar como PDF (ADR-0017)                 |
 
 `vocabulary` también lleva el repaso FSRS y los encuentros: `library` le avisa al terminar una lectura por
 `ReadingCompletionListener`, una interfaz de `reading`, sin depender de ella. Del mismo modo, `library`, `vocabulary` y

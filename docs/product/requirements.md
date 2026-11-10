@@ -44,20 +44,21 @@ La columna «Entrega» dice en qué fase se construye. Lo de la primera entrega 
 
 ### Lector inmersivo
 
-| Id        | Requisito                                                                                                            | Entrega |
-| --------- | -------------------------------------------------------------------------------------------------------------------- | ------- |
-| RF-LEC-01 | Tipografía de lectura, ancho de línea cómodo, tamaño e interlineado ajustables                                       | 1       |
-| RF-LEC-02 | Temas de lectura claro, sepia y oscuro; pantalla completa                                                            | 1       |
-| RF-LEC-03 | Cada palabra se puede tocar: vistazo al pasar el cursor, hoja completa al hacer clic o tocar                         | 1       |
-| RF-LEC-04 | Teclado: un solo tabstop para el texto, flechas por palabras y oraciones, Intro abre                                 | 1       |
-| RF-LEC-05 | Diccionario en contexto: lema, forma flexionada, traducción, clase, IPA, gramática, ejemplos                         | 1       |
-| RF-LEC-06 | Traducción de oración y de párrafo a petición, escrita por una persona; nunca palabra a palabra                      | 1       |
-| RF-LEC-07 | Ayudas: mostrar traducciones de párrafos (apagado por defecto), resaltar palabras guardadas                          | 1       |
-| RF-LEC-08 | Resaltar palabras desconocidas y aprendidas                                                                          | 4       |
-| RF-LEC-09 | Avance, tiempo restante, posición guardada y restaurada al volver                                                    | 1       |
-| RF-LEC-10 | Marcar para después, guardar una oración con nota, terminar la lectura                                               | 1       |
-| RF-LEC-11 | Libro ilustrado: página a página (doble página en escritorio), maqueta por página, ilustración con texto alternativo | 7       |
-| RF-LEC-12 | Lecturas a medida: pedir una lectura o un libro ilustrado escrito para mí, privado, con cuota                        | 7       |
+| Id        | Requisito                                                                                                             | Entrega |
+| --------- | --------------------------------------------------------------------------------------------------------------------- | ------- |
+| RF-LEC-01 | Tipografía de lectura, ancho de línea cómodo, tamaño e interlineado ajustables                                        | 1       |
+| RF-LEC-02 | Temas de lectura claro, sepia y oscuro; pantalla completa                                                             | 1       |
+| RF-LEC-03 | Cada palabra se puede tocar: vistazo al pasar el cursor, hoja completa al hacer clic o tocar                          | 1       |
+| RF-LEC-04 | Teclado: un solo tabstop para el texto, flechas por palabras y oraciones, Intro abre                                  | 1       |
+| RF-LEC-05 | Diccionario en contexto: lema, forma flexionada, traducción, clase, IPA, gramática, ejemplos                          | 1       |
+| RF-LEC-06 | Traducción de oración y de párrafo a petición, escrita por una persona; nunca palabra a palabra                       | 1       |
+| RF-LEC-07 | Ayudas: mostrar traducciones de párrafos (apagado por defecto), resaltar palabras guardadas                           | 1       |
+| RF-LEC-08 | Resaltar palabras desconocidas y aprendidas                                                                           | 4       |
+| RF-LEC-09 | Avance, tiempo restante, posición guardada y restaurada al volver                                                     | 1       |
+| RF-LEC-10 | Marcar para después, guardar una oración con nota, terminar la lectura                                                | 1       |
+| RF-LEC-11 | Libro ilustrado: página a página (doble página en escritorio), maqueta por página, ilustración con texto alternativo  | 7       |
+| RF-LEC-12 | Lecturas a medida: pedir una lectura o un libro ilustrado escrito para mí, privado, con cuota                         | 7       |
+| RF-LEC-13 | Exportar a ePub (Kindle, Apple Books) o imprimir y guardar como PDF, eligiendo incluir traducciones, glosario y notas | 7       |
 
 ### Audio sincronizado (fase 3)
 

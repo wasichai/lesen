@@ -2,6 +2,15 @@
 
 Lo entregado, lo más nuevo arriba.
 
+## 2026-11-10 — Exportar lecturas (backend)
+
+- ADR-0017 y capacidad `export`: `GET readings/{slug}/versions/{n}/export` devuelve la lectura como ePub 3 (armado con
+  `java.util.zip`, para Apple Books y Kindle por «Send to Kindle») o como página HTML para imprimir o guardar como PDF.
+- Opciones: traducción bajo cada párrafo (o se dice que falta), glosario con las entradas del diccionario curado y notas
+  propias (exigen el cuaderno). Idiomas marcados con `lang`, `no-store`, CSP sin scripts.
+- Libros ilustrados: una sección por página en el orden de lectura, con su ilustración y su texto alternativo en la
+  lengua de la interfaz; una doble página con la imagen a todo el ancho; si falta una ilustración, el documento lo dice.
+
 ## 2026-11-10 — Fase 7, etapa 3 (backend): lecturas a medida privadas
 
 - ADR-0016 y esquema V10: una lectura con dueña es privada; `ReadingVersions.find` solo la encuentra quien la pidió y el
