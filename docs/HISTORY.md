@@ -2,6 +2,13 @@
 
 Lo entregado, lo más nuevo arriba.
 
+## 2026-11-10 — Exportar lecturas (backend)
+
+- ADR-0015 y capacidad `export`: `GET readings/{slug}/versions/{n}/export` devuelve la lectura como ePub 3 (armado con
+  `java.util.zip`, para Apple Books y Kindle por «Send to Kindle») o como página HTML para imprimir o guardar como PDF.
+- Opciones: traducción bajo cada párrafo (o se dice que falta), glosario con las entradas del diccionario curado y notas
+  propias (exigen el cuaderno). Idiomas marcados con `lang`, `no-store`, CSP sin scripts.
+
 ## 2026-11-10 — Lecturas a medida, fase 1 (backend): prototipo y evaluación
 
 - ADR-0013 y capacidad `generation`: perfil de escritura (`GenerationContext`) sin datos que identifiquen a la persona,

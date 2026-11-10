@@ -96,6 +96,12 @@ class DictionaryService(
         return results
     }
 
+    // las entradas de una lectura, para el glosario de una exportación: lema, categoría y hasta tres traducciones
+    suspend fun glossary(
+        keys: Collection<String>,
+        into: String,
+    ): List<EntrySummary> = store.entries(keys).map { summary(it, into, "READING") }.sortedBy { it.lemma.lowercase() }
+
     suspend fun history(me: Learner) = store.history(me.organizationId, me.userId)
 
     suspend fun clearHistory(me: Learner) = store.clearHistory(me.organizationId, me.userId)
