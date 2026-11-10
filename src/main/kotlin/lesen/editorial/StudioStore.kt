@@ -15,7 +15,8 @@ import java.util.UUID
 
 enum class DraftStatus { DRAFT, IN_REVIEW, PUBLISHED, DISCARDED }
 
-enum class StudioAction { CREATED, SAVED, AUDIO_ATTACHED, AUDIO_REMOVED, SUBMITTED, RETURNED, PUBLISHED, DISCARDED }
+// GENERATED: un borrador que escribió la generación (ADR-0015), que se revisa y publica como cualquier otro
+enum class StudioAction { CREATED, GENERATED, SAVED, AUDIO_ATTACHED, AUDIO_REMOVED, SUBMITTED, RETURNED, PUBLISHED, DISCARDED }
 
 // el audio de un borrador: un archivo del almacén y sus tiempos, ya casados con las palabras del texto
 data class DraftAudio(

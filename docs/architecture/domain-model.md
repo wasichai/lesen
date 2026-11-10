@@ -143,6 +143,11 @@ Un borrador abierto por lectura. Su documento tiene la forma de `ReadingDraft`; 
 casados con los ids de palabra que tendrá la versión. Publicar crea la versión (si el texto cambió), carga las preguntas
 y adjunta el audio contra ella; el historial de una lectura son sus versiones y los eventos de sus borradores.
 
+**Encargos (ADR-0015).** `generation_job`: quien lo pidió (organización, usuario), el destino (`STUDIO`, `PRIVATE`), el
+formato y la petición, el estado (`QUEUED → WRITING → ILLUSTRATING → READY | FAILED`), lo que salió (el borrador o la
+lectura a medida), el motivo y los hallazgos si falló, la biblia visual con que se ilustró, quién dirigió el arte y lo
+que costó.
+
 ## Recomendación
 
 Recomendación v1 (hecha, `Recommender`): solo lecturas del idioma que se estudia y aún no terminadas. Suma cercanía a la

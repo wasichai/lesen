@@ -1,6 +1,7 @@
 package lesen.generation
 
 import lesen.assessment.QuestionType
+import lesen.reading.ReadingFormat
 
 // el tipo de texto que se pide
 enum class TextKind { STORY, ARTICLE, DIALOGUE, LETTER }
@@ -21,6 +22,8 @@ data class GenerationRequest(
     val kind: TextKind,
     val topics: List<String> = emptyList(),
     val prompt: String? = null,
+    // un texto o un libro ilustrado, con sus páginas, maquetas y la biblia visual para ilustrarlo (ADR-0014, ADR-0015)
+    val format: ReadingFormat = ReadingFormat.TEXT,
 )
 
 // el «perfil de escritura» (ADR-0013): todo lo que el modelo sabe de la persona, compacto y calculado por el código. Ni
@@ -49,6 +52,8 @@ data class GenerationContext(
 ) {
     // el largo pedido en palabras
     val targetWordCount get() = request.minutes * wordsPerMinute
+
+    val book get() = request.format == ReadingFormat.PICTURE_BOOK
 
     companion object {
         const val MAX_PROMPT = 500

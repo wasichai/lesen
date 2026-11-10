@@ -14,6 +14,7 @@ data class LesenProperties(
     val demo: Demo = Demo(),
     val ai: Ai = Ai(),
     val generation: Generation = Generation(),
+    val illustration: Illustration = Illustration(),
 ) {
     // publica el contenido de src/main/resources/demo al arrancar (docs/content/demo-content.md)
     data class Demo(
@@ -44,7 +45,32 @@ data class LesenProperties(
         // las veces que la lectura vuelve al modelo con sus fallos antes de darla por fallida
         val maxCorrections: Int = 2,
         val timeoutSeconds: Long = 300,
+        // los trabajos de generación que corren a la vez (lesen.generation_job) y cada cuánto se mira la cola
+        val workers: Int = 1,
+        val pollMillis: Long = 2000,
+        // un trabajo sin noticias en este tiempo se da por caído y vuelve a la cola
+        val staleMinutes: Long = 30,
     )
+
+    // las ilustraciones de los libros (ADR-0015). provider: none (sin ilustraciones: el libro queda con ellas pendientes),
+    // fake (imágenes de prueba, para desarrollo y pruebas), openai o gemini. Las claves nunca van a un archivo
+    data class Illustration(
+        val provider: String = "none",
+        // el modelo de imagen del proveedor; vacío, el suyo por defecto (gpt-image-1, gemini-2.5-flash-image)
+        val model: String = "",
+        val openaiApiKey: String = "",
+        val openaiBaseUrl: String = "https://api.openai.com",
+        val geminiApiKey: String = "",
+        val geminiBaseUrl: String = "https://generativelanguage.googleapis.com",
+        // la dirección de arte con Embabel y Claude (biblia visual, planos y revisión con visión); sin clave de
+        // Anthropic, el libro se ilustra con la biblia que escribió la generación del texto
+        val agent: Boolean = true,
+        // las veces que una página que la revisión rechaza se vuelve a dibujar
+        val maxRetries: Int = 1,
+        val timeoutSeconds: Long = 180,
+    ) {
+        val enabled get() = provider != "none"
+    }
 }
 
 @Configuration

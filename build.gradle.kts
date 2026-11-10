@@ -23,6 +23,9 @@ dependencies {
     implementation(libs.wasichai.starter.files)
     implementation(libs.springdoc.webflux.api)
     implementation(libs.anthropic.java)
+    // la dirección de arte de los libros ilustrados (ADR-0015); sin clave, IllustrationGate deja Embabel fuera del contexto
+    implementation(libs.embabel.agent.starter)
+    implementation(libs.embabel.agent.starter.anthropic)
     testImplementation(libs.wasichai.test)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

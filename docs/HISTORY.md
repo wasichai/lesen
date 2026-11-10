@@ -2,6 +2,19 @@
 
 Lo entregado, lo más nuevo arriba.
 
+## 2026-11-10 — Fase 7, etapa 2 (backend): libros ilustrados generados desde el estudio
+
+- ADR-0015: la generación (ADR-0013) escribe también un libro, con su maqueta, sus páginas, la escena y el texto
+  alternativo de cada una y la biblia visual (`book`), y comprueba páginas, palabras por página, escenas, personajes y
+  textos alternativos (`PictureBooks`).
+- Capacidad `illustration`: `ImageProvider` con los proveedores `fake`, `openai` (gpt-image) y `gemini` (con imágenes de
+  referencia), los pasos de la dirección de arte (`IllustrationSteps`), el recorrido que dibuja en orden con las hojas
+  de los personajes y la página anterior y vuelve a dibujar lo que la revisión rechaza (`IllustrationPipeline`), y el
+  agente de Embabel `IllustrationAgent` (biblia → planos → ilustraciones con revisión con visión), fuera del contexto sin
+  clave (`IllustrationGate`).
+- Capacidad `commission` y esquema V9: la cola de encargos con trabajadores reactivos, encargos desde el estudio
+  (`studio/generations`) que terminan en un borrador con el evento `GENERATED`, y volver a dibujar una página.
+
 ## 2026-11-10 — Fase 7, etapa 1 (backend): libros ilustrados
 
 - ADR-0014: formato `PICTURE_BOOK` además del texto, páginas y dobles páginas que reparten los párrafos sin cambiar sus
