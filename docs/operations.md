@@ -17,6 +17,8 @@ interfaz (`lesen-ui`) se sirve aparte y llama a `/api`.
 | `WASICHAI_FILES_STORE=s3` y `WASICHAI_FILES_S3_*`              | El almacén en S3 en lugar de disco (configuración de `wasichai-files`)             |
 | `LESEN_DEMO_ENABLED`                                           | `true` publica el contenido de demostración al arrancar (idempotente)              |
 | `ANTHROPIC_API_KEY`                                            | La corrección asistida de respuestas abiertas (ADR-0009); sin ella, autoevaluación |
+| `LESEN_AI_MODEL`                                               | El modelo de Claude (`claude-opus-5-5` por defecto)                                |
+| `LESEN_GENERATION_EFFORT`                                      | El esfuerzo del modelo en las lecturas a medida (ADR-0013), `medium` por defecto   |
 | `PORT`                                                         | Puerto HTTP (8095 por defecto)                                                     |
 
 Las migraciones (Flyway por módulo: las de Wasichai y las de `db/lesen`) corren al arrancar. Después, con la

@@ -1,0 +1,455 @@
+{
+  "note": "Juego de evaluación de lecturas a medida (ADR-0013): 30 perfiles sobre el contenido de demostración. Cada perfil se corre con tres peticiones: guided (solo controles), free (solo prompt, con los valores del perfil) y mixed (controles y prompt).",
+  "profiles": [
+    {
+      "id": "de-a1-1",
+      "language": "de",
+      "level": "A1",
+      "minutes": 2,
+      "kind": "STORY",
+      "topics": [],
+      "read": [],
+      "targets": [],
+      "weakTypes": [],
+      "prompts": {
+        "free": "una historia de misterio en un tren nocturno",
+        "mixed": "a letter from a grandmother about her first job"
+      }
+    },
+    {
+      "id": "de-a1-2",
+      "language": "de",
+      "level": "A1",
+      "minutes": 2,
+      "kind": "DIALOGUE",
+      "topics": ["culture/food", "everyday-life/home"],
+      "read": ["brot-vom-baecker", "ein-sonntag-bei-oma"],
+      "targets": ["de:darin", "de:fahren", "de:haus", "de:kaufen", "de:neu", "de:nuss", "de:riechen", "de:tasche"],
+      "weakTypes": ["VOCABULARY_IN_CONTEXT"],
+      "prompts": {
+        "free": "an article about how bees talk to each other",
+        "mixed": "la historia de un faro y su guardiana"
+      }
+    },
+    {
+      "id": "de-a1-3",
+      "language": "de",
+      "level": "A1",
+      "minutes": 5,
+      "kind": "STORY",
+      "topics": ["culture/food", "everyday-life/home"],
+      "read": ["brot-vom-baecker", "ein-sonntag-bei-oma"],
+      "targets": [],
+      "weakTypes": ["VOCABULARY_IN_CONTEXT", "COMPLETION"],
+      "prompts": {
+        "free": "una conversación en una farmacia",
+        "mixed": "a dialogue at a train station ticket office"
+      }
+    },
+    {
+      "id": "de-a2-1",
+      "language": "de",
+      "level": "A2",
+      "minutes": 2,
+      "kind": "LETTER",
+      "topics": ["nature/animals"],
+      "read": ["der-fuchs-im-garten"],
+      "targets": ["de:direkt", "de:lachen", "de:neugierig", "de:scheu", "de:weg#adv"],
+      "weakTypes": [],
+      "prompts": {
+        "free": "a letter from a grandmother about her first job",
+        "mixed": "un robot que aprende a cocinar"
+      }
+    },
+    {
+      "id": "de-a2-2",
+      "language": "de",
+      "level": "A2",
+      "minutes": 2,
+      "kind": "ARTICLE",
+      "topics": ["culture/food", "nature"],
+      "read": ["brot-vom-baecker", "der-alte-leuchtturm"],
+      "targets": ["de:bäckerei", "de:honig", "de:oben", "de:probieren", "de:öffnen"],
+      "weakTypes": ["VOCABULARY_IN_CONTEXT"],
+      "prompts": {
+        "free": "algo sobre el mercado de los sábados",
+        "mixed": "an article about how bees talk to each other"
+      }
+    },
+    {
+      "id": "de-a2-3",
+      "language": "de",
+      "level": "A2",
+      "minutes": 5,
+      "kind": "LETTER",
+      "topics": ["culture/food", "nature"],
+      "read": ["brot-vom-baecker", "der-alte-leuchtturm", "der-fuchs-im-garten"],
+      "targets": [],
+      "weakTypes": ["MAIN_IDEA", "COMPLETION"],
+      "prompts": {
+        "free": "a story set on a rainy night in a big city",
+        "mixed": "una cena familiar que sale mal"
+      }
+    },
+    {
+      "id": "de-b1-1",
+      "language": "de",
+      "level": "B1",
+      "minutes": 2,
+      "kind": "DIALOGUE",
+      "topics": ["nature/animals", "science/space"],
+      "read": ["der-fuchs-im-garten", "ein-abend-mit-den-sternen"],
+      "targets": ["de:drücken", "de:halten", "de:herbstabend", "de:hinaus", "de:kopf", "de:noch", "de:nächste", "de:unterwegs"],
+      "weakTypes": [],
+      "prompts": {
+        "free": "cómo se hace el pan en casa",
+        "mixed": "a detective story in a small bakery"
+      }
+    },
+    {
+      "id": "de-b1-2",
+      "language": "de",
+      "level": "B1",
+      "minutes": 5,
+      "kind": "STORY",
+      "topics": ["nature", "nature/animals"],
+      "read": ["der-alte-leuchtturm", "der-fuchs-im-garten", "ein-abend-mit-den-sternen"],
+      "targets": ["de:freitag", "de:gewöhnen", "de:hafen", "de:lange", "de:rückfahrt", "de:sagen", "de:stern", "de:wieder"],
+      "weakTypes": ["VOCABULARY_IN_CONTEXT"],
+      "prompts": {
+        "free": "a short history of the bicycle",
+        "mixed": "un día en la vida de una bombera"
+      }
+    },
+    {
+      "id": "de-b1-3",
+      "language": "de",
+      "level": "B1",
+      "minutes": 8,
+      "kind": "DIALOGUE",
+      "topics": ["everyday-life/home", "mysteries-adventures/detectives"],
+      "read": ["das-verschwundene-fahrrad", "der-alte-leuchtturm", "ein-abend-mit-den-sternen", "ein-sonntag-bei-oma"],
+      "targets": [],
+      "weakTypes": ["MAIN_IDEA", "VOCABULARY_IN_CONTEXT"],
+      "prompts": {
+        "free": "una cena familiar que sale mal",
+        "mixed": "a neighbour who never says hello"
+      }
+    },
+    {
+      "id": "de-b2-1",
+      "language": "de",
+      "level": "B2",
+      "minutes": 2,
+      "kind": "ARTICLE",
+      "topics": ["nature", "science/space"],
+      "read": ["der-alte-leuchtturm", "ein-abend-mit-den-sternen"],
+      "targets": ["de:dunkel", "de:gar", "de:machen", "de:nur", "de:okular", "de:wasser"],
+      "weakTypes": [],
+      "prompts": {
+        "free": "two friends planning a trip with very little money",
+        "mixed": "cómo se hace el pan en casa"
+      }
+    },
+    {
+      "id": "de-b2-2",
+      "language": "de",
+      "level": "B2",
+      "minutes": 5,
+      "kind": "LETTER",
+      "topics": ["everyday-life/home", "mysteries-adventures/detectives"],
+      "read": ["das-verschwundene-fahrrad", "ein-abend-mit-den-sternen", "ein-sonntag-bei-oma"],
+      "targets": ["de:dann", "de:fahrradfahren", "de:mehr", "de:neblig", "de:plötzlich", "de:rückfahrt", "de:weiß", "de:zeigen"],
+      "weakTypes": ["INFERENCE"],
+      "prompts": {
+        "free": "la historia de un faro y su guardiana",
+        "mixed": "an astronaut's first morning on the moon"
+      }
+    },
+    {
+      "id": "de-b2-3",
+      "language": "de",
+      "level": "B2",
+      "minutes": 8,
+      "kind": "ARTICLE",
+      "topics": ["culture/food", "everyday-life/home"],
+      "read": ["brot-vom-baecker", "das-verschwundene-fahrrad", "der-fuchs-im-garten", "ein-sonntag-bei-oma"],
+      "targets": [],
+      "weakTypes": ["VOCABULARY_IN_CONTEXT", "MAIN_IDEA"],
+      "prompts": {
+        "free": "why some people love spicy food",
+        "mixed": "una aventura en la montaña con mal tiempo"
+      }
+    },
+    {
+      "id": "de-c1-1",
+      "language": "de",
+      "level": "C1",
+      "minutes": 2,
+      "kind": "STORY",
+      "topics": ["nature", "psychology/habits"],
+      "read": ["der-alte-leuchtturm", "ein-abend-mit-den-sternen", "warum-wir-gewohnheiten-brauchen"],
+      "targets": ["de:gehirn", "de:lange", "de:unterwegs", "de:verbindung", "de:übernehmen"],
+      "weakTypes": [],
+      "prompts": {
+        "free": "una entrevista de trabajo un poco rara",
+        "mixed": "a mystery at a music festival"
+      }
+    },
+    {
+      "id": "de-c1-2",
+      "language": "de",
+      "level": "C1",
+      "minutes": 5,
+      "kind": "DIALOGUE",
+      "topics": ["mysteries-adventures/detectives", "nature"],
+      "read": ["das-verschwundene-fahrrad", "der-alte-leuchtturm", "ein-abend-mit-den-sternen", "warum-wir-gewohnheiten-brauchen"],
+      "targets": ["de:außerdem", "de:beginnen", "de:frau", "de:herbstabend", "de:klar", "de:ordentlich", "de:richten", "de:weiß"],
+      "weakTypes": ["VOCABULARY_IN_CONTEXT"],
+      "prompts": {
+        "free": "an astronaut's first morning on the moon",
+        "mixed": "algo sobre el mercado de los sábados"
+      }
+    },
+    {
+      "id": "de-c1-3",
+      "language": "de",
+      "level": "C1",
+      "minutes": 8,
+      "kind": "STORY",
+      "topics": ["culture/food", "everyday-life/home"],
+      "read": ["brot-vom-baecker", "das-verschwundene-fahrrad", "die-stimme-im-archiv", "ein-sonntag-bei-oma", "warum-wir-gewohnheiten-brauchen"],
+      "targets": [],
+      "weakTypes": ["VOCABULARY_IN_CONTEXT", "INFERENCE"],
+      "prompts": {
+        "free": "una fiesta de cumpleaños sorpresa",
+        "mixed": "why some people love spicy food"
+      }
+    },
+    {
+      "id": "en-a1-1",
+      "language": "en",
+      "level": "A1",
+      "minutes": 2,
+      "kind": "LETTER",
+      "topics": [],
+      "read": [],
+      "targets": [],
+      "weakTypes": [],
+      "prompts": {
+        "free": "a detective story in a small bakery",
+        "mixed": "una carta a una amiga que se mudó a otra ciudad"
+      }
+    },
+    {
+      "id": "en-a1-2",
+      "language": "en",
+      "level": "A1",
+      "minutes": 2,
+      "kind": "ARTICLE",
+      "topics": [],
+      "read": [],
+      "targets": [],
+      "weakTypes": ["INFERENCE"],
+      "prompts": {
+        "free": "un artículo sobre por qué los gatos ronronean",
+        "mixed": "a story about a lost dog that finds its way home"
+      }
+    },
+    {
+      "id": "en-a1-3",
+      "language": "en",
+      "level": "A1",
+      "minutes": 5,
+      "kind": "LETTER",
+      "topics": [],
+      "read": [],
+      "targets": [],
+      "weakTypes": ["MAIN_IDEA", "COMPLETION"],
+      "prompts": {
+        "free": "a dialogue at a train station ticket office",
+        "mixed": "una conversación en una farmacia"
+      }
+    },
+    {
+      "id": "en-a2-1",
+      "language": "en",
+      "level": "A2",
+      "minutes": 2,
+      "kind": "DIALOGUE",
+      "topics": ["travel/cities"],
+      "read": ["a-morning-in-lisbon"],
+      "targets": ["en:anymore", "en:café", "en:hill", "en:out", "en:still", "en:up"],
+      "weakTypes": [],
+      "prompts": {
+        "free": "una carta a una amiga que se mudó a otra ciudad",
+        "mixed": "two friends planning a trip with very little money"
+      }
+    },
+    {
+      "id": "en-a2-2",
+      "language": "en",
+      "level": "A2",
+      "minutes": 2,
+      "kind": "STORY",
+      "topics": ["travel/cities"],
+      "read": ["a-morning-in-lisbon"],
+      "targets": ["en:city", "en:good", "en:hear", "en:lose", "en:sit", "en:white"],
+      "weakTypes": ["INFERENCE"],
+      "prompts": {
+        "free": "something funny about learning to drive",
+        "mixed": "un artículo sobre por qué los gatos ronronean"
+      }
+    },
+    {
+      "id": "en-a2-3",
+      "language": "en",
+      "level": "A2",
+      "minutes": 5,
+      "kind": "DIALOGUE",
+      "topics": ["travel/cities"],
+      "read": ["a-morning-in-lisbon"],
+      "targets": [],
+      "weakTypes": ["COMPLETION", "INFERENCE"],
+      "prompts": {
+        "free": "una aventura en la montaña con mal tiempo",
+        "mixed": "a walk in the forest where something strange happens"
+      }
+    },
+    {
+      "id": "en-b1-1",
+      "language": "en",
+      "level": "B1",
+      "minutes": 2,
+      "kind": "ARTICLE",
+      "topics": ["history/modern", "travel/cities"],
+      "read": ["a-morning-in-lisbon", "the-night-the-lights-went-out"],
+      "targets": ["en:give", "en:how", "en:then", "en:tram", "en:warm", "en:white"],
+      "weakTypes": [],
+      "prompts": {
+        "free": "how people kept food cold before fridges",
+        "mixed": "una historia de misterio en un tren nocturno"
+      }
+    },
+    {
+      "id": "en-b1-2",
+      "language": "en",
+      "level": "B1",
+      "minutes": 5,
+      "kind": "LETTER",
+      "topics": ["history/modern", "travel/cities"],
+      "read": ["a-morning-in-lisbon", "the-night-the-lights-went-out"],
+      "targets": ["en:full", "en:glow", "en:man", "en:see", "en:up"],
+      "weakTypes": ["MAIN_IDEA"],
+      "prompts": {
+        "free": "un día en la vida de una bombera",
+        "mixed": "a short history of the bicycle"
+      }
+    },
+    {
+      "id": "en-b1-3",
+      "language": "en",
+      "level": "B1",
+      "minutes": 8,
+      "kind": "ARTICLE",
+      "topics": ["history/modern", "travel/cities"],
+      "read": ["a-morning-in-lisbon", "the-night-the-lights-went-out"],
+      "targets": [],
+      "weakTypes": ["MAIN_IDEA", "COMPLETION"],
+      "prompts": {
+        "free": "a walk in the forest where something strange happens",
+        "mixed": "una fiesta de cumpleaños sorpresa"
+      }
+    },
+    {
+      "id": "en-b2-1",
+      "language": "en",
+      "level": "B2",
+      "minutes": 2,
+      "kind": "STORY",
+      "topics": ["psychology/habits", "travel/cities"],
+      "read": ["a-morning-in-lisbon", "the-art-of-doing-nothing"],
+      "targets": ["en:how", "en:mind", "en:pocket", "en:solve", "en:worried"],
+      "weakTypes": [],
+      "prompts": {
+        "free": "un robot que aprende a cocinar",
+        "mixed": "how people kept food cold before fridges"
+      }
+    },
+    {
+      "id": "en-b2-2",
+      "language": "en",
+      "level": "B2",
+      "minutes": 5,
+      "kind": "DIALOGUE",
+      "topics": ["history/modern", "psychology/habits"],
+      "read": ["a-morning-in-lisbon", "the-art-of-doing-nothing", "the-night-the-lights-went-out"],
+      "targets": ["en:blue", "en:can", "en:child", "en:office", "en:sit", "en:tiny"],
+      "weakTypes": ["INFERENCE"],
+      "prompts": {
+        "free": "a story about a lost dog that finds its way home",
+        "mixed": "por qué dormimos y qué pasa si no dormimos"
+      }
+    },
+    {
+      "id": "en-b2-3",
+      "language": "en",
+      "level": "B2",
+      "minutes": 8,
+      "kind": "STORY",
+      "topics": ["history/modern", "psychology/habits"],
+      "read": ["a-morning-in-lisbon", "the-art-of-doing-nothing", "the-night-the-lights-went-out"],
+      "targets": [],
+      "weakTypes": ["MAIN_IDEA", "VOCABULARY_IN_CONTEXT"],
+      "prompts": {
+        "free": "un viaje en bicicleta junto al río",
+        "mixed": "a story set on a rainy night in a big city"
+      }
+    },
+    {
+      "id": "en-c1-1",
+      "language": "en",
+      "level": "C1",
+      "minutes": 2,
+      "kind": "LETTER",
+      "topics": ["history/modern", "psychology/habits"],
+      "read": ["a-morning-in-lisbon", "the-art-of-doing-nothing", "the-night-the-lights-went-out"],
+      "targets": ["en:custard", "en:day", "en:hill", "en:neighbour", "en:practice"],
+      "weakTypes": [],
+      "prompts": {
+        "free": "a mystery at a music festival",
+        "mixed": "una entrevista de trabajo un poco rara"
+      }
+    },
+    {
+      "id": "en-c1-2",
+      "language": "en",
+      "level": "C1",
+      "minutes": 5,
+      "kind": "ARTICLE",
+      "topics": ["history/modern", "psychology/habits"],
+      "read": ["a-morning-in-lisbon", "the-art-of-doing-nothing", "the-night-the-lights-went-out"],
+      "targets": ["en:freezer", "en:hot", "en:hotel", "en:lose", "en:skill"],
+      "weakTypes": ["COMPLETION"],
+      "prompts": {
+        "free": "por qué dormimos y qué pasa si no dormimos",
+        "mixed": "something funny about learning to drive"
+      }
+    },
+    {
+      "id": "en-c1-3",
+      "language": "en",
+      "level": "C1",
+      "minutes": 8,
+      "kind": "LETTER",
+      "topics": ["history/modern", "psychology/habits"],
+      "read": ["a-morning-in-lisbon", "the-art-of-doing-nothing", "the-night-the-lights-went-out"],
+      "targets": [],
+      "weakTypes": ["INFERENCE", "VOCABULARY_IN_CONTEXT"],
+      "prompts": {
+        "free": "a neighbour who never says hello",
+        "mixed": "un viaje en bicicleta junto al río"
+      }
+    }
+  ]
+}

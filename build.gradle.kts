@@ -72,6 +72,17 @@ val noServletStack by tasks.registering {
 
 tasks.check { dependsOn(noServletStack) }
 
+// el juego de evaluación de las lecturas a medida (ADR-0013) contra la API real: cuesta dinero, así que nunca va en
+// check ni en CI. ANTHROPIC_API_KEY en el entorno; argumentos con -Peval="--only de-a1 --limit 3 --parallel 3"
+tasks.register<JavaExec>("generationEval") {
+    description = "Evalúa las lecturas a medida contra la API real (a mano, nunca en CI)."
+    group = "evaluation"
+    classpath = sourceSets.test.get().runtimeClasspath
+    mainClass.set("lesen.generation.eval.GenerationEvalKt")
+    args(((project.findProperty("eval") as String?) ?: "").split(" ").filter { it.isNotBlank() })
+    workingDir = projectDir
+}
+
 tasks.bootJar { archiveFileName.set("lesen.jar") }
 
 // desarrollo local: bootRun toma .env (ignorado por git) como variables de entorno reales, que es como las lee Wasichai

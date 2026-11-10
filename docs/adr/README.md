@@ -16,3 +16,4 @@ Una ADR aceptada no se edita: si cambia la decisión, se escribe otra que la ree
 | [0010](0010-repaso-espaciado-fsrs.md)               | Repaso espaciado FSRS-5; los estados del cuaderno solo los mueve el repaso  |
 | [0011](0011-progreso-eventos-y-metas-amables.md)    | Progreso por eventos, proyección diaria y metas que no castigan             |
 | [0012](0012-estudio-editorial.md)                   | Estudio editorial: borradores, revisión y publicación con audio y preguntas |
+| [0013](0013-lecturas-a-medida.md)                   | Lecturas a medida: un flujo controlado por el código que escribe con Claude |

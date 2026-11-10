@@ -2,6 +2,16 @@
 
 Lo entregado, lo más nuevo arriba.
 
+## 2026-11-10 — Lecturas a medida, fase 1 (backend): prototipo y evaluación
+
+- ADR-0013 y capacidad `generation`: perfil de escritura (`GenerationContext`) sin datos que identifiquen a la persona,
+  prompt de sistema fijo y esquema cerrado de salida estructurada, escritor con Claude por streaming con caché del
+  prefijo (`ClaudeReadingWriter`) y flujo escribir → comprobar → corregir con hasta dos correcciones (`Generator`).
+- Comprobaciones puras (`GenerationCheck`, `LevelFit`): largo, nivel, vocabulario del diccionario curado, palabras
+  objetivo, traducciones y preguntas (con `ReadingAssembler` y `QuestionCheck`).
+- Juego de evaluación de 30 perfiles × 3 peticiones sobre el contenido de demostración y `./gradlew generationEval`
+  contra la API real (a mano, nunca en CI), con informe, coste medido y hojas de revisión humana.
+
 ## 2026-11-09 — Fase 6 (backend): estudio editorial y operación
 
 - Esquema V7 y capacidad `editorial` (ADR-0012): borradores con revisión optimista, un borrador abierto por lectura,

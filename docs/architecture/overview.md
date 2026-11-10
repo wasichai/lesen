@@ -56,6 +56,7 @@ flowchart BT
   progress --> learner & catalog & vocabulary & assessment
   editorial --> language & reading & audio & assessment & dictionary
   demo --> assessment & audio & catalog & dictionary & reading
+  generation --> reading & assessment
 ```
 
 | Capacidad    | Responsabilidad                                                                                          |
@@ -73,6 +74,7 @@ flowchart BT
 | `progress`   | Actividad, proyección diaria, panel, resumen semanal, metas, racha semanal, logros, señales de historial |
 | `editorial`  | Estudio: borradores, comprobación, revisión, publicación con audio y preguntas, historial, diccionario   |
 | `demo`       | Carga del contenido de demostración a través de la publicación real                                      |
+| `generation` | Lecturas a medida: perfil de escritura, escritura con Claude, comprobación y correcciones (ADR-0013)     |
 
 `vocabulary` también lleva el repaso FSRS y los encuentros: `library` le avisa al terminar una lectura por
 `ReadingCompletionListener`, una interfaz de `reading`, sin depender de ella. Del mismo modo, `library`, `vocabulary` y
@@ -113,4 +115,5 @@ Detalle en `lesen-ui/CLAUDE.md` y `lesen-ui/docs/design-system/lesen/`.
 | «Palabras desconocidas» necesita saber qué se encontró | `vocabulary_encounter` al terminar cada lectura (fase 4); lo no terminado no cuenta como visto   |
 | Corrección asistida depende de un proveedor externo    | Sin clave, autoevaluación con la respuesta modelo; nunca un resultado inventado (ADR-0009)       |
 | Contenido de demostración en el classpath              | El estudio publica a la base; audio y portadas subidos van al almacén de `wasichai-files`        |
+| Lecturas a medida dependen de un proveedor externo     | Sin clave no se ofrecen; comprobación antes de entregar y juego de evaluación a mano (ADR-0013)  |
 | Sin generación de voz en el servidor                   | Audio subido con tiempos por palabra (WebVTT, SRT o JSON); proveedor de voz cuando haya uno real |
