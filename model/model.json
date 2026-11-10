@@ -1,5 +1,5 @@
 {
-  "_comentario": "Lesen no guarda su dominio en Custom Objects (ADR-0002): sus tablas viven en el esquema lesen. Estos objetos son anclas de permisos de Wasichai y no guardan registros: lectura (leer el catálogo y el diccionario), cuaderno (lo personal de cada lector) y estudio (el estudio editorial, con la acción propia PUBLICAR). apiOnly: nadie crea registros por la API genérica.",
+  "_comentario": "Lesen no guarda su dominio en Custom Objects (ADR-0002): sus tablas viven en el esquema lesen. Estos objetos son anclas de permisos de Wasichai y no guardan registros: lectura (leer el catálogo y el diccionario), cuaderno (lo personal de cada lector), estudio (el estudio editorial, con la acción propia PUBLICAR) y lectura_a_medida (pedir lecturas a medida, CREATE). apiOnly: nadie crea registros por la API genérica.",
   "enums": {},
   "objects": [
     {
@@ -42,6 +42,20 @@
           "label": "Publicar"
         }
       ],
+      "fields": [
+        {
+          "name": "nota",
+          "label": "Nota",
+          "type": "TEXT"
+        }
+      ]
+    },
+    {
+      "name": "lectura_a_medida",
+      "label": "Lectura a medida",
+      "pluralLabel": "Lecturas a medida",
+      "description": "Ancla de permisos de las lecturas a medida de Lesen (ADR-0016): pedir una lectura o un libro ilustrado escrito para quien lo pide (CREATE). No guarda registros.",
+      "apiOnly": true,
       "fields": [
         {
           "name": "nota",

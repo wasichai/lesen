@@ -20,15 +20,15 @@ un idioma.
 
 ## Lecturas
 
-| Entidad               | Estado | Notas                                                                                                      |
-| --------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
-| `topic`               | Hecho  | Árbol: el slug es la ruta (`travel/coasts`), etiquetas por idioma de interfaz                              |
-| `reading`             | Hecho  | Slug, idioma, nivel, destacada, versión vigente. Su idioma no cambia                                       |
-| `reading_topic`       | Hecho  | Temas en orden                                                                                             |
-| `reading_version`     | Hecho  | Inmutable (disparador). Título, subtítulo, resumen, portada, acento, palabras, minutos, contenido y huella |
-| `reading_translation` | Hecho  | Por unidad (`SENTENCE`, `PARAGRAPH`), referencia e idioma; origen `AUTHORED` o `PROVIDER`                  |
-| `reading_entry`       | Hecho  | Entradas del diccionario de cada versión y cuántas veces aparecen                                          |
-| `collection`          | Hecho  | Etiquetas y descripciones por idioma, lecturas en orden                                                    |
+| Entidad               | Estado | Notas                                                                                                                                                  |
+| --------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `topic`               | Hecho  | Árbol: el slug es la ruta (`travel/coasts`), etiquetas por idioma de interfaz                                                                          |
+| `reading`             | Hecho  | Slug, idioma, nivel, destacada, versión vigente y, en una lectura a medida, su dueña (ADR-0016). Su idioma y su dueña no cambian                       |
+| `reading_topic`       | Hecho  | Temas en orden                                                                                                                                         |
+| `reading_version`     | Hecho  | Inmutable (disparador). Título, subtítulo, resumen, portada, acento, palabras, minutos, contenido, huella y formato (`TEXT`, `PICTURE_BOOK`, ADR-0014) |
+| `reading_translation` | Hecho  | Por unidad (`SENTENCE`, `PARAGRAPH`), referencia e idioma; origen `AUTHORED` o `PROVIDER`                                                              |
+| `reading_entry`       | Hecho  | Entradas del diccionario de cada versión y cuántas veces aparecen                                                                                      |
+| `collection`          | Hecho  | Etiquetas y descripciones por idioma, lecturas en orden                                                                                                |
 
 ### El contenido de una versión
 
@@ -37,7 +37,14 @@ content
 └── paragraphs[]  id: p3
     └── sentences[]  id: p3s2, text
         └── tokens[]  id: p3s2t5, text, kind (WORD | PUNCT), start, end, space, entry
+format  TEXT | PICTURE_BOOK
+layout  la maqueta del libro (solo en un libro)
+pages[]  id: g2, span (1 | 2), layout (ya resuelta), paragraphs [p3, p4], illustration {file, alt{es, en}}
 ```
+
+**Libro ilustrado (ADR-0014).** Las páginas reparten los párrafos consecutivos: el texto y sus ids son los mismos que en
+un texto. Cada página o doble página tiene una maqueta del catálogo cerrado `PageLayout` (la del libro o la suya). Una
+página con maqueta ilustrada lleva su ilustración y su texto alternativo en cada idioma de interfaz.
 
 Los ids son estables dentro de la versión y todo lo que guarda una persona apunta a (versión, id). `entry` es la
 entrada del diccionario que la publicación resolvió para esa forma (o la elegida por la autora para un homógrafo), o
@@ -135,6 +142,11 @@ son de descanso.
 Un borrador abierto por lectura. Su documento tiene la forma de `ReadingDraft`; su audio, el archivo y los tiempos ya
 casados con los ids de palabra que tendrá la versión. Publicar crea la versión (si el texto cambió), carga las preguntas
 y adjunta el audio contra ella; el historial de una lectura son sus versiones y los eventos de sus borradores.
+
+**Encargos (ADR-0015).** `generation_job`: quien lo pidió (organización, usuario), el destino (`STUDIO`, `PRIVATE`), el
+formato y la petición, el estado (`QUEUED → WRITING → ILLUSTRATING → READY | FAILED`), lo que salió (el borrador o la
+lectura a medida), el motivo y los hallazgos si falló, la biblia visual con que se ilustró, quién dirigió el arte y lo
+que costó.
 
 ## Recomendación
 

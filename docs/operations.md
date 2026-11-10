@@ -8,18 +8,25 @@ auditoría, almacén de archivos) es de Wasichai y sigue su documentación.
 Un solo proceso (`build/libs/lesen.jar`, JDK 25) con PostgreSQL 18 y, para el estudio, un almacén de archivos. La
 interfaz (`lesen-ui`) se sirve aparte y llama a `/api`.
 
-| Variable                                                       | Para qué                                                                           |
-| -------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `WASICHAI_DB_HOST`, `_PORT`, `_NAME`, `_USERNAME`, `_PASSWORD` | La base de datos                                                                   |
-| `WASICHAI_JWT_SECRET`                                          | Firma de los tokens; sin ella no arranca (`openssl rand -base64 48`)               |
-| `WASICHAI_CORS_ALLOWED_ORIGINS`                                | Orígenes de navegador ajenos, si la interfaz vive en otro dominio                  |
-| `LESEN_FILES_PATH`                                             | Carpeta del almacén local de archivos (`./data/files` por defecto)                 |
-| `WASICHAI_FILES_STORE=s3` y `WASICHAI_FILES_S3_*`              | El almacén en S3 en lugar de disco (configuración de `wasichai-files`)             |
-| `LESEN_DEMO_ENABLED`                                           | `true` publica el contenido de demostración al arrancar (idempotente)              |
-| `ANTHROPIC_API_KEY`                                            | La corrección asistida de respuestas abiertas (ADR-0009); sin ella, autoevaluación |
-| `LESEN_AI_MODEL`                                               | El modelo de Claude (`claude-opus-5-5` por defecto)                                |
-| `LESEN_GENERATION_EFFORT`                                      | El esfuerzo del modelo en las lecturas a medida (ADR-0013), `medium` por defecto   |
-| `PORT`                                                         | Puerto HTTP (8095 por defecto)                                                     |
+| Variable                                                       | Para qué                                                                                               |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `WASICHAI_DB_HOST`, `_PORT`, `_NAME`, `_USERNAME`, `_PASSWORD` | La base de datos                                                                                       |
+| `WASICHAI_JWT_SECRET`                                          | Firma de los tokens; sin ella no arranca (`openssl rand -base64 48`)                                   |
+| `WASICHAI_CORS_ALLOWED_ORIGINS`                                | Orígenes de navegador ajenos, si la interfaz vive en otro dominio                                      |
+| `LESEN_FILES_PATH`                                             | Carpeta del almacén local de archivos (`./data/files` por defecto)                                     |
+| `WASICHAI_FILES_STORE=s3` y `WASICHAI_FILES_S3_*`              | El almacén en S3 en lugar de disco (configuración de `wasichai-files`)                                 |
+| `LESEN_DEMO_ENABLED`                                           | `true` publica el contenido de demostración al arrancar (idempotente)                                  |
+| `ANTHROPIC_API_KEY`                                            | La corrección asistida de respuestas abiertas (ADR-0009); sin ella, autoevaluación                     |
+| `LESEN_AI_MODEL`                                               | El modelo de Claude (`claude-opus-5-5` por defecto)                                                    |
+| `LESEN_GENERATION_EFFORT`                                      | El esfuerzo del modelo en las lecturas a medida (ADR-0013), `medium` por defecto                       |
+| `LESEN_GENERATION_WORKERS`                                     | Encargos que corren a la vez (ADR-0015), 1 por defecto                                                 |
+| `LESEN_GENERATION_QUOTA_DAILY` / `_MONTHLY_BOOKS`              | Lecturas a medida por persona y día (3) y libros ilustrados por mes (4) (ADR-0016)                     |
+| `LESEN_ILLUSTRATION_PROVIDER`                                  | `none` (por defecto: ilustraciones pendientes), `fake`, `openai` o `gemini` (ADR-0015)                 |
+| `LESEN_ILLUSTRATION_MODEL`                                     | El modelo de imagen; vacío: `gpt-image-1` o `gemini-2.5-flash-image`                                   |
+| `OPENAI_API_KEY` / `GEMINI_API_KEY`                            | La clave del proveedor de imágenes elegido; nunca en un archivo                                        |
+| `LESEN_ILLUSTRATION_AGENT`                                     | `true`: con `ANTHROPIC_API_KEY`, Embabel y Claude dirigen el arte; `false`, la biblia de la generación |
+| `LESEN_ILLUSTRATION_MAX_RETRIES`                               | Veces que se vuelve a dibujar una página que la revisión rechaza (1)                                   |
+| `PORT`                                                         | Puerto HTTP (8095 por defecto)                                                                         |
 
 Las migraciones (Flyway por módulo: las de Wasichai y las de `db/lesen`) corren al arrancar. Después, con la
 aplicación en marcha, `model/apply.py` crea las anclas de permisos (`lectura`, `cuaderno`, `estudio` y su acción

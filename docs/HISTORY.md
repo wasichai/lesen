@@ -2,6 +2,41 @@
 
 Lo entregado, lo más nuevo arriba.
 
+## 2026-11-10 — Fase 7, etapa 3 (backend): lecturas a medida privadas
+
+- ADR-0016 y esquema V10: una lectura con dueña es privada; `ReadingVersions.find` solo la encuentra quien la pidió y el
+  catálogo, los temas, el diccionario y el estudio solo muestran lo público. Un slug no cambia de dueña.
+- Encargos privados (`/api/lesen/generations`) con el perfil de escritura de quien aprende (palabras que aprende, lemas
+  vistos, títulos recientes), publicados como lecturas privadas con traducciones de proveedor y sus preguntas.
+- Ancla `lectura_a_medida` (CREATE) para LECTOR y cuota por persona (lecturas por día, libros por mes), con 429 y
+  `resetsAt`.
+
+## 2026-11-10 — Fase 7, etapa 2 (backend): libros ilustrados generados desde el estudio
+
+- ADR-0015: la generación (ADR-0013) escribe también un libro, con su maqueta, sus páginas, la escena y el texto
+  alternativo de cada una y la biblia visual (`book`), y comprueba páginas, palabras por página, escenas, personajes y
+  textos alternativos (`PictureBooks`).
+- Capacidad `illustration`: `ImageProvider` con los proveedores `fake`, `openai` (gpt-image) y `gemini` (con imágenes de
+  referencia), los pasos de la dirección de arte (`IllustrationSteps`), el recorrido que dibuja en orden con las hojas
+  de los personajes y la página anterior y vuelve a dibujar lo que la revisión rechaza (`IllustrationPipeline`), y el
+  agente de Embabel `IllustrationAgent` (biblia → planos → ilustraciones con revisión con visión), fuera del contexto sin
+  clave (`IllustrationGate`).
+- Capacidad `commission` y esquema V9: la cola de encargos con trabajadores reactivos, encargos desde el estudio
+  (`studio/generations`) que terminan en un borrador con el evento `GENERATED`, y volver a dibujar una página.
+
+## 2026-11-10 — Fase 7, etapa 1 (backend): libros ilustrados
+
+- ADR-0014: formato `PICTURE_BOOK` además del texto, páginas y dobles páginas que reparten los párrafos sin cambiar sus
+  ids, una maqueta por defecto y otra por página del catálogo cerrado `PageLayout` (`PageRules`).
+- Esquema V8: `reading_version.format` (también inmutable) y `media.kind = ILLUSTRATION`. La huella de un texto no
+  cambia; la escena de una página no cuenta.
+- Contenido de una versión con `format`, `layout` y `pages` (ilustración con `src` y `alt`); ilustraciones públicas en
+  `public/illustrations/{archivo}`; tarjeta con `format` y filtro `format` en el catálogo.
+- Estudio: subida de ilustraciones (`studio/illustrations`), borradores de libros desde la versión vigente y
+  comprobación con `ILLUSTRATION_MISSING` y `ALT_MISSING`; un libro no se publica con una ilustración pendiente.
+- Demostración: «Ein Sonntag bei Oma» es un libro ilustrado de cinco páginas con ilustraciones SVG coherentes;
+  `tools/check_demo.py` valida páginas, maquetas, ilustraciones y textos alternativos.
+
 ## 2026-11-10 — Lecturas a medida, fase 1 (backend): prototipo y evaluación
 
 - ADR-0013 y capacidad `generation`: perfil de escritura (`GenerationContext`) sin datos que identifiquen a la persona,

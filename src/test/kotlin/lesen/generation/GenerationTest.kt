@@ -213,4 +213,69 @@ class GenerationTest {
             }
         }
     }
+
+    // un libro ilustrado (ADR-0014, ADR-0015): 30 oraciones en 3 párrafos de 40 palabras, tres páginas con texto y una pausa
+    private val bookContext = context.copy(request = context.request.copy(format = lesen.reading.ReadingFormat.PICTURE_BOOK))
+
+    private fun page(
+        paragraphs: Int,
+        layout: lesen.reading.PageLayout? = null,
+        span: Int = 1,
+        characters: List<String> = listOf("Anna"),
+        alt: Map<String, String> = mapOf("es" to "Anna con su taza", "en" to "Anna with her cup"),
+    ) = GeneratedPage(span, layout, paragraphs, "Anna trinkt Kaffee am Fenster", characters, alt)
+
+    private fun book(vararg pages: GeneratedPage = arrayOf(page(1), page(1), page(0, lesen.reading.PageLayout.IMAGE_ONLY), page(1))) =
+        reading().copy(
+            book =
+                GeneratedBook(
+                    lesen.reading.PageLayout.IMAGE_TOP,
+                    GeneratedArt("acuarela suave", "ocres y verdes", "una cocina", listOf(GeneratedCharacter("Anna", "pelo corto, jersey amarillo"))),
+                    pages.toList(),
+                ),
+        )
+
+    private fun bookFindings(reading: GeneratedReading) =
+        generator
+            .evaluate(reading, bookContext, "kaffee", resolver())
+            .result.findings
+            .map { it.code to it.ref }
+
+    @Test
+    fun `a picture book comes with its pages, layouts and the scene and alt text of each illustration`() {
+        val evaluated = generator.evaluate(book(), bookContext, "kaffee", resolver())
+        assertThat(evaluated.result.findings).isEmpty()
+        val draft = evaluated.draft
+        assertThat(draft.format).isEqualTo(lesen.reading.ReadingFormat.PICTURE_BOOK)
+        assertThat(draft.layout).isEqualTo(lesen.reading.PageLayout.IMAGE_TOP)
+        assertThat(draft.pages.map { it.paragraphs }).containsExactly(1, 1, 0, 1)
+        assertThat(draft.pages[2].layout).isEqualTo(lesen.reading.PageLayout.IMAGE_ONLY)
+        assertThat(draft.pages[0].illustration!!.scene).isEqualTo("Anna trinkt Kaffee am Fenster")
+        assertThat(draft.pages[0].illustration!!.file).isNull()
+        assertThat(draft.pages[0].illustration!!.alt).containsEntry("en", "Anna with her cup")
+        // el esquema pide el libro solo cuando se pide un libro
+        assertThat((GenerationPrompt.schema(bookContext)["properties"] as Map<*, *>).keys).contains("book")
+        assertThat((GenerationPrompt.schema(context)["properties"] as Map<*, *>).keys).doesNotContain("book")
+        assertThat(GenerationPrompt.message(bookContext)).contains("Format: picture book, up to 40 words per page")
+    }
+
+    @Test
+    fun `a picture book is checked page by page`() {
+        assertThat(bookFindings(reading())).containsExactly("BOOK" to null)
+        assertThat(findings(book())).contains("BOOK" to null)
+        assertThat(bookFindings(book(page(2), page(0, lesen.reading.PageLayout.IMAGE_ONLY), page(1), page(0, lesen.reading.PageLayout.IMAGE_ONLY))))
+            .contains("PAGE_TOO_LONG" to "g1")
+        assertThat(bookFindings(book(page(1), page(1), page(1)))).contains("PAGES" to null)
+        assertThat(bookFindings(book(page(1), page(1, characters = listOf("Otto")), page(1), page(0, lesen.reading.PageLayout.IMAGE_ONLY))))
+            .contains("CHARACTER" to "g2")
+        assertThat(bookFindings(book(page(1), page(1), page(1, alt = mapOf("es" to "Anna")), page(0, lesen.reading.PageLayout.IMAGE_ONLY))))
+            .contains("ALT" to "g3")
+        // una maqueta que no cabe en su ancho, o páginas que no reparten los párrafos, las dice el ensamblado
+        assertThat(
+            bookFindings(book(page(1, lesen.reading.PageLayout.PANORAMA), page(1), page(1), page(0, lesen.reading.PageLayout.IMAGE_ONLY))).map { it.first },
+        ).contains("FIELD")
+        assertThat(
+            bookFindings(book(page(1), page(1), page(0, lesen.reading.PageLayout.IMAGE_ONLY), page(0, lesen.reading.PageLayout.IMAGE_ONLY))).map { it.first },
+        ).contains("FIELD")
+    }
 }

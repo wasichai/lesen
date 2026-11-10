@@ -43,6 +43,10 @@ data class ReadingCard(
     val progress: CardProgress?,
     // personas que la abrieron alguna vez (agregado anónimo, para ordenar por popularidad)
     val readers: Long,
+    // TEXT o PICTURE_BOOK (ADR-0014)
+    val format: String = "TEXT",
+    // una lectura a medida de quien pregunta (ADR-0016)
+    val custom: Boolean = false,
 )
 
 data class CollectionView(
@@ -104,4 +108,5 @@ data class CatalogQuery(
     val sort: ReadingSort = ReadingSort.RECENT,
     // solo estas lecturas (las de una lista propia)
     val slugs: List<String>? = null,
+    val format: lesen.reading.ReadingFormat? = null,
 )

@@ -12,6 +12,12 @@ import wasichai.core.common.FieldViolation
 import wasichai.core.common.ValidationException
 import java.util.UUID
 
+// la dueña de una lectura a medida (ADR-0016); sin ella, la lectura es del catálogo
+data class ReadingOwner(
+    val organizationId: UUID,
+    val userId: UUID,
+)
+
 data class PublishResult(
     val readingId: UUID,
     val version: Int,
@@ -27,11 +33,18 @@ class ReadingPublisher(
     private val db: DatabaseClient,
     private val tx: TransactionalOperator,
     private val resolvers: FormResolvers,
+    private val illustrations: IllustrationFiles,
 ) {
     private val tokenizers = Tokenizers()
     private val log = LoggerFactory.getLogger(ReadingPublisher::class.java)
 
-    suspend fun publish(draft: ReadingDraft): PublishResult {
+    // owner: la de una lectura a medida. source: AUTHORED (escrita o revisada por una persona) o PROVIDER (escrita por la
+    // generación y sin revisión, ADR-0005, ADR-0016)
+    suspend fun publish(
+        draft: ReadingDraft,
+        owner: ReadingOwner? = null,
+        source: String = "AUTHORED",
+    ): PublishResult {
         ReadingAssembler.validate(draft)
         requireReferences(draft)
         val assembled = ReadingAssembler.assemble(draft, tokenizers.forLanguage(draft.language), resolvers.load(draft.language))
@@ -44,7 +57,7 @@ class ReadingPublisher(
                 .awaitSingle()
         val result =
             tx.executeAndAwait {
-                val readingId = upsertReading(draft)
+                val readingId = upsertReading(draft, owner)
                 val current = currentVersion(readingId)
                 if (current != null && current.second == assembled.hash) {
                     PublishResult(readingId, current.first, false, assembled.unresolved)
@@ -65,7 +78,7 @@ class ReadingPublisher(
                         .fetch()
                         .rowsUpdated()
                         .awaitSingle()
-                    insertTranslations(versionId, assembled.translations)
+                    insertTranslations(versionId, assembled.translations, source)
                     insertOccurrences(versionId, assembled.entryOccurrences)
                     PublishResult(readingId, number, true, assembled.unresolved)
                 }
@@ -76,8 +89,11 @@ class ReadingPublisher(
         return result
     }
 
+    // un libro se publica con todas sus ilustraciones: una pendiente no se inventa ni se deja en blanco
     private suspend fun requireReferences(draft: ReadingDraft) {
-        val problems = referenceProblems(draft)
+        val problems =
+            referenceProblems(draft) +
+                PageRules.missingIllustrations(draft).map { FieldViolation("pages[$it].illustration", "the illustration is still missing") }
         if (problems.isNotEmpty()) throw ValidationException("Invalid reading", problems)
     }
 
@@ -112,6 +128,21 @@ class ReadingPublisher(
                 .toSet()
         val missing = draft.topics.filter { it !in known }
         if (missing.isNotEmpty()) problems += FieldViolation("topics", "unknown topics: $missing")
+        problems += illustrationProblems(draft)
+        return problems
+    }
+
+    // cada ilustración de un libro es un archivo que existe: de la demostración o subido como ilustración (ADR-0014). Las
+    // pendientes las dice PageRules.missingIllustrations
+    private suspend fun illustrationProblems(draft: ReadingDraft): List<FieldViolation> {
+        if (draft.format != ReadingFormat.PICTURE_BOOK) return emptyList()
+        val problems = mutableListOf<FieldViolation>()
+        draft.pages.forEachIndexed { i, page ->
+            val file = page.illustration?.file ?: return@forEachIndexed
+            if (PageRules.effective(draft, page)?.illustrated == true && !illustrations.exists(file)) {
+                problems += FieldViolation("pages[$i].illustration", "unknown illustration file: $file")
+            }
+        }
         return problems
     }
 
@@ -122,24 +153,40 @@ class ReadingPublisher(
     // la forma → la entrada que la publicación elegiría por defecto, para reconstruir las elecciones de una autora
     suspend fun resolver(language: String): FormResolver = resolvers.load(language)
 
-    private suspend fun upsertReading(draft: ReadingDraft): UUID {
+    // una lectura no cambia de idioma ni de dueña: el slug de una lectura de otra persona (o del catálogo, para una a
+    // medida) no se puede tomar
+    private suspend fun upsertReading(
+        draft: ReadingDraft,
+        owner: ReadingOwner?,
+    ): UUID {
         val id =
             db
                 .sql(
                     """
-                    INSERT INTO lesen.reading (slug, language, level, featured) VALUES (:slug, :language, :level, :featured)
+                    INSERT INTO lesen.reading (slug, language, level, featured, owner_organization, owner_user)
+                    VALUES (:slug, :language, :level, :featured, :oo, :ou)
                     ON CONFLICT (slug) DO UPDATE SET level = EXCLUDED.level, featured = EXCLUDED.featured
                     WHERE lesen.reading.language = EXCLUDED.language
+                      AND lesen.reading.owner_user IS NOT DISTINCT FROM EXCLUDED.owner_user
+                      AND lesen.reading.owner_organization IS NOT DISTINCT FROM EXCLUDED.owner_organization
                     RETURNING id
                     """.trimIndent(),
                 ).bind("slug", draft.slug)
-                .bind("language", draft.language)
+                .let {
+                    if (owner ==
+                        null
+                    ) {
+                        it.bindNull("oo", UUID::class.java).bindNull("ou", UUID::class.java)
+                    } else {
+                        it.bind("oo", owner.organizationId).bind("ou", owner.userId)
+                    }
+                }.bind("language", draft.language)
                 .bind("level", draft.level)
                 .bind("featured", draft.featured)
                 .map { row, _ -> row.get(0, UUID::class.java)!! }
                 .one()
                 .awaitSingleOrNull()
-                ?: throw ValidationException("Invalid reading", "language", "a reading keeps the language it was first published in")
+                ?: throw ValidationException("Invalid reading", "slug", "a reading keeps its language and its owner: this slug is taken")
         db
             .sql("DELETE FROM lesen.reading_topic WHERE reading_id = :r")
             .bind("r", id)
@@ -184,8 +231,8 @@ class ReadingPublisher(
                 .sql(
                     """
                     INSERT INTO lesen.reading_version
-                      (reading_id, number, status, title, subtitle, summary, cover, accent, word_count, minutes, content, content_hash)
-                    VALUES (:r, :n, 'PUBLISHED', :title, :subtitle, :summary, :cover, :accent, :words, :minutes, CAST(:content AS jsonb), :hash)
+                      (reading_id, number, status, title, subtitle, summary, cover, accent, word_count, minutes, content, content_hash, format)
+                    VALUES (:r, :n, 'PUBLISHED', :title, :subtitle, :summary, :cover, :accent, :words, :minutes, CAST(:content AS jsonb), :hash, :format)
                     RETURNING id
                     """.trimIndent(),
                 ).bind("r", readingId)
@@ -196,6 +243,7 @@ class ReadingPublisher(
                 .bind("minutes", minutes)
                 .bind("content", Jsonb.of(assembled.content))
                 .bind("hash", assembled.hash)
+                .bind("format", draft.format.name)
         spec = draft.subtitle?.let { spec.bind("subtitle", it.trim()) } ?: spec.bindNull("subtitle", String::class.java)
         spec = draft.cover?.let { spec.bind("cover", it) } ?: spec.bindNull("cover", String::class.java)
         spec = draft.accent?.let { spec.bind("accent", it) } ?: spec.bindNull("accent", String::class.java)
@@ -205,19 +253,21 @@ class ReadingPublisher(
     private suspend fun insertTranslations(
         versionId: UUID,
         units: List<TranslationUnit>,
+        source: String,
     ) {
         for (unit in units) {
             db
                 .sql(
                     """
                     INSERT INTO lesen.reading_translation (version_id, unit, ref, language, text, source)
-                    SELECT :v, :unit, :ref, :language, :text, 'AUTHORED' WHERE EXISTS (SELECT 1 FROM lesen.language WHERE code = :language)
+                    SELECT :v, :unit, :ref, :language, :text, :source WHERE EXISTS (SELECT 1 FROM lesen.language WHERE code = :language)
                     """.trimIndent(),
                 ).bind("v", versionId)
                 .bind("unit", unit.unit)
                 .bind("ref", unit.ref)
                 .bind("language", unit.language)
                 .bind("text", unit.text.trim())
+                .bind("source", source)
                 .fetch()
                 .rowsUpdated()
                 .awaitSingle()

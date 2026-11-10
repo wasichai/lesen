@@ -117,6 +117,13 @@ class StudioController(
         @RequestPart("file") file: FilePart,
     ): MediaFile = service.cover(access.writeStudio(), bytes(file, COVER_LIMIT))
 
+    // la ilustración de una página de un libro (PNG, JPEG o WebP): devuelve el nombre de archivo para esa página
+    @PostMapping("/illustrations")
+    @ResponseStatus(HttpStatus.CREATED)
+    suspend fun illustration(
+        @RequestPart("file") file: FilePart,
+    ): MediaFile = service.illustration(access.writeStudio(), bytes(file, ILLUSTRATION_LIMIT))
+
     @GetMapping("/readings")
     suspend fun readings(): List<PublishedReading> {
         access.studio()
@@ -161,6 +168,7 @@ class StudioController(
     companion object {
         const val AUDIO_LIMIT = 30 * 1_048_576
         const val COVER_LIMIT = 3 * 1_048_576
+        const val ILLUSTRATION_LIMIT = 5 * 1_048_576
         const val TIMINGS_LIMIT = 2 * 1_048_576
     }
 }

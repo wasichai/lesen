@@ -198,7 +198,7 @@ class DictionaryStore(
                 """
                 SELECT r.slug, v.title, r.level, e.occurrences FROM lesen.reading_entry e
                 JOIN lesen.reading_version v ON v.id = e.version_id
-                JOIN lesen.reading r ON r.id = v.reading_id AND r.current_version = v.number
+                JOIN lesen.reading r ON r.id = v.reading_id AND r.current_version = v.number AND r.owner_user IS NULL
                 WHERE e.entry_key = :k ORDER BY e.occurrences DESC, v.title LIMIT 12
                 """.trimIndent(),
             ).bind("k", key)

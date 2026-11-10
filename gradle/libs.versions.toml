@@ -9,6 +9,8 @@ ktlintTool = "1.7.1"
 springdoc = "3.2.0"
 # corrección asistida de respuestas abiertas (ADR-0009)
 anthropic = "3.3.0"
+# las ilustraciones coherentes de los libros (ADR-0015): la misma versión que Wasichai 1.10.0
+embabel = "1.5.4"
 
 [libraries]
 wasichai-bom = { module = "wasichai:wasichai-bom", version.ref = "wasichai" }
@@ -16,6 +18,8 @@ wasichai-starter = { module = "wasichai:wasichai-spring-boot-starter" }
 wasichai-starter-files = { module = "wasichai:wasichai-spring-boot-starter-files" }
 wasichai-test = { module = "wasichai:wasichai-test" }
 anthropic-java = { module = "com.anthropic:anthropic-java", version.ref = "anthropic" }
+embabel-agent-starter = { module = "com.embabel.agent:embabel-agent-starter", version.ref = "embabel" }
+embabel-agent-starter-anthropic = { module = "com.embabel.agent:embabel-agent-starter-anthropic", version.ref = "embabel" }
 springdoc-webflux-api = { module = "org.springdoc:springdoc-openapi-starter-webflux-api", version.ref = "springdoc" }
 
 [plugins]

@@ -173,6 +173,36 @@ class StudioService(
         return view(created)
     }
 
+    // un borrador que escribió la generación (ADR-0013, ADR-0015): entra en DRAFT con su texto, sus traducciones, sus
+    // preguntas y, en un libro, sus páginas e ilustraciones, y sigue la revisión de siempre. Si el slug ya es de una lectura
+    // o de un borrador abierto, se le añade un número
+    suspend fun createGenerated(
+        actor: String,
+        document: ReadingDraft,
+        questions: List<Question>,
+        note: String?,
+    ): UUID {
+        var slug = document.slug
+        var n = 2
+        while (true) {
+            if (versions.find(slug) == null) {
+                val candidate = document.copy(slug = slug)
+                val id =
+                    try {
+                        store.insert(slug, candidate.language, null, null, candidate, questions, null, actor)
+                    } catch (_: DataIntegrityViolationException) {
+                        null
+                    }
+                if (id != null) {
+                    store.event(id, slug, StudioAction.GENERATED, actor, note?.take(2000))
+                    return id
+                }
+            }
+            slug = "${document.slug.take(110)}-${n++}"
+            if (n > 50) throw ConflictException("No free slug for this reading")
+        }
+    }
+
     // el borrador de una lectura publicada: su versión vigente con sus traducciones, sus preguntas y su audio
     private suspend fun fromReading(
         slug: String,
@@ -197,6 +227,9 @@ class StudioService(
                 title = meta.title,
                 subtitle = meta.subtitle,
                 summary = meta.summary,
+                format = content.format,
+                layout = content.layout,
+                pages = content.pages?.let { lesen.reading.PageRules.draftPages(content.layout, it) }.orEmpty(),
                 paragraphs =
                     content.paragraphs.map { paragraph ->
                         DraftParagraph(
@@ -247,6 +280,29 @@ class StudioService(
         val document = request.document.copy(slug = draft.slug, language = draft.language)
         limits(document, request.questions)
         if (!store.save(id, request.revision, document, request.questions, me.user.email)) {
+            throw ConflictException("Someone saved this draft in the meantime: reload it before saving")
+        }
+        store.event(id, draft.slug, StudioAction.SAVED, me.user.email)
+        return view(find(id))
+    }
+
+    // un borrador editable, para quien lo cambia desde fuera del editor (redibujar una ilustración): su documento y su revisión
+    suspend fun editable(id: UUID): Pair<ReadingDraft, Int> {
+        val draft = find(id)
+        requireStatus(draft, DraftStatus.DRAFT)
+        return draft.document to draft.revision
+    }
+
+    // guardar un documento cambiado fuera del editor, con la misma revisión optimista (409 si alguien guardó antes)
+    suspend fun replaceDocument(
+        me: Learner,
+        id: UUID,
+        revision: Int,
+        document: ReadingDraft,
+    ): DraftView {
+        val draft = find(id)
+        requireStatus(draft, DraftStatus.DRAFT)
+        if (!store.save(id, revision, document.copy(slug = draft.slug, language = draft.language), draft.questions, me.user.email)) {
             throw ConflictException("Someone saved this draft in the meantime: reload it before saving")
         }
         store.event(id, draft.slug, StudioAction.SAVED, me.user.email)
@@ -318,6 +374,12 @@ class StudioService(
         me: Learner,
         file: ByteArray,
     ): MediaFile = media.save(MediaKind.COVER, file, me.user.email)
+
+    // la ilustración de una página (ADR-0014): devuelve el archivo que el borrador pone en esa página
+    suspend fun illustration(
+        me: Learner,
+        file: ByteArray,
+    ): MediaFile = media.save(MediaKind.ILLUSTRATION, file, me.user.email)
 
     suspend fun check(id: UUID): CheckReport = check(find(id))
 
@@ -470,6 +532,11 @@ class StudioService(
                 questions = draft.questions,
                 audio = draft.audio,
                 unchanged = unchanged,
+                missingIllustrations =
+                    lesen.reading.PageRules
+                        .missingIllustrations(draft.document)
+                        .map { "g${it + 1}" },
+                interfaceLanguages = languages.all().filter { it.interfaceLanguage }.map { it.code },
                 currentQuestions = current?.let { assessments.questionsOf(it.versionId) },
                 currentAnswered = current?.let { assessments.answered(it.versionId) } ?: false,
             ),
@@ -488,6 +555,7 @@ class StudioService(
         if (meta.level != document.level || meta.topics != document.topics || meta.featured != document.featured) return false
         if (meta.title != document.title.trim() || meta.subtitle != document.subtitle?.trim() || meta.summary != document.summary.trim()) return false
         if (meta.cover != document.cover || meta.accent != document.accent) return false
+        // el formato, la maqueta y las páginas van en el contenido: ya se compararon
 
         fun key(unit: lesen.reading.TranslationUnit) = listOf(unit.unit, unit.ref, unit.language, unit.text.trim())
         val wanted =

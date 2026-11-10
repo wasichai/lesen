@@ -7,6 +7,8 @@ import lesen.common.Page
 import lesen.common.PageRequest
 import lesen.common.requireLength
 import lesen.learner.ProfileService
+import lesen.reading.IllustrationFiles
+import lesen.reading.ReadingFormat
 import lesen.reading.ReadingVersions
 import lesen.reading.TranslationUnit
 import org.springframework.core.io.ByteArrayResource
@@ -42,6 +44,21 @@ data class ContentParagraph(
     val sentences: List<ContentSentence>,
 )
 
+// la ilustración de una página: su dirección pública y su texto alternativo por idioma de interfaz
+data class ContentIllustration(
+    val src: String,
+    val alt: Map<String, String>,
+)
+
+// una página de un libro ilustrado (ADR-0014): la maqueta ya resuelta y los ids de sus párrafos
+data class ContentPage(
+    val id: String,
+    val span: Int,
+    val layout: String,
+    val paragraphs: List<String>,
+    val illustration: ContentIllustration?,
+)
+
 // el texto de una versión, listo para pintar palabra por palabra
 data class ReadingContentView(
     val slug: String,
@@ -49,6 +66,9 @@ data class ReadingContentView(
     val language: String,
     val current: Boolean,
     val paragraphs: List<ContentParagraph>,
+    val format: String = "TEXT",
+    val layout: String? = null,
+    val pages: List<ContentPage>? = null,
 )
 
 data class TranslationView(
@@ -79,6 +99,7 @@ class CatalogController(
         @RequestParam q: String?,
         @RequestParam status: ReadingStatus?,
         @RequestParam featured: Boolean?,
+        @RequestParam format: ReadingFormat?,
         @RequestParam sort: ReadingSort?,
         @RequestParam page: Int?,
         @RequestParam size: Int?,
@@ -87,7 +108,7 @@ class CatalogController(
         requireLength(q, "q", 64)
         requireLength(topic, "topic", 120)
         if ((level?.size ?: 0) > 6) throw ValidationException("Invalid level", "level", "at most 6 levels")
-        val query = CatalogQuery(language, level.orEmpty(), topic, minMinutes, maxMinutes, q, status, featured, sort ?: ReadingSort.RECENT)
+        val query = CatalogQuery(language, level.orEmpty(), topic, minMinutes, maxMinutes, q, status, featured, sort ?: ReadingSort.RECENT, format = format)
         return catalog.search(me, query, PageRequest.of(page, size))
     }
 
@@ -115,6 +136,17 @@ class CatalogController(
                     ContentParagraph(
                         p.id,
                         p.sentences.map { s -> ContentSentence(s.id, s.tokens.map { ContentToken(it.id, it.text, it.kind.name, it.space, it.entry) }) },
+                    )
+                },
+                content.format.name,
+                content.layout?.name,
+                content.pages?.map { page ->
+                    ContentPage(
+                        page.id,
+                        page.span,
+                        page.layout.name,
+                        page.paragraphs,
+                        page.illustration?.let { ContentIllustration(IllustrationFiles.url(it.file), it.alt) },
                     )
                 },
             )
@@ -183,6 +215,36 @@ class PublicCatalogController(
             .ok()
             .contentType(MediaType.valueOf(type))
             .cacheControl(CacheControl.maxAge(Duration.ofDays(7)).cachePublic())
+            .header("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'")
+            .header("X-Content-Type-Options", "nosniff")
+            .body(resource)
+    }
+
+    // las ilustraciones de los libros (ADR-0014): SVG de la demostración o imágenes del almacén. Una versión publicada no
+    // cambia, y el nombre sale de la huella: se guardan en caché para siempre
+    @GetMapping("/illustrations/{file}")
+    suspend fun illustration(
+        @PathVariable file: String,
+    ): ResponseEntity<Resource> {
+        if (!lesen.reading.PageRules.ILLUSTRATION_FILE
+                .matches(file)
+        ) {
+            throw NotFoundException("Illustration not found")
+        }
+        val type: String
+        val resource: Resource
+        if (file.endsWith(".svg")) {
+            resource = IllustrationFiles.demo(file).takeIf { it.exists() } ?: throw NotFoundException("Illustration not found")
+            type = "image/svg+xml"
+        } else {
+            val stored = media.find(file)?.takeIf { it.kind == MediaKind.ILLUSTRATION } ?: throw NotFoundException("Illustration not found")
+            resource = ByteArrayResource(media.bytes(stored) ?: throw NotFoundException("Illustration not found"))
+            type = stored.contentType
+        }
+        return ResponseEntity
+            .ok()
+            .contentType(MediaType.valueOf(type))
+            .cacheControl(CacheControl.maxAge(Duration.ofDays(365)).cachePublic().immutable())
             .header("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'")
             .header("X-Content-Type-Options", "nosniff")
             .body(resource)
