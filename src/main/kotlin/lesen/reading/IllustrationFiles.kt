@@ -18,6 +18,23 @@ class IllustrationFiles(
             else -> media.find(file)?.kind == MediaKind.ILLUSTRATION
         }
 
+    data class Bytes(
+        val contentType: String,
+        val bytes: ByteArray,
+    )
+
+    // los bytes de una ilustración, para servirla o incluirla en otro formato: SVG de la demostración o imagen subida.
+    // null si no existe
+    suspend fun read(file: String): Bytes? =
+        when {
+            !PageRules.ILLUSTRATION_FILE.matches(file) -> null
+            file.endsWith(".svg") -> demo(file).takeIf { it.exists() }?.let { Bytes("image/svg+xml", it.inputStream.use { s -> s.readAllBytes() }) }
+            else ->
+                media.find(file)?.takeIf { it.kind == MediaKind.ILLUSTRATION }?.let { stored ->
+                    media.bytes(stored)?.let { Bytes(stored.contentType, it) }
+                }
+        }
+
     companion object {
         const val URL = "/api/lesen/public/illustrations"
 
