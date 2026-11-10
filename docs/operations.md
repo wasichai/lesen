@@ -20,6 +20,7 @@ interfaz (`lesen-ui`) se sirve aparte y llama a `/api`.
 | `LESEN_AI_MODEL`                                               | El modelo de Claude (`claude-opus-5-5` por defecto)                                                    |
 | `LESEN_GENERATION_EFFORT`                                      | El esfuerzo del modelo en las lecturas a medida (ADR-0013), `medium` por defecto                       |
 | `LESEN_GENERATION_WORKERS`                                     | Encargos que corren a la vez (ADR-0015), 1 por defecto                                                 |
+| `LESEN_GENERATION_QUOTA_DAILY` / `_MONTHLY_BOOKS`              | Lecturas a medida por persona y día (3) y libros ilustrados por mes (4) (ADR-0016)                     |
 | `LESEN_ILLUSTRATION_PROVIDER`                                  | `none` (por defecto: ilustraciones pendientes), `fake`, `openai` o `gemini` (ADR-0015)                 |
 | `LESEN_ILLUSTRATION_MODEL`                                     | El modelo de imagen; vacío: `gpt-image-1` o `gemini-2.5-flash-image`                                   |
 | `OPENAI_API_KEY` / `GEMINI_API_KEY`                            | La clave del proveedor de imágenes elegido; nunca en un archivo                                        |

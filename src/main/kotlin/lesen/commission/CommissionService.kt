@@ -282,6 +282,10 @@ class CommissionWorker(
 
     @EventListener(ApplicationReadyEvent::class)
     fun start() {
+        if (!properties.generation.worker) {
+            log.info("encargos: este proceso no atiende la cola (lesen.generation.worker=false)")
+            return
+        }
         if (!service.available) {
             log.info("encargos desactivados: sin clave no se escriben lecturas a medida ni libros")
             return

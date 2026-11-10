@@ -35,7 +35,7 @@ import java.time.Instant
         "embabel.agent.platform.models.anthropic.api-key=sk-ant-not-a-real-key",
         "spring.ai.anthropic.api-key=sk-ant-not-a-real-key",
         "lesen.illustration.provider=fake",
-        "lesen.generation.poll-millis=200",
+        "lesen.generation.poll-millis=200", "lesen.generation.worker=true",
     ],
 )
 @Import(IllustrationAgentTest.Scripted::class)

@@ -23,7 +23,7 @@ un idioma.
 | Entidad               | Estado | Notas                                                                                                                                                  |
 | --------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `topic`               | Hecho  | Árbol: el slug es la ruta (`travel/coasts`), etiquetas por idioma de interfaz                                                                          |
-| `reading`             | Hecho  | Slug, idioma, nivel, destacada, versión vigente. Su idioma no cambia                                                                                   |
+| `reading`             | Hecho  | Slug, idioma, nivel, destacada, versión vigente y, en una lectura a medida, su dueña (ADR-0016). Su idioma y su dueña no cambian                       |
 | `reading_topic`       | Hecho  | Temas en orden                                                                                                                                         |
 | `reading_version`     | Hecho  | Inmutable (disparador). Título, subtítulo, resumen, portada, acento, palabras, minutos, contenido, huella y formato (`TEXT`, `PICTURE_BOOK`, ADR-0014) |
 | `reading_translation` | Hecho  | Por unidad (`SENTENCE`, `PARAGRAPH`), referencia e idioma; origen `AUTHORED` o `PROVIDER`                                                              |

@@ -256,6 +256,7 @@ class StudioStore(
                        (SELECT count(*) FROM lesen.reading_version x WHERE x.reading_id = r.id) AS versions,
                        (SELECT d.id FROM lesen.studio_draft d WHERE d.slug = r.slug AND d.status IN ('DRAFT', 'IN_REVIEW')) AS draft
                 FROM lesen.reading r JOIN lesen.reading_version v ON v.reading_id = r.id AND v.number = r.current_version
+                WHERE r.owner_user IS NULL
                 ORDER BY v.published_at DESC, r.slug
                 """.trimIndent(),
             ).map { row, _ ->
@@ -281,7 +282,7 @@ class StudioStore(
                        EXISTS (SELECT 1 FROM lesen.audio_asset a WHERE a.version_id = v.id) AS audio,
                        COALESCE((SELECT jsonb_array_length(s.questions) FROM lesen.assessment s WHERE s.version_id = v.id), 0) AS questions
                 FROM lesen.reading r JOIN lesen.reading_version v ON v.reading_id = r.id
-                WHERE r.slug = :slug ORDER BY v.number DESC
+                WHERE r.slug = :slug AND r.owner_user IS NULL ORDER BY v.number DESC
                 """.trimIndent(),
             ).bind("slug", slug)
             .map { row, _ ->

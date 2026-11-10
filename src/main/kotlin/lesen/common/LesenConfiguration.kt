@@ -47,10 +47,19 @@ data class LesenProperties(
         val timeoutSeconds: Long = 300,
         // los trabajos de generación que corren a la vez (lesen.generation_job) y cada cuánto se mira la cola
         val workers: Int = 1,
+        // si este proceso atiende la cola de encargos (en un despliegue con varios procesos, se puede apagar en algunos)
+        val worker: Boolean = true,
         val pollMillis: Long = 2000,
         // un trabajo sin noticias en este tiempo se da por caído y vuelve a la cola
         val staleMinutes: Long = 30,
-    )
+        // lo que cada persona puede pedir (ADR-0016): un encargo que falla no cuenta
+        val quota: Quota = Quota(),
+    ) {
+        data class Quota(
+            val daily: Int = 3,
+            val monthlyBooks: Int = 4,
+        )
+    }
 
     // las ilustraciones de los libros (ADR-0015). provider: none (sin ilustraciones: el libro queda con ellas pendientes),
     // fake (imágenes de prueba, para desarrollo y pruebas), openai o gemini. Las claves nunca van a un archivo

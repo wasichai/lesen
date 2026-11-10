@@ -39,7 +39,7 @@ import java.time.Instant
 // su trabajador atiende la cola de la base de prueba compartida: el contexto se cierra al acabar para que no le quite
 // los encargos a otra clase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@TestPropertySource(properties = ["lesen.illustration.provider=fake", "lesen.generation.poll-millis=200"])
+@TestPropertySource(properties = ["lesen.illustration.provider=fake", "lesen.generation.poll-millis=200", "lesen.generation.worker=true"])
 @Import(CommissionApiTest.ScriptedWriter::class)
 class CommissionApiTest : LesenApiTest() {
     @TestConfiguration

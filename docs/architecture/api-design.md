@@ -127,6 +127,20 @@ dominadas, nivel). La racha (`{current, best, weeksMet, target, activeThisWeek, 
 que se perdió nada. La actividad la registran los endpoints de siempre (progreso, terminar, guardar, repasar, enviar un
 intento); no hay un endpoint para inventarla (ADR-0011).
 
+## Lecturas a medida
+
+Permiso **lectura a medida** = CREATE sobre `lectura_a_medida` (ADR-0016). Lo de otra persona es 404.
+
+| Método | Ruta                | Permiso          | Notas                                                                                                          |
+| ------ | ------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------- |
+| POST   | `generations`       | lectura a medida | `{language, level, minutes, kind, format, topics[≤3], prompt?}` → 202; cuota agotada, 429; sin generación, 503 |
+| GET    | `generations`       | lectura a medida | Mis encargos (`readingSlug` cuando está lista), lo más nuevo primero                                           |
+| GET    | `generations/{id}`  | lectura a medida | Uno de mis encargos                                                                                            |
+| GET    | `generations/quota` | lectura a medida | `{dailyLimit, dailyUsed, monthlyBooksLimit, monthlyBooksUsed, resetsAt}`                                       |
+
+Una lectura a medida se lee con las rutas de siempre (`readings/{slug}/…`), solo para quien la pidió; su tarjeta lleva
+`custom: true` y no aparece en el catálogo.
+
 ## Estudio editorial
 
 Permisos (`Access`): **estudio** = READ sobre `estudio`; **escribir estudio** = UPDATE; **publicar** = la acción propia

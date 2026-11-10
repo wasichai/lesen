@@ -51,6 +51,10 @@ lesen:
     effort: ${LESEN_GENERATION_EFFORT:medium}
     max-corrections: ${LESEN_GENERATION_MAX_CORRECTIONS:2}
     workers: ${LESEN_GENERATION_WORKERS:1}
+    # lo que cada persona puede pedir (ADR-0016): lecturas por día y libros ilustrados por mes
+    quota:
+      daily: ${LESEN_GENERATION_QUOTA_DAILY:3}
+      monthly-books: ${LESEN_GENERATION_QUOTA_MONTHLY_BOOKS:4}
   illustration:
     # libros ilustrados (ADR-0015): none, fake, openai o gemini. Sin proveedor, las ilustraciones quedan pendientes
     provider: ${LESEN_ILLUSTRATION_PROVIDER:none}

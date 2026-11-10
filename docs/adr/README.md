@@ -19,3 +19,4 @@ Una ADR aceptada no se edita: si cambia la decisión, se escribe otra que la ree
 | [0013](0013-lecturas-a-medida.md)                    | Lecturas a medida: un flujo controlado por el código que escribe con Claude |
 | [0014](0014-libros-ilustrados.md)                    | Libros ilustrados: páginas y maquetas de un catálogo cerrado                |
 | [0015](0015-ilustraciones-coherentes-con-embabel.md) | Ilustraciones coherentes con Embabel y proveedores de imagen                |
+| [0016](0016-lecturas-a-medida-privadas.md)           | Lecturas a medida privadas, con cuota, para quien aprende                   |

@@ -35,6 +35,9 @@ class Access(
     // el estudio editorial (ADR-0012): ver los borradores y el historial
     suspend fun studio(): Learner = require(Actions.READ, STUDIO_ANCHOR)
 
+    // pedir lecturas a medida (ADR-0016): un ancla propia, para que cada organización decida quién puede
+    suspend fun generate(): Learner = require(Actions.CREATE, GENERATION_ANCHOR)
+
     // escribir borradores, adjuntarles audio y enviarlos a revisión
     suspend fun writeStudio(): Learner = require(Actions.UPDATE, STUDIO_ANCHOR)
 
@@ -54,6 +57,7 @@ class Access(
         const val READING_ANCHOR = "lectura"
         const val NOTEBOOK_ANCHOR = "cuaderno"
         const val STUDIO_ANCHOR = "estudio"
+        const val GENERATION_ANCHOR = "lectura_a_medida"
         const val PUBLISH = "PUBLICAR"
     }
 }

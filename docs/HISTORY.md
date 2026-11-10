@@ -2,6 +2,15 @@
 
 Lo entregado, lo más nuevo arriba.
 
+## 2026-11-10 — Fase 7, etapa 3 (backend): lecturas a medida privadas
+
+- ADR-0016 y esquema V10: una lectura con dueña es privada; `ReadingVersions.find` solo la encuentra quien la pidió y el
+  catálogo, los temas, el diccionario y el estudio solo muestran lo público. Un slug no cambia de dueña.
+- Encargos privados (`/api/lesen/generations`) con el perfil de escritura de quien aprende (palabras que aprende, lemas
+  vistos, títulos recientes), publicados como lecturas privadas con traducciones de proveedor y sus preguntas.
+- Ancla `lectura_a_medida` (CREATE) para LECTOR y cuota por persona (lecturas por día, libros por mes), con 429 y
+  `resetsAt`.
+
 ## 2026-11-10 — Fase 7, etapa 2 (backend): libros ilustrados generados desde el estudio
 
 - ADR-0015: la generación (ADR-0013) escribe también un libro, con su maqueta, sus páginas, la escena y el texto
